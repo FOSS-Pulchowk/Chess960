@@ -10,11 +10,18 @@ vector<int> getPositionInVector(string position)
 	return positionInNumber;
 
 }
-
+void Piece::setCurrentPosition(string position)
+{
+	//this->currentPosition = position;
+}
+string Piece::myName()
+{
+	return name;
+}
 King::King(string currentPosition,string color)
 {
 	name = "King";
-	this->currentPosition = currentPosition;
+	//this->currentPosition = currentPosition;
 	if (color == "white")
 	{
 		this->isWhite = 1;
@@ -24,7 +31,7 @@ King::King(string currentPosition,string color)
 		this->isWhite = 0;
 	}
 }
-bool King::MovesInEmptyBoard(string initialPosition,string finalPosition)
+int King::movesInEmptyBoard(string initialPosition,string finalPosition)
 {
 	vector<int> initialPositionInNumber = getPositionInVector(initialPosition);
 	vector<int> finalPositionInNumber = getPositionInVector(finalPosition);
@@ -44,7 +51,7 @@ bool King::MovesInEmptyBoard(string initialPosition,string finalPosition)
 			y = initialPositionInNumber[1];
 			temp[0] = x + i;
 			temp[1] = y + j;
-			std::cout << temp[0] << "," << temp[1] << "\n";
+			//std::cout << temp[0] << "," << temp[1] << "\n";
 			if (finalPositionInNumber == temp)
 			{
 				return 1;

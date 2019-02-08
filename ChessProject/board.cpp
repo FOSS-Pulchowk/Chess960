@@ -29,6 +29,7 @@ void setBoard(Board currentBoard[8][8])
 			string tempLocation;
 			tempLocation.push_back('a' + j);
 			tempLocation.push_back('1' + i);
+			currentBoard[i][j].currentPiece = NULL;
 			currentBoard[i][j].setMyLocation(tempLocation);
 		}
 	}
