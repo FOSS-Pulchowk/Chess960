@@ -7,8 +7,8 @@ class Piece;
 class Board
 {
 	string myLocation;
-	Piece *currentPiece;
 public:
+	Piece *currentPiece;
 	void setMyLocation(string location);
 	string getMyLocation();
 	bool setPiece(Piece *pieceptr);

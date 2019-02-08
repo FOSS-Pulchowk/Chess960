@@ -8,5 +8,6 @@ int main()
 	King blackKing("e8", "black");
 	Board myBoard[8][8];
 	setBoard(myBoard);
-	
+	Board(*pointer)[8][8] = &myBoard;
+	(*pointer)[0][0].getMyLocation();
 }

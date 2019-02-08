@@ -18,6 +18,6 @@ int Game::moveToEmptySquare(string choosenMove)
 	string destination = choosenMove.substr(2, 2);
 	int sourceFile = source[0] - 'a' + 1;
 	int sourceRow= source[1] - '1' + 1;
-
-
+	return 0;
+	//(*currentBoard)[sourceRow-1][sourceFile-1].
 }
