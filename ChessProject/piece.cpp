@@ -1,21 +1,40 @@
 #include "piece.h"
-#include "ChessFunctions.h"
-King::King(string currentPosition)
+#include <iostream>
+vector<int> getPositionInVector(string position)
+{
+	vector<int> positionInNumber;
+	int file = position[0] - 'a' + 1;
+	int row = position[1] - '0';
+	positionInNumber.push_back(file);
+	positionInNumber.push_back(row);
+	return positionInNumber;
+
+}
+
+King::King(string currentPosition,string color)
 {
 	name = "King";
 	this->currentPosition = currentPosition;
+	if (color == "white")
+	{
+		this->isWhite = 1;
+	}
+	else
+	{
+		this->isWhite = 0;
+	}
 }
 bool King::MovesInEmptyBoard(string initialPosition,string finalPosition)
 {
-	vector<int> initialPositionInNumber = Chess::getPositionInVector(initialPosition);
-	vector<int> finalPositionInNumber = Chess::getPositionInVector(finalPosition);
-	int i = -1;
-	int j = -1;
+	vector<int> initialPositionInNumber = getPositionInVector(initialPosition);
+	vector<int> finalPositionInNumber = getPositionInVector(finalPosition);
 	int x, y;
+
 	vector<int> temp(2);
-	for (; i <= 1; i++)
+
+	for (int i=-1; i <= 1; i++)
 	{
-		for (; j <= 1; j++)
+		for (int j=-1; j <= 1; j++)
 		{
 			if (i == 0 && j == 0)
 			{
@@ -25,10 +44,12 @@ bool King::MovesInEmptyBoard(string initialPosition,string finalPosition)
 			y = initialPositionInNumber[1];
 			temp[0] = x + i;
 			temp[1] = y + j;
+			std::cout << temp[0] << "," << temp[1] << "\n";
 			if (finalPositionInNumber == temp)
 			{
 				return 1;
 			}
 		}
 	}
+	return 0;
 }
