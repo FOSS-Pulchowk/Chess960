@@ -1,8 +1,8 @@
 #include "board.h"
 
-void Board::setBoard(string location)
+void Board::setMyLocation(string location)
 {
-	this->location = location;
+	this->myLocation = location;
 }
 bool Board::setPiece(Piece *pieceptr)
 {
@@ -16,16 +16,20 @@ bool Board::setPiece(Piece *pieceptr)
 		return 0;
 	}
 }
-void Boards::setBoard(Board[8][8])
+string Board::getMyLocation()
+{
+	return this->myLocation;
+}
+void setBoard(Board currentBoard[8][8])
 {
 	for (int i = 0; i < 8; i++)
 	{
 		for (int j = 0; j < 8; j++)
 		{
 			string tempLocation;
-			tempLocation.push_back('a' + i);
-			tempLocation.push_back('1' + j);
-
+			tempLocation.push_back('a' + j);
+			tempLocation.push_back('1' + i);
+			currentBoard[i][j].setMyLocation(tempLocation);
 		}
 	}
 }
