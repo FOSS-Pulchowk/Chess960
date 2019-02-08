@@ -8,14 +8,9 @@ class Game
 	string blackPlayerName;
 	bool whiteToPlay;
 	bool isOver;
-	Board *currentBoard[8][8];
+	Board (*currentBoard)[8][8];
 public:
-	Game(string name1, string name2, Board *currentBoard[8][8])
-	{
-		whiteToPlay = true;
-		isOver = false;
-		whitePlayerName = name1;
-		blackPlayerName = name2;
-	}
-
+	Game(string name1, string name2, Board (*currentBoard)[8][8]);
+	int moveToEmptySquare(string choosenMove);
+	void changeTurn();
 };
