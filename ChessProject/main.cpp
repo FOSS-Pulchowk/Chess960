@@ -9,5 +9,6 @@ int main()
 	Board myBoard[8][8];
 	setBoard(myBoard);
 	Board(*pointer)[8][8] = &myBoard;
-	(*pointer)[0][0].getMyLocation();
+	myBoard[1][4].currentPiece = &whiteKing;
+	cout <<(*pointer)[1][4].currentPiece->MovesInEmptyBoard("e2","e4");
 }

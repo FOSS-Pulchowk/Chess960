@@ -44,7 +44,7 @@ bool King::MovesInEmptyBoard(string initialPosition,string finalPosition)
 			y = initialPositionInNumber[1];
 			temp[0] = x + i;
 			temp[1] = y + j;
-			std::cout << temp[0] << "," << temp[1] << "\n";
+			//std::cout << temp[0] << "," << temp[1] << "\n";
 			if (finalPositionInNumber == temp)
 			{
 				return 1;
