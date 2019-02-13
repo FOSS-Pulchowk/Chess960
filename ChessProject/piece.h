@@ -16,11 +16,11 @@ public:
 	virtual int movesInEmptyBoard(string initialPosition, string finalPosition) = 0;
 };
 
-class King:public Piece
+class King :public Piece
 {
 	bool isWhite;
 public:
-	King(string currentPosition,string color);
+	King(string currentPosition, string color);
 	int movesInEmptyBoard(string initialPosition, string finalPosition);
 
 };

@@ -10,8 +10,8 @@ int main()
 	Board(*pointer)[8][8] = &myBoard;
 	myBoard[1][4].currentPiece = &whiteKing;
 	Game mygame("Player1", "Player2", &myBoard);
-	cout <<(*mygame.currentBoard)[1][4].currentPiece->myName();
+	cout << (*mygame.currentBoard)[1][4].currentPiece->myName();
 	mygame.moveToEmptySquare("e2e3");
-	cout << "\n" << (*mygame.currentBoard)[1][4].currentPiece->movesInEmptyBoard("e2","e3");
-	
+	cout << "\n" << (*mygame.currentBoard)[1][4].currentPiece->movesInEmptyBoard("e2", "e3");
+
 }
