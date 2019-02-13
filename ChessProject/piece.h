@@ -14,12 +14,12 @@ protected:
 public:
 	void setCurrentPosition(string position);
 	string myName();
-	bool isWhite;
 	virtual int movesInEmptyBoard(string initialPosition, string finalPosition) = 0;
 };
 
 class King :public Piece
 {
+	bool isWhite;
 public:
 	King(string currentPosition, string color);
 	int movesInEmptyBoard(string initialPosition, string finalPosition);
@@ -27,6 +27,7 @@ public:
 
 class Pawn :public Piece
 {
+	bool isWhite;
 	std::ifstream moveRefFile;
 	//std::ifstream eatRefFile;
 public:
@@ -37,6 +38,7 @@ public:
 
 class Bishop :public Piece
 {
+	bool isWhite;
 public:
 	Bishop(string currentPosition, string color);
 	int movesInEmptyBoard(string initialPosition, string finalPosition);
