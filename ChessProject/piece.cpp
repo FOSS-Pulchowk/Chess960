@@ -59,3 +59,23 @@ int King::movesInEmptyBoard(string initialPosition, string finalPosition)
 	}
 	return 0;
 }
+
+Bishop::Bishop(string currentPosition, string color)
+{
+	this->name = "Bishop";
+	//this->currentPosition = currentPosition;
+	if (color == "white") { isWhite = true; }
+	else { isWhite = false; }
+}
+
+int Bishop::movesInEmptyBoard(string initialPosition, string finalPosition)
+{
+	vector<int> initialPositionInNumber = getPositionInVector(initialPosition);
+	vector<int> finalPositionInNumber = getPositionInVector(finalPosition);
+	int verticalPosDiff, horizontalPosDiff;
+	verticalPosDiff = finalPositionInNumber[0] - initialPositionInNumber[0];
+	horizontalPosDiff = finalPositionInNumber[1] - initialPositionInNumber[1];
+	if (verticalPosDiff == 0) { return 0; }
+	else if (verticalPosDiff == horizontalPosDiff) { return 1; }
+	else { return 0; }
+}
