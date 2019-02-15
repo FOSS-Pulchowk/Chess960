@@ -13,10 +13,11 @@ class Game
 	string blackPlayerName;
 	bool whiteToPlay;
 	bool isOver;
+	OnePiece *ptrToNoPiece;
 	
 public:
 	Board(*currentBoard)[8][8];
-	Game(string name1, string name2, Board (*currentBoard)[8][8]);
+	Game(string name1, string name2, Board (*currentBoard)[8][8],OnePiece *ptr);
 	int moveToEmptySquare(string choosenMove);
 	void changeTurn();
 	bool isGameOver();

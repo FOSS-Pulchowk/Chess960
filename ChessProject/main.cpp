@@ -12,7 +12,8 @@ int main()
 	setBoard(myBoard,&noPiece);
 	Board(*pointer)[8][8] = &myBoard;
 	myBoard[1][4].currentPiece = &whiteKing;
-	Game myGame("Player1", "Player2", &myBoard);
+	myBoard[7][4].currentPiece = &blackKing;
+	Game myGame("Player1", "Player2", &myBoard,&noPiece);
 	cout << (*myGame.currentBoard)[1][4].currentPiece->myName();
 	/*myGame.moveToEmptySquare("e2e3");
 	//cout << "\n" << (*mygame.currentBoard)[1][4].currentPiece->movesInEmptyBoard("e2", "e3");
@@ -22,6 +23,7 @@ int main()
 	while (!myGame.isGameOver())
 	{
 		string move;
+		cout << (myGame.getCurrentPlayer() ? "\nWhite:" : "\nBlack:");
 		cout << "\nEnter move:";
 		cin >> move;
 		if (myGame.moveToEmptySquare(move))

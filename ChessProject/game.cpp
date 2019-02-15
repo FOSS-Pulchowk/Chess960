@@ -10,6 +10,7 @@ Game::Game(string name1, string name2, Board (*currentBoard)[8][8],OnePiece *ptr
 	whitePlayerName = name1;
 	blackPlayerName = name2;
 	this->currentBoard = currentBoard;
+	this->ptrToNoPiece = ptr;
 	
 }
 bool Game::getCurrentPlayer() { return whiteToPlay; }
@@ -37,7 +38,7 @@ int Game::moveToEmptySquare(string choosenMove)
 	if (canMove && playerMatchesPiece)
 	{
 		(*currentBoard)[destinationRow-1][destinationFile-1].currentPiece = (*currentBoard)[sourceRow-1][sourceFile-1].currentPiece;
-		(*currentBoard)[sourceRow-1][sourceFile-1].currentPiece = NULL;
+		(*currentBoard)[sourceRow-1][sourceFile-1].currentPiece = ptrToNoPiece;
 		//string destinationPosition = (*currentBoard)[destinationRow-1][destinationFile-1].getMyLocation();
 		//(*currentBoard)[destinationRow-1][destinationFile-1].currentPiece->setCurrentPosition(destinationPosition);
 		std::cout << "Move done Successfully";
