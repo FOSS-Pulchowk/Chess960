@@ -19,4 +19,8 @@ public:
 	Game(string name1, string name2, Board (*currentBoard)[8][8]);
 	int moveToEmptySquare(string choosenMove);
 	void changeTurn();
+	bool isGameOver();
+	bool getCurrentPlayer();
+	void checkState();
+	void endGame();
 };

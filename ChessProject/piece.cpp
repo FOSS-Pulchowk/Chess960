@@ -10,18 +10,17 @@ vector<int> getPositionInVector(string position)
 	return positionInNumber;
 
 }
-void Piece::setCurrentPosition(string position)
+/*void Piece::setCurrentPosition(string position)
 {
 	//this->currentPosition = position;
-}
+}*/
 string Piece::myName()
 {
 	return name;
 }
-King::King(string currentPosition, string color)
+King::King(string color)
 {
 	name = "King";
-	//this->currentPosition = currentPosition;
 	if (color == "white")
 	{
 		this->isWhite = 1;

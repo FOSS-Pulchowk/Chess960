@@ -1,4 +1,5 @@
 #pragma once
+#include <iostream>
 #include <vector>
 #include <string>
 using std::string;
@@ -9,18 +10,34 @@ class Piece
 {
 protected:
 	string name;
+	bool isWhite;
 	//string currentPosition;
 public:
-	void setCurrentPosition(string position);
+	//void setCurrentPosition(string position);
 	string myName();
 	virtual int movesInEmptyBoard(string initialPosition, string finalPosition) = 0;
+	bool getColor() { return isWhite; }
 };
 
 class King :public Piece
 {
-	bool isWhite;
+	
 public:
-	King(string currentPosition, string color);
+	King(string color);
 	int movesInEmptyBoard(string initialPosition, string finalPosition);
 
+};
+class OnePiece : public Piece
+{
+public:
+	OnePiece(string color)
+	{
+		name = "OnePiece";
+		isWhite = 1;
+	}
+	int movesInEmptyBoard(string initialPosition, string finalPosition)
+	{
+		std::cout << "No Piece exists here";
+		return 0;
+	}
 };

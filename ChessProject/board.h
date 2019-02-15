@@ -1,8 +1,9 @@
+#pragma once
 #include <string>
 #include <vector>
+#include "piece.h"
 using std::string;
 using std::vector;
-class Piece;
 /*Board is made up of 8*8 individual squares. All the squares contain information about their location. Each square contain a pointer to base class of Piece. */
 class Board
 {
@@ -12,6 +13,6 @@ public:
 	void setMyLocation(string location);
 	string getMyLocation();
 	bool setPiece(Piece *pieceptr);//This sets the value of currentPiece Pointer to a pointer to derived object
-	friend void setBoard(Board currentBoard[8][8]);
+	friend void setBoard(Board currentBoard[8][8],OnePiece *onePiece);
 };
-void setBoard(Board currentBoard[8][8]);
+void setBoard(Board currentBoard[8][8],OnePiece *onePiece);

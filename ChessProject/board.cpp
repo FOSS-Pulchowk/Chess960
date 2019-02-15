@@ -20,7 +20,7 @@ string Board::getMyLocation()
 {
 	return this->myLocation;
 }
-void setBoard(Board currentBoard[8][8])
+void setBoard(Board currentBoard[8][8],OnePiece* onePiece)
 {
 	for (int i = 0; i < 8; i++)
 	{
@@ -29,7 +29,7 @@ void setBoard(Board currentBoard[8][8])
 			string tempLocation;
 			tempLocation.push_back('a' + j);
 			tempLocation.push_back('1' + i);
-			currentBoard[i][j].currentPiece = NULL;
+			currentBoard[i][j].currentPiece = onePiece;
 			currentBoard[i][j].setMyLocation(tempLocation);
 		}
 	}
