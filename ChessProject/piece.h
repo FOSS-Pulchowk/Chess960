@@ -41,3 +41,10 @@ public:
 		return 0;
 	}
 };
+
+class Queen :public Piece
+{
+public:
+	Queen(string color);
+	int movesInEmptyBoard(string initialPosition, string finalPosition);
+};
