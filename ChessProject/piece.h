@@ -27,6 +27,15 @@ public:
 	int movesInEmptyBoard(string initialPosition, string finalPosition);
 
 };
+
+class Bishop :public Piece
+{
+	//bool isWhite;
+public:
+	Bishop(string currentPosition, string color);
+	int movesInEmptyBoard(string initialPosition, string finalPosition);
+};
+
 class OnePiece : public Piece
 {
 public:
@@ -41,10 +50,10 @@ public:
 		return 0;
 	}
 };
-
+/*
 class Queen :public Piece
 {
 public:
 	Queen(string color);
 	int movesInEmptyBoard(string initialPosition, string finalPosition);
-};
+};*/
