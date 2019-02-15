@@ -3,11 +3,11 @@
 #include "board.h"
 #include "piece.h"
 using std::string;
-/*Contains basic game related information and pointer to the board */
+/*Contains basic Chess related information and pointer to the board */
 class Board;
 class Piece;
 
-class Game
+class Chess
 {
 	string whitePlayerName;
 	string blackPlayerName;
@@ -17,12 +17,12 @@ class Game
 	
 public:
 	Board(*currentBoard)[8][8];
-	Game(string name1, string name2, Board (*currentBoard)[8][8],OnePiece *ptr);
+	Chess(string name1, string name2, Board (*currentBoard)[8][8],OnePiece *ptr);
 	int moveToEmptySquare(string choosenMove);
 	void changeTurn();
-	bool isGameOver();
+	bool isChessOver();
 	bool getCurrentPlayer();
 	void checkState();
-	void endGame();
+	void endChess();
 	int capture(string choosenMove);
 };

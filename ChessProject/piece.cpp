@@ -21,6 +21,7 @@ string Piece::myName()
 King::King(string color)
 {
 	name = "King";
+	alive = true;
 	if (color == "white")
 	{
 		this->isWhite = 1;
@@ -60,12 +61,19 @@ int King::movesInEmptyBoard(string initialPosition, string finalPosition)
 	return 0;
 }
 
-Bishop::Bishop(string currentPosition, string color)
+Bishop::Bishop(string color)
 {
 	this->name = "Bishop";
+	alive = true;
 	//this->currentPosition = currentPosition;
-	if (color == "white") { isWhite = true; }
-	else { isWhite = false; }
+	if (color == "white")
+	{ 
+		isWhite = true; 
+	}
+	else 
+	{ 
+		isWhite = false;
+	}
 }
 
 int Bishop::movesInEmptyBoard(string initialPosition, string finalPosition)
@@ -78,4 +86,16 @@ int Bishop::movesInEmptyBoard(string initialPosition, string finalPosition)
 	if (verticalPosDiff == 0) { return 0; }
 	else if (verticalPosDiff == horizontalPosDiff) { return 1; }
 	else { return 0; }
+}
+bool Piece::kill()
+{
+	if (alive)
+	{
+		alive = 0;
+		std::cout << "piece killed successfully";
+	}
+	else
+	{
+		std::cout << "Piece already dead";
+	}
 }

@@ -11,11 +11,14 @@ class Piece
 protected:
 	string name;
 	bool isWhite;
+	bool alive;
 	//string currentPosition;
 public:
 	//void setCurrentPosition(string position);
 	string myName();
 	virtual int movesInEmptyBoard(string initialPosition, string finalPosition) = 0;
+	bool isAlive() { return alive; }
+	bool kill();
 	bool getColor() { return isWhite; }
 };
 
