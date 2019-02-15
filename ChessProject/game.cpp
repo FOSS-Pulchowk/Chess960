@@ -58,6 +58,10 @@ int Game::moveToEmptySquare(string choosenMove)
 		return 0;
 	}
 }
+int Game::capture(string choosenMove)
+{
+
+}
 void Game::checkState()
 {
 	//if (*currentBoard)[0][5].currentPiece != noPiece;

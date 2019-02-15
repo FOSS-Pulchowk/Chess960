@@ -32,7 +32,7 @@ class Bishop :public Piece
 {
 	//bool isWhite;
 public:
-	Bishop(string currentPosition, string color);
+	Bishop(string color);
 	int movesInEmptyBoard(string initialPosition, string finalPosition);
 };
 

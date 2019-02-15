@@ -15,4 +15,5 @@ public:
 	bool setPiece(Piece *pieceptr);//This sets the value of currentPiece Pointer to a pointer to derived object
 	friend void setBoard(Board currentBoard[8][8],OnePiece *onePiece);
 };
+names
 void setBoard(Board currentBoard[8][8],OnePiece *onePiece);

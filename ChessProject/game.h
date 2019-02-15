@@ -24,4 +24,5 @@ public:
 	bool getCurrentPlayer();
 	void checkState();
 	void endGame();
+	int capture(string choosenMove);
 };
