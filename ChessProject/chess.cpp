@@ -80,13 +80,14 @@ int Chess::capture(string choosenMove)
 	if (canMove && playerMatchesPiece && isOpponentPiece)
 	{
 
-		sourcePiece->kill();
+		destinationPiece->kill();
 		//(*currentBoard)[sourceRow - 1][sourceFile - 1].currentPiece = ptrToNoPiece;
 		(*currentBoard)[destinationRow - 1][destinationFile - 1].currentPiece = (*currentBoard)[sourceRow - 1][sourceFile - 1].currentPiece;
 		(*currentBoard)[sourceRow - 1][sourceFile - 1].currentPiece = ptrToNoPiece;
 		//string destinationPosition = (*currentBoard)[destinationRow-1][destinationFile-1].getMyLocation();
 		//(*currentBoard)[destinationRow-1][destinationFile-1].currentPiece->setCurrentPosition(destinationPosition);
 		std::cout << "Move done Successfully\n";
+		std::cout << "you captured " << destinationPiece->myName() << " in " << destination << "with " << sourcePiece->myName() << " in " << source << "\n";
 		return 1;
 	}
 	else
