@@ -1,5 +1,5 @@
 
-#include "game.h"
+#include "chess.h"
 #include <iostream>
 class Board;
 class Piece;
