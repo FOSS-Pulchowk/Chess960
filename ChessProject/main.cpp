@@ -15,7 +15,7 @@ int main()
 	myBoard[1][4].currentPiece = &whiteKing;
 	myBoard[3][6].currentPiece = &blackPawn;
 	myBoard[4][5].currentPiece = &blackBishop;
-	Game mygame("Player1", "Player2", &myBoard);
+	chess mygame("Player1", "Player2", &myBoard);
 	cout << (*mygame.currentBoard)[1][4].currentPiece->myName();
 	mygame.moveToEmptySquare("e2e3");
 	cout << "\n" << (*mygame.currentBoard)[1][4].currentPiece->movesInEmptyBoard("e2", "e3");

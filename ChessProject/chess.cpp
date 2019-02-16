@@ -1,9 +1,8 @@
-
 #include "chess.h"
 #include <iostream>
 class Board;
 class Piece;
-Game::Game(string name1, string name2, Board (*currentBoard)[8][8])
+chess::chess(string name1, string name2, Board (*currentBoard)[8][8])
 {
 	whiteToPlay = true;
 	isOver = false;
@@ -12,11 +11,11 @@ Game::Game(string name1, string name2, Board (*currentBoard)[8][8])
 	this->currentBoard = currentBoard;
 	
 }
-void Game::changeTurn()
+void chess::changeTurn()
 {
 	whiteToPlay = !whiteToPlay;
 }
-int Game::moveToEmptySquare(string choosenMove)
+int chess::moveToEmptySquare(string choosenMove)
 {
 	string source = choosenMove.substr(0, 2);
 	string destination = choosenMove.substr(2, 2);

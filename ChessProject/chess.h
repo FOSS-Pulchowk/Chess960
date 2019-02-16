@@ -7,7 +7,7 @@ using std::string;
 class Board;
 class Piece;
 
-class Game
+class chess
 {
 	string whitePlayerName;
 	string blackPlayerName;
@@ -16,7 +16,7 @@ class Game
 	
 public:
 	Board(*currentBoard)[8][8];
-	Game(string name1, string name2, Board (*currentBoard)[8][8]);
+	chess(string name1, string name2, Board (*currentBoard)[8][8]);
 	int moveToEmptySquare(string choosenMove);
 	void changeTurn();
 };
