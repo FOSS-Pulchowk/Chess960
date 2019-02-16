@@ -143,3 +143,7 @@ void Chess::endChess()
 {
 	isOver = true;
 }
+int Chess::checkPath(string choosenMove)
+{
+
+}

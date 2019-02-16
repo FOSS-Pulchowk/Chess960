@@ -101,3 +101,35 @@ bool Piece::kill()
 		return 0;
 	}
 }
+Queen::Queen(string color)
+{
+	this->name = "Queen";
+	alive = true;
+	if (color == "white")
+	{
+		isWhite = true;
+	}
+	else
+	{
+		isWhite = false;
+	}
+}
+ 
+int Queen::movesInEmptyBoard(string initialPosition, string finalPosition)
+{
+	vector<int> initialPositionInNumber = getPositionInVector(initialPosition);
+	vector<int> finalPositionInNumber = getPositionInVector(finalPosition);
+	//Straight move 
+	bool inStraightLine = (initialPositionInNumber[0] == finalPositionInNumber[0]) || (initialPositionInNumber[1] == finalPositionInNumber[1]);
+	int verticalDifference = abs(finalPositionInNumber[0] - initialPositionInNumber[0]);
+	int horizontalDifference = abs(finalPositionInNumber[1] - initialPositionInNumber[1]);
+	bool inDiagonalLine = (verticalDifference == horizontalDifference);
+	if (inStraightLine || inDiagonalLine)
+	{
+		return 1;
+	}
+	else
+	{
+		return 0;
+	}
+}

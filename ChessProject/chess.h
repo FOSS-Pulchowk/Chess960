@@ -19,6 +19,7 @@ public:
 	Board(*currentBoard)[8][8];
 	Chess(string name1, string name2, Board (*currentBoard)[8][8],OnePiece *ptr);
 	int moveToEmptySquare(string choosenMove);
+	int checkPath(string choosenMove);
 	void changeTurn();
 	bool isChessOver();
 	bool getCurrentPlayer();

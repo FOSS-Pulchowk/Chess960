@@ -10,6 +10,9 @@ int main()
 	Bishop blackBishop1("black");
 	Bishop whiteBishop2("white");
 	Bishop blackBishop2("black");
+	Queen whiteQueen("white");
+	Queen blackQueen("black");
+
 
 	OnePiece noPiece("white");
 
@@ -20,18 +23,12 @@ int main()
 	myBoard[7][4].currentPiece = &blackKing;
 	myBoard[0][2].currentPiece = &whiteBishop1;
 	myBoard[7][2].currentPiece = &blackBishop1;
-	
+	myBoard[0][3].currentPiece = &whiteQueen;
+	myBoard[7][3].currentPiece = &blackQueen;
+
 	myBoard[7][5].currentPiece = &blackBishop2;
 	myBoard[0][5].currentPiece = &whiteBishop2;
 	Chess myChess("Player1", "Player2", &myBoard,&noPiece);
-	if ((*myChess.currentBoard)[7][2].currentPiece->movesInEmptyBoard("c8", "h3"))
-	{
-		std::cout << "Yes, Bishop can move";
-	}
-	else
-	{
-		std::cout << "No, Bishop cant move";
-	}
 	/*myChess.moveToEmptySquare("e2e3");
 	//cout << "\n" << (*myChess.currentBoard)[1][4].currentPiece->movesInEmptyBoard("e2", "e3");
 	cout <<"New Name" << (*myChess.currentBoard)[2][4].currentPiece->myName();
@@ -51,5 +48,4 @@ int main()
 		}
 
 	}
-
 }
