@@ -84,7 +84,7 @@ int Bishop::movesInEmptyBoard(string initialPosition, string finalPosition)
 	verticalPosDiff = finalPositionInNumber[0] - initialPositionInNumber[0];
 	horizontalPosDiff = finalPositionInNumber[1] - initialPositionInNumber[1];
 	if (verticalPosDiff == 0) { return 0; }
-	else if (verticalPosDiff == horizontalPosDiff) { return 1; }
+	else if (abs(verticalPosDiff) == abs(horizontalPosDiff)) { return 1; }
 	else { return 0; }
 }
 bool Piece::kill()
@@ -93,9 +93,11 @@ bool Piece::kill()
 	{
 		alive = 0;
 		std::cout << "piece killed successfully";
+		return 1;
 	}
 	else
 	{
 		std::cout << "Piece already dead";
+		return 0;
 	}
 }

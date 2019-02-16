@@ -25,4 +25,5 @@ public:
 	void checkState();
 	void endChess();
 	int capture(string choosenMove);
+	int execute(string move);
 };
