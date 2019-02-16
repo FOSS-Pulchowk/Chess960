@@ -2,6 +2,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <cmath>
 
 vector<int> getPositionInVector(string position)
 {
@@ -139,6 +140,6 @@ int Bishop::movesInEmptyBoard(string initialPosition, string finalPosition)
 	verticalPosDiff = finalPositionInNumber[0] - initialPositionInNumber[0];
 	horizontalPosDiff = finalPositionInNumber[1] - initialPositionInNumber[1];
 	if (verticalPosDiff == 0) { return 0; }
-	else if (verticalPosDiff == horizontalPosDiff) { return 1; }
+	else if (verticalPosDiff == abs(horizontalPosDiff)) { return 1; }
 	else { return 0; }
 }
