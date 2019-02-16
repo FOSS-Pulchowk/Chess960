@@ -4,5 +4,5 @@ class Rook :public Piece
 {
 public:
 	Rook(string currentPosition, string color);
-	int MovesInEmptyBoard(string initialPosition, string finalPosition);
+	int movesInEmptyBoard(string initialPosition, string finalPosition);
 };

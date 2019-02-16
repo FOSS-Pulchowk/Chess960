@@ -8,8 +8,8 @@ Rook::Rook(string currentPosition, string color)
 	if (color == "white") { isWhite = true; }
 	else { isWhite = false; }
 }
-
-int Rook::MovesInEmptyBoard(string initialPosition, string finalPosition)
+		  
+int Rook::movesInEmptyBoard(string initialPosition, string finalPosition)
 {
 	vector<int> initialPositionInNumber = getPositionInVector(initialPosition);
 	vector<int> finalPositionInNumber = getPositionInVector(finalPosition);
