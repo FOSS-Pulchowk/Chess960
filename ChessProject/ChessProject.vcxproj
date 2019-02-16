@@ -152,12 +152,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="board.h" />
-    <ClInclude Include="game.h" />
+    <ClInclude Include="chess.h" />
     <ClInclude Include="piece.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="board.cpp" />
-    <ClCompile Include="game.cpp" />
+    <ClCompile Include="chess.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="piece.cpp" />
   </ItemGroup>

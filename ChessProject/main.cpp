@@ -1,5 +1,5 @@
 #include <iostream>
-#include "game.h"
+#include "chess.h"
 using std::cout;
 int main()
 {
