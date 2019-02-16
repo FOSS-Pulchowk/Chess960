@@ -1,5 +1,7 @@
 #include <iostream>
 #include "chess.h"
+#include "rook.h"
+
 using std::cout;
 using std::cin;
 int main()
@@ -12,6 +14,8 @@ int main()
 	Bishop blackBishop2("black");
 	Queen whiteQueen("white");
 	Queen blackQueen("black");
+	Rook blackRook("e5", "black");
+//	Rook whiteRook("a8", "black");
 
 
 	OnePiece noPiece("white");
@@ -26,6 +30,8 @@ int main()
 	myBoard[7][2].currentPiece = &blackBishop1;
 	myBoard[0][3].currentPiece = &whiteQueen;
 	myBoard[7][3].currentPiece = &blackQueen;
+//	myBoard[1][3].currentPiece = &whiteRook;
+	myBoard[3][2].currentPiece = &blackRook;	
 
 	myBoard[7][5].currentPiece = &blackBishop2;
 	myBoard[0][5].currentPiece = &whiteBishop2;
