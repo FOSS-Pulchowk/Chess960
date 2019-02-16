@@ -1,6 +1,7 @@
 
 #include "chess.h"
 #include <iostream>
+#include <cmath>
 Chess::Chess(string name1, string name2, Board (*currentBoard)[8][8],OnePiece *ptr)
 {
 	whiteToPlay = true;
@@ -30,6 +31,7 @@ int Chess::moveToEmptySquare(string choosenMove)
 	int destinationRow = destination[1] - '1' + 1;
 	Piece *sourcePiece = (*currentBoard)[sourceRow - 1][sourceFile - 1].currentPiece;
 	bool canMove = sourcePiece->movesInEmptyBoard(source, destination);
+	int pathIsNotBlocked = isNotBlocked(choosenMove);
 	if (!canMove)
 	{
 		
@@ -39,7 +41,7 @@ int Chess::moveToEmptySquare(string choosenMove)
 	string sourcePieceName = sourcePiece->myName();
 	//std::cout << canMove;
 	
-	if (canMove && playerMatchesPiece)
+	if (canMove && playerMatchesPiece && pathIsNotBlocked)
 	{
 		(*currentBoard)[destinationRow-1][destinationFile-1].currentPiece = (*currentBoard)[sourceRow-1][sourceFile-1].currentPiece;
 		(*currentBoard)[sourceRow-1][sourceFile-1].currentPiece = ptrToNoPiece;
@@ -59,6 +61,10 @@ int Chess::moveToEmptySquare(string choosenMove)
 		{
 			std::cout << "Not a Valid Move\n";
 		}
+		else if (!pathIsNotBlocked)
+		{
+			std::cout << "There is something in the path";
+		}
 		return 0;
 	}
 }
@@ -77,7 +83,7 @@ int Chess::capture(string choosenMove)
 	bool isOpponentPiece = (getCurrentPlayer() != destinationPiece->getColor());
 	//std::cout << canMove;
 
-	if (canMove && playerMatchesPiece && isOpponentPiece)
+	if (canMove && playerMatchesPiece && isOpponentPiece && isNotBlocked(choosenMove))
 	{
 
 		destinationPiece->kill();
@@ -121,13 +127,17 @@ int Chess::execute(string choosenMove)
 		else
 			return 0;
 	}
-	else if (destinationPiece->myName()!="OnePiece")
+	else if (destinationPiece->myName()!="OnePiece" && destinationPiece->getColor()!=getCurrentPlayer())
 	{
 		std::cout << "Sending mvoe to capture\n";
 		if (capture(choosenMove))
 			return 1;
 		else
 			return 0;
+	}
+	else
+	{
+		std::cout << "It is neither capture nor move";
 	}
 	bool canMove = sourcePiece->movesInEmptyBoard(source, destination);
 	bool playerMatchesPiece = (getCurrentPlayer() == sourcePiece->getColor());
@@ -143,7 +153,150 @@ void Chess::endChess()
 {
 	isOver = true;
 }
-int Chess::checkPath(string choosenMove)
+int Chess::isNotBlocked(string choosenMove)
 {
+	string sourceString = choosenMove.substr(0, 2);
+	string destinationString = choosenMove.substr(2, 2);
+	Position source(sourceString);
+	Position destination(destinationString);
+	/*
+	int sourceFile = source[0] - 'a' + 1;
+	int sourceRow = source[1] - '1' + 1;
+	int destinationFile = destination[0] - 'a' + 1;
+	int destinationRow = destination[1] - '1' + 1;
+	*/
+	bool inStraightLine = (source.x==destination.x) || (source.y==destination.y);
+	int verticalDifference = abs(source.x - destination.x);
+	int horizontalDifference = abs(source.y-destination.y);
+	bool inDiagonalLine = (verticalDifference == horizontalDifference);
+	bool blocked=false;
+	if (inStraightLine)
+	{
+		std::cout << "It belongs to straight line\n";
+		if (source.x == destination.x)
+		{
+			int i = source.x;
+			if (source.y+1<destination.y)
+			{
+				int j = source.y+1;
+				while (j < destination.y)
+				{
+					
+					if ((*currentBoard)[i][j].currentPiece != ptrToNoPiece)
+					{
+						blocked = true;
+						break;
+					}
+					j++;
 
+				}
+			}
+			else if(source.y-1>destination.y)
+			{
+				int j = source.y - 1;
+				while (j > destination.y)
+				{
+					if ((*currentBoard)[i][j].currentPiece != ptrToNoPiece)
+					{
+						blocked = true;
+						break;
+					}
+				}
+				j--;
+			}
+			else
+			{
+				blocked = false;
+			}
+		}
+		else if (source.y == destination.y)
+		{
+			int j = source.y;
+			if (source.x +1< destination.x)
+			{
+				int i = source.x + 1;
+				while (i < destination.y)
+				{
+					if ((*currentBoard)[i][j].currentPiece != ptrToNoPiece)
+					{
+						blocked = true;
+						break;
+					}
+					i++;
+				}
+			}
+			else if (source.x-1 > destination.x)
+			{
+				int i = source.x - 1;
+				while (i > destination.y)
+				{
+					if ((*currentBoard)[i][j].currentPiece != ptrToNoPiece)
+					{
+						blocked = true;
+						break;
+					}
+					i--;
+				}
+			}
+			else
+			{
+				blocked = true;
+			}
+		}
+
+
+	}
+	else if (inDiagonalLine)
+	{
+		std::cout << "I am checking for diagonal";
+		int movX, movY;//variables for checking through path
+		//setting the variable for going through rows
+		if (source.x<destination.x)
+		{
+			std::cout << "I made movX 1";
+			movX = 1;
+		}
+		else if(source.x>destination.x)
+		{
+			std::cout << "I made movX -1";
+			movX = -1;
+		}
+		else
+		{
+			std::cout << "I made movX0";
+			movX = 0;
+		}
+
+		if (source.y < destination.y)
+		{
+			std::cout << "I made movY1";
+			movY= 1;
+		}
+		else if (source.x > destination.x)
+		{
+			std::cout << "I made movY1";
+			movY = -1;
+		}
+		else
+		{
+			std::cout << "I made movY1";
+			movY = 0;
+		}
+		int currX = source.x + movX;
+		int currY = source.y + movX;
+		while (abs(source.x - currX) > 0 || abs(source.y - currY))
+		{
+			std::cout << (*currentBoard)[currX][currY].currentPiece->myName();
+			if ((*currentBoard)[currX][currY].currentPiece != ptrToNoPiece)
+			{
+				//std::cout << "Path blocked by " << ((*currentBoard)[currX][currY].currentPiece->myName());// << "in " << currY + 'a' << currX + '1' << "\n";
+				blocked = true;
+				break;
+			}
+			currX += movX;
+			currY += movY;
+		}
+
+	}
+	return !blocked;
 }

@@ -19,6 +19,7 @@ int main()
 	Board myBoard[8][8];
 	setBoard(myBoard,&noPiece);
 	Board(*pointer)[8][8] = &myBoard;
+
 	myBoard[0][4].currentPiece = &whiteKing;
 	myBoard[7][4].currentPiece = &blackKing;
 	myBoard[0][2].currentPiece = &whiteBishop1;
