@@ -19,10 +19,6 @@ int main(int argc,char*args[])
 	Queen whiteQueen("white");
 	Queen blackQueen("black");
 	//Rook blackRook("e5", "black");
-<<<<<<< HEAD
-=======
-	//Pawn whitePawn1("a2", "white");
->>>>>>> 9769ef8906e723fa23bf82d9be0e015b7e653382
 //	Rook whiteRook("a8", "black");
 
 
