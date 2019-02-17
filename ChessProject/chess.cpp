@@ -262,7 +262,7 @@ int Chess::isNotBlocked(string choosenMove)
 					{
 						if ((*currentBoard)[currX-1][currY-1].currentPiece != ptrToNoPiece)
 						{
-							std::cout << ((*currentBoard)[currX][currY].currentPiece->myName());
+							std::cout << ((*currentBoard)[currX-1][currY-1].currentPiece->myName());
 							std::cout << currX << " " << currY << " ";
 							std::cout << " blocks the path pathe\n";
 							blocked = true;
