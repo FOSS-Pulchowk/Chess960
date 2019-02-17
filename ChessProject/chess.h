@@ -19,4 +19,6 @@ public:
 	chess(string name1, string name2, Board (*currentBoard)[8][8]);
 	int moveToEmptySquare(string choosenMove);
 	void changeTurn();
+	string getPiecesConfig();
+	// K = king, k = knight, Q = queen, B = bishop, R = rook
 };

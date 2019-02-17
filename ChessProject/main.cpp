@@ -21,4 +21,5 @@ int main()
 	cout << "\n" << (*mygame.currentBoard)[1][4].currentPiece->movesInEmptyBoard("e2", "e3");
 	cout << "\n" << (*mygame.currentBoard)[3][6].currentPiece->myName() << (*mygame.currentBoard)[3][6].currentPiece->movesInEmptyBoard("g4", "g3") << std::endl;
 	cout << (*mygame.currentBoard)[4][5].currentPiece->myName() << (*mygame.currentBoard)[4][5].currentPiece->movesInEmptyBoard("c8", "h3") << std::endl;
+	cout << mygame.getPiecesConfig();
 }
