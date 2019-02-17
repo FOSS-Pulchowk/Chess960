@@ -1,11 +1,15 @@
 #include <iostream>
+#include <SDL.h>
+#include <SDL_image.h>
+#include "Graphic.h"
 #include "chess.h"
 #include "rook.h"
 
 using std::cout;
 using std::cin;
-int main()
+int main(int argc,char*args[])
 {
+	Graphic myGraphic;
 	King whiteKing("white");
 	King blackKing("black");
 	Bishop whiteBishop1("white");
@@ -15,6 +19,10 @@ int main()
 	Queen whiteQueen("white");
 	Queen blackQueen("black");
 	//Rook blackRook("e5", "black");
+<<<<<<< HEAD
+=======
+	//Pawn whitePawn1("a2", "white");
+>>>>>>> 9769ef8906e723fa23bf82d9be0e015b7e653382
 //	Rook whiteRook("a8", "black");
 
 
@@ -23,12 +31,15 @@ int main()
 	Board myBoard[8][8];
 	setBoard(myBoard,&noPiece);
 	Board(*pointer)[8][8] = &myBoard;
+
 	myBoard[0][4].currentPiece = &whiteKing;
 	myBoard[7][4].currentPiece = &blackKing;
 	myBoard[0][2].currentPiece = &whiteBishop1;
 	myBoard[7][2].currentPiece = &blackBishop1;
 	myBoard[0][3].currentPiece = &whiteQueen;
 	myBoard[7][3].currentPiece = &blackQueen;
+	//myBoard[1][0].currentPiece = &whitePawn1;
+
 //	myBoard[1][3].currentPiece = &whiteRook;
 	//myBoard[3][2].currentPiece = &blackRook;	
 
@@ -43,9 +54,13 @@ int main()
 	while (!myChess.isChessOver())
 	{
 		string move;
+		myGraphic.run(myChess);
 		cout << (myChess.getCurrentPlayer() ? "\nWhite:" : "\nBlack:");
-		cout << "\nEnter move:";
-		cin >> move;
+
+		//cout << "\nEnter move:";
+		//cin >> move;
+		move=myGraphic.input(myChess,myGraphic.e);
+
 		if (move=="")
 			myChess.endChess();
 		if (myChess.execute(move))
@@ -54,4 +69,5 @@ int main()
 		}
 
 	}
+	return 0;
 }

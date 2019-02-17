@@ -1,4 +1,6 @@
 #pragma once
+#include "SDL.h"
+#include "SDL_image.h"
 #include <iostream>
 #include <vector>
 #include <string>
@@ -16,6 +18,7 @@ protected:
 public:
 	//void setCurrentPosition(string position);
 	string myName();
+	SDL_Surface *image;
 	virtual int movesInEmptyBoard(string initialPosition, string finalPosition) = 0;
 	bool isAlive() { return alive; }
 	bool kill();
