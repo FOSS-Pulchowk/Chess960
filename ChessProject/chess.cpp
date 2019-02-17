@@ -310,6 +310,9 @@ int Chess::isNotBlocked(string choosenMove)
 	bool blocked = false;
 	if (inStraightLine)
 	{
+		std::cout << "Source and destination " << source.x << "," << source.y << "\n";
+		int currX;
+		int currY;
 		if (source.x == destination.x && source.y == destination.y)
 		{
 			blocked = false;
@@ -324,16 +327,17 @@ int Chess::isNotBlocked(string choosenMove)
 			}
 			else
 			{
-				int currX = source.x;
-				int currY = source.y;
+				
 				if (source.y < destination.y)
 				{
-					currY += 1;
+					currX = source.x;
+					currY = source.y+1;
+		
 					while (currY < destination.y)
 					{
-						if ((*currentBoard)[currX][currY].currentPiece != ptrToNoPiece)
+						if ((*currentBoard)[currX-1][currY-1].currentPiece != ptrToNoPiece)
 						{
-							std::cout << ((*currentBoard)[currX][currY].currentPiece->myName());
+							std::cout << ((*currentBoard)[currX-1][currY-1].currentPiece->myName());
 							std::cout << " blocks the path first \n";
 							blocked = true;
 							break;
@@ -343,12 +347,14 @@ int Chess::isNotBlocked(string choosenMove)
 				}
 				else if (source.y > destination.y)
 				{
-					currY -= 1;
+					currX = source.x;
+					currY = source.y - 1;
+					std::cout << "Here currX and y" << currX << " " << currY;
 					while (currY > destination.y)
 					{
-						if ((*currentBoard)[currX][currY].currentPiece != ptrToNoPiece)
+						if ((*currentBoard)[currX-1][currY-1].currentPiece != ptrToNoPiece)
 						{
-							std::cout << ((*currentBoard)[currX][currY].currentPiece->myName());
+							std::cout << ((*currentBoard)[currX-1][currY-1].currentPiece->myName());
 							std::cout << " blocks the 2nd  path\n";
 							blocked = true;
 							break;
@@ -374,16 +380,17 @@ int Chess::isNotBlocked(string choosenMove)
 			}
 			else
 			{
-				int currX = source.x;
-				int currY = source.y;
+				
 				if (source.x < destination.x)
 				{
+					currX = source.x  +1;
+					currY = source.y;
 					currX += 1;
 					while (currX < destination.x)
 					{
-						if ((*currentBoard)[currX][currY].currentPiece != ptrToNoPiece)
+						if ((*currentBoard)[currX-1][currY-1].currentPiece != ptrToNoPiece)
 						{
-							std::cout << ((*currentBoard)[currX][currY].currentPiece->myName());
+							std::cout << ((*currentBoard)[currX-1][currY-1].currentPiece->myName());
 							std::cout << " blocks the path column \n";
 							blocked = true;
 							break;
@@ -393,10 +400,11 @@ int Chess::isNotBlocked(string choosenMove)
 				}
 				else if (source.x > destination.x)
 				{
-					currX-= 1;
+					currX = source.x-1;
+					currY = source.y;
 					while (currX > destination.x)
 					{
-						if ((*currentBoard)[currX][currY].currentPiece != ptrToNoPiece)
+						if ((*currentBoard)[currX-1][currY-1].currentPiece != ptrToNoPiece)
 						{
 							std::cout << ((*currentBoard)[currX][currY].currentPiece->myName());
 							std::cout << currX << " " << currY << " ";
