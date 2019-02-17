@@ -140,12 +140,20 @@ int Queen::movesInEmptyBoard(string initialPosition, string finalPosition)
 	}
 }
 
-Rook::Rook(string currentPosition, string color)
+Rook::Rook(string color)
 {
 	this->name = "Rook";
 	//this->currentPosition = currentPosition;
-	if (color == "white") { isWhite = true; }
-	else { isWhite = false; }
+	if (color == "white")
+	{ 
+		image = IMG_Load("ChessPieces/WhiteRook.png");
+		isWhite = true;
+	}
+	else 
+	{ 
+		image = IMG_Load("ChessPieces/BlackRook.png");
+		isWhite = false; 
+	}
 }
 
 int Rook::movesInEmptyBoard(string initialPosition, string finalPosition)

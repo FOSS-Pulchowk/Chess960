@@ -67,6 +67,6 @@ public:
 class Rook :public Piece
 {
 public:
-	Rook(string currentPosition, string color);
+	Rook(string color);
 	int movesInEmptyBoard(string initialPosition, string finalPosition);
 };

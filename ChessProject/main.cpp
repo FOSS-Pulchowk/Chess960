@@ -18,8 +18,12 @@ int main(int argc,char*args[])
 	Bishop blackBishop2("black");
 	Queen whiteQueen("white");
 	Queen blackQueen("black");
-	//Rook blackRook("e5", "black");
-	//Pawn whitePawn1("a2", "white");
+	Rook blackRook("black");
+	Rook blackRook("black");
+	Rook whiteRook1("white");
+	Rook whiteRook2("white");
+	Rook blackRook1("black");
+	Rook blackRook2("black");
 //	Rook whiteRook("a8", "black");
 
 
@@ -35,6 +39,11 @@ int main(int argc,char*args[])
 	myBoard[7][2].currentPiece = &blackBishop1;
 	myBoard[0][3].currentPiece = &whiteQueen;
 	myBoard[7][3].currentPiece = &blackQueen;
+	myBoard[0][0].currentPiece = &whiteRook1;
+	myBoard[0][7].currentPiece = &whiteRook2;
+	myBoard[7][0].currentPiece = &blackRook1;
+	myBoard[7][7].currentPiece = &blackRook2;
+
 	//myBoard[1][0].currentPiece = &whitePawn1;
 
 //	myBoard[1][3].currentPiece = &whiteRook;
