@@ -423,6 +423,38 @@ int Chess::isNotBlocked(string choosenMove)
 
 		}
 	}
+	else if (inDiagonalLine)
+	{
+		std::cout << "Source and destination " << source.x << "," << source.y << "\n";
+		int currX;
+		int currY;
+		if (source.x == destination.x && source.y == destination.y)
+		{
+			blocked = false;
+		}
+		else if (abs(source.x-destination.x)==1)
+		{
+			blocked = false;
+		}
+		else
+		{
+			int movX;
+			int movY;
+			movX = (source.x < destination.x) ? 1 : -1;
+			movY = (source.y < destination.y) ? 1 : -1;
+			currX = source.x+ movX;
+			currY = source.y + movY;
+			while (abs(currX - destination.x) > 0)
+			{
+				if (((*currentBoard)[currX - 1][currY - 1].currentPiece == ptrToNoPiece))
+				{
+					std::cout << (*currentBoard)[currX - 1][currY - 1].currentPiece->myName() << " blocks the path\n";
+					blocked = true;
+					break;
+				}
+			}
+		}
+	}
 	else
 	{
 	blocked = false;
