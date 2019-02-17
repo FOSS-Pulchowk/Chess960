@@ -20,12 +20,12 @@ Graphic::Graphic()
 	whiteKing = IMG_Load("ChessPieces/WhiteKing.png");
 
 	chessBoardPos.x = 302; chessBoardPos.y = 0;
-	int initialPosY = 365, initialPosX = 44, boxPosDiff = 86;
+	int initialPosX = 365, initialPosY = 44, boxPosDiff = 86;
 	
 	for (int i=7; i >= 0; i--) {
 		for (int j=0; j < 8; j++) {
-			posBoard[i][j].y = initialPosX + (boxPosDiff*(7 - i));
-			posBoard[i][j].x = initialPosY + (boxPosDiff*j);
+			posBoard[i][j].y = initialPosY + (boxPosDiff*(7 - i));
+			posBoard[i][j].x = initialPosX + (boxPosDiff*j);
 		}
 	}
 }

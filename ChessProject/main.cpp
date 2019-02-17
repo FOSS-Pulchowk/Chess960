@@ -25,10 +25,7 @@ int main(int argc,char*args[])
 	Rook blackRook2("black");
 
 	//Rook blackRook("e5", "black");
-<<<<<<< HEAD
 //	Rook whiteRook("a8", "black");
-=======
->>>>>>> fce0c25ee704f4decdcf291374eff9becc6ffff3
 
 	//Pawn whitePawn1("a2", "white");
 
