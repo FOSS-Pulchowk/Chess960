@@ -19,13 +19,14 @@ int main(int argc,char*args[])
 	Queen whiteQueen("white");
 	Queen blackQueen("black");
 	Rook blackRook("black");
-	Rook blackRook("black");
 	Rook whiteRook1("white");
 	Rook whiteRook2("white");
 	Rook blackRook1("black");
 	Rook blackRook2("black");
-//	Rook whiteRook("a8", "black");
 
+	//Rook blackRook("e5", "black");
+
+	//Pawn whitePawn1("a2", "white");
 
 	OnePiece noPiece("white");
 
