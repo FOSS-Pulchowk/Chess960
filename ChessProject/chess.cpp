@@ -155,150 +155,6 @@ void Chess::endChess()
 }
 int Chess::isNotBlocked(string choosenMove)
 {
-	/*
-	
-	int sourceFile = source[0] - 'a' + 1;
-	int sourceRow = source[1] - '1' + 1;
-	int destinationFile = destination[0] - 'a' + 1;
-	int destinationRow = destination[1] - '1' + 1;
-	
-	bool inStraightLine = (source.x==destination.x) || (source.y==destination.y);
-	int verticalDifference = abs(source.x - destination.x);
-	int horizontalDifference = abs(source.y-destination.y);
-	bool inDiagonalLine = (verticalDifference == horizontalDifference);
-	bool blocked=false;
-	if (inStraightLine)
-	{
-		std::cout << "It belongs to straight line\n";
-		if (source.x == destination.x)
-		{
-			int i = source.x;
-			if (source.y+1<destination.y)
-			{
-				int j = source.y+1;
-				while (j < destination.y)
-				{
-					
-					if ((*currentBoard)[i][j].currentPiece != ptrToNoPiece)
-					{
-						blocked = true;
-						break;
-					}
-					j++;
-
-				}
-			}
-			else if(source.y-1>destination.y)
-			{
-				int j = source.y - 1;
-				while (j > destination.y)
-				{
-					if ((*currentBoard)[i][j].currentPiece != ptrToNoPiece)
-					{
-						blocked = true;
-						break;
-					}
-				}
-				j--;
-			}
-			else
-			{
-				blocked = false;
-			}
-		}
-		else if (source.y == destination.y)
-		{
-			int j = source.y;
-			if (source.x +1< destination.x)
-			{
-				int i = source.x + 1;
-				while (i < destination.y)
-				{
-					if ((*currentBoard)[i][j].currentPiece != ptrToNoPiece)
-					{
-						std::cout << "Path is blocked by " << (*currentBoard)[i][j].currentPiece->myName()<<"\n";
-						blocked = true;
-						break;
-					}
-					i++;
-				}
-			}
-			else if (source.x-1 > destination.x)
-			{
-				int i = source.x - 1;
-				while (i > destination.y)
-				{
-					if ((*currentBoard)[i][j].currentPiece != ptrToNoPiece)
-					{
-						blocked = true;
-						break;
-					}
-					i--;
-				}
-			}
-			else
-			{
-				blocked = true;
-			}
-		}
-
-
-	}
-	else if (inDiagonalLine)
-	{
-		std::cout << "I am checking for diagonal";
-		int movX, movY;//variables for checking through path
-		//setting the variable for going through rows
-		if (source.x<destination.x)
-		{
-			std::cout << "I made movX 1";
-			movX = 1;
-		}
-		else if(source.x>destination.x)
-		{
-			std::cout << "I made movX -1";
-			movX = -1;
-		}
-		else
-		{
-			std::cout << "I made movX0";
-			movX = 0;
-		}
-
-		if (source.y < destination.y)
-		{
-			std::cout << "I made movY1";
-			movY= 1;
-		}
-		else if (source.x > destination.x)
-		{
-			std::cout << "I made movY1";
-			movY = -1;
-		}
-		else
-		{
-			std::cout << "I made movY1";
-			movY = 0;
-		}
-		int currX = source.x + movX;
-		int currY = source.y + movX;
-		while (abs(source.x - currX) > 0 || abs(source.y - currY))
-		{
-			string temp = ((*currentBoard)[currX][currY].currentPiece)->myName();
-			std::cout << temp;
-			if ((*currentBoard)[currX][currY].currentPiece != ptrToNoPiece)
-			{
-				//std::cout << "Path blocked by " << ((*currentBoard)[currX][currY].currentPiece->myName());// << "in " << currY + 'a' << currX + '1' << "\n";
-				blocked = true;
-				break;
-			}
-			currX += movX;
-			currY += movY;
-		}
-
-	}
-	return !blocked;
-	*/
 	string sourceString = choosenMove.substr(0, 2);
 	string destinationString = choosenMove.substr(2, 2);
 	Position source(sourceString);
@@ -444,14 +300,20 @@ int Chess::isNotBlocked(string choosenMove)
 			movY = (source.y < destination.y) ? 1 : -1;
 			currX = source.x+ movX;
 			currY = source.y + movY;
+			std::cout << "movX:" << movX << " movY:" << movY << " currX:" << currX << " currY" << currY << "\n";
 			while (abs(currX - destination.x) > 0)
 			{
-				if (((*currentBoard)[currX - 1][currY - 1].currentPiece == ptrToNoPiece))
+				if (((*currentBoard)[currX - 1][currY - 1].currentPiece != ptrToNoPiece))
 				{
 					std::cout << (*currentBoard)[currX - 1][currY - 1].currentPiece->myName() << " blocks the path\n";
+					std::cout << "I am inside if";
 					blocked = true;
 					break;
 				}
+				currX = currX+ movX;
+				currY = currY + movY;
+				std::cout << "I am inside while after incrementing. " << "currX:" << currX << " currY:" << currY << " \n";
+				SDL_Delay(1000);
 			}
 		}
 	}
@@ -459,5 +321,5 @@ int Chess::isNotBlocked(string choosenMove)
 	{
 	blocked = false;
 	}
-return !blocked;
+	return !blocked;
 }
