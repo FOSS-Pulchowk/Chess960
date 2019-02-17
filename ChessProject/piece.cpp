@@ -24,10 +24,12 @@ King::King(string color)
 	alive = true;
 	if (color == "white")
 	{
+		image = IMG_Load("ChessPieces/WhiteKing.png");
 		this->isWhite = 1;
 	}
 	else
 	{
+		image = IMG_Load("ChessPieces/BlackKing.png");
 		this->isWhite = 0;
 	}
 }
@@ -68,10 +70,12 @@ Bishop::Bishop(string color)
 	//this->currentPosition = currentPosition;
 	if (color == "white")
 	{ 
+		image=IMG_Load("ChessPieces/WhiteBishop.png");
 		isWhite = true; 
 	}
 	else 
 	{ 
+		image=IMG_Load("ChessPieces/BlackBishop.png");
 		isWhite = false;
 	}
 }
@@ -107,10 +111,12 @@ Queen::Queen(string color)
 	alive = true;
 	if (color == "white")
 	{
+		image=IMG_Load("ChessPieces/WhiteQueen.png");
 		isWhite = true;
 	}
 	else
 	{
+		image=IMG_Load("ChessPieces/BlackQueen.png");
 		isWhite = false;
 	}
 }

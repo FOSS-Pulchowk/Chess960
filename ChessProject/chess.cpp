@@ -155,16 +155,13 @@ void Chess::endChess()
 }
 int Chess::isNotBlocked(string choosenMove)
 {
-	string sourceString = choosenMove.substr(0, 2);
-	string destinationString = choosenMove.substr(2, 2);
-	Position source(sourceString);
-	Position destination(destinationString);
 	/*
+	
 	int sourceFile = source[0] - 'a' + 1;
 	int sourceRow = source[1] - '1' + 1;
 	int destinationFile = destination[0] - 'a' + 1;
 	int destinationRow = destination[1] - '1' + 1;
-	*/
+	
 	bool inStraightLine = (source.x==destination.x) || (source.y==destination.y);
 	int verticalDifference = abs(source.x - destination.x);
 	int horizontalDifference = abs(source.y-destination.y);
@@ -219,6 +216,7 @@ int Chess::isNotBlocked(string choosenMove)
 				{
 					if ((*currentBoard)[i][j].currentPiece != ptrToNoPiece)
 					{
+						std::cout << "Path is blocked by " << (*currentBoard)[i][j].currentPiece->myName()<<"\n";
 						blocked = true;
 						break;
 					}
@@ -286,7 +284,8 @@ int Chess::isNotBlocked(string choosenMove)
 		int currY = source.y + movX;
 		while (abs(source.x - currX) > 0 || abs(source.y - currY))
 		{
-			std::cout << (*currentBoard)[currX][currY].currentPiece->myName();
+			string temp = ((*currentBoard)[currX][currY].currentPiece)->myName();
+			std::cout << temp;
 			if ((*currentBoard)[currX][currY].currentPiece != ptrToNoPiece)
 			{
 				//std::cout << "Path blocked by " << ((*currentBoard)[currX][currY].currentPiece->myName());// << "in " << currY + 'a' << currX + '1' << "\n";
@@ -299,4 +298,126 @@ int Chess::isNotBlocked(string choosenMove)
 
 	}
 	return !blocked;
+	*/
+	string sourceString = choosenMove.substr(0, 2);
+	string destinationString = choosenMove.substr(2, 2);
+	Position source(sourceString);
+	Position destination(destinationString);
+	bool inStraightLine = (source.x == destination.x) || (source.y == destination.y);
+	int verticalDifference = abs(source.x - destination.x);
+	int horizontalDifference = abs(source.y - destination.y);
+	bool inDiagonalLine = (verticalDifference == horizontalDifference);
+	bool blocked = false;
+	if (inStraightLine)
+	{
+		if (source.x == destination.x && source.y == destination.y)
+		{
+			blocked = false;
+		}
+		else if (source.x == destination.x)
+		{
+			std::cout << "Here the rows of source and destiantion are same.";
+			if (abs(source.y - destination.y) == 1)
+			{
+				std::cout << "The move takes place in adjacent square so block is false.";
+				blocked = false;
+			}
+			else
+			{
+				int currX = source.x;
+				int currY = source.y;
+				if (source.y < destination.y)
+				{
+					currY += 1;
+					while (currY < destination.y)
+					{
+						if ((*currentBoard)[currX][currY].currentPiece != ptrToNoPiece)
+						{
+							std::cout << ((*currentBoard)[currX][currY].currentPiece->myName());
+							std::cout << " blocks the path first \n";
+							blocked = true;
+							break;
+						}
+						currY++;
+					}
+				}
+				else if (source.y > destination.y)
+				{
+					currY -= 1;
+					while (currY > destination.y)
+					{
+						if ((*currentBoard)[currX][currY].currentPiece != ptrToNoPiece)
+						{
+							std::cout << ((*currentBoard)[currX][currY].currentPiece->myName());
+							std::cout << " blocks the 2nd  path\n";
+							blocked = true;
+							break;
+						}
+						currY--;
+					}
+				}
+				else if (source.y==destination.y)
+				{
+					std::cout << "This place shouldnt be reached. ";
+				}
+			}
+
+			
+		}
+		else if (source.y == destination.y)
+		{
+			std::cout << "Here the column are equal";
+			if (abs(source.x - destination.x) == 1)
+			{
+				std::cout << "The move takes place in adjacent square so block is false.";
+				blocked = false;
+			}
+			else
+			{
+				int currX = source.x;
+				int currY = source.y;
+				if (source.x < destination.x)
+				{
+					currX += 1;
+					while (currX < destination.x)
+					{
+						if ((*currentBoard)[currX][currY].currentPiece != ptrToNoPiece)
+						{
+							std::cout << ((*currentBoard)[currX][currY].currentPiece->myName());
+							std::cout << " blocks the path column \n";
+							blocked = true;
+							break;
+						}
+						currX++;
+					}
+				}
+				else if (source.x > destination.x)
+				{
+					currX-= 1;
+					while (currX > destination.x)
+					{
+						if ((*currentBoard)[currX][currY].currentPiece != ptrToNoPiece)
+						{
+							std::cout << ((*currentBoard)[currX][currY].currentPiece->myName());
+							std::cout << currX << " " << currY << " ";
+							std::cout << " blocks the path pathe\n";
+							blocked = true;
+							
+						}
+						currX--;
+					}
+				}
+				else if (source.x == destination.x)
+				{
+					std::cout << "This place shouldnt be reached. ";
+				}
+			}
+
+		}
+	}
+	else
+	{
+	blocked = false;
+	}
+return !blocked;
 }
