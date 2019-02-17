@@ -158,7 +158,6 @@
     <ClInclude Include="chess.h" />
     <ClInclude Include="Graphic.h" />
     <ClInclude Include="piece.h" />
-    <ClInclude Include="rook.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="board.cpp" />
@@ -166,7 +165,6 @@
     <ClCompile Include="Graphic.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="piece.cpp" />
-    <ClCompile Include="rook.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

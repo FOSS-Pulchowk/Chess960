@@ -63,3 +63,10 @@ public:
 	Queen(string color);
 	int movesInEmptyBoard(string initialPosition, string finalPosition);
 };
+
+class Rook :public Piece
+{
+public:
+	Rook(string currentPosition, string color);
+	int movesInEmptyBoard(string initialPosition, string finalPosition);
+};
