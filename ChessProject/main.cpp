@@ -3,7 +3,7 @@
 #include <SDL_image.h>
 #include "Graphic.h"
 #include "chess.h"
-#include "rook.h"
+//#include "rook.h"
 
 using std::cout;
 using std::cin;
