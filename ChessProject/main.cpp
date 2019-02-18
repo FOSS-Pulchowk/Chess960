@@ -10,6 +10,8 @@ using std::cin;
 int main(int argc,char*args[])
 {
 	Graphic myGraphic;
+	string move;
+	string tempSelection = "0"; // extra haleko
 	King whiteKing("white");
 	King blackKing("black");
 	Bishop whiteBishop1("white");
@@ -61,20 +63,38 @@ int main(int argc,char*args[])
 	int count = 1;
 	while (!myChess.isChessOver())
 	{
-		string move;
 		myGraphic.run(myChess);
-		cout << (myChess.getCurrentPlayer() ? "\nWhite:" : "\nBlack:");
-
+		//cout << (myChess.getCurrentPlayer() ? "\nWhite:" : "\nBlack:");
+		
 		//cout << "\nEnter move:";
 		//cin >> move;
 		move=myGraphic.input(myChess,myGraphic.e);
-
+		/*if (move.length() == 2)
+		{
+			cout << 'a';
+			if (tempSelection == move)
+			{
+				cout << 'b';
+				tempSelection = "0";
+			}
+			else if (tempSelection == "0")
+			{
+				cout << 'c';
+				tempSelection = move;
+			}
+			else
+			{
+				myChess.execute(tempSelection+move);
+				tempSelection = "0";
+			}
+		}
+		/*
 		if (move=="")
 			myChess.endChess();
 		if (myChess.execute(move))
 		{
 			myChess.changeTurn();
-		}
+		}*/
 
 	}
 	return 0;

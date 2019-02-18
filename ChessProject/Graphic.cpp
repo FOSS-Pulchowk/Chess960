@@ -9,6 +9,18 @@
 
 //Set SDL pointers to null
 
+string getBoxSelection(int x, int y)
+{
+	int boxY, boxX;
+	char columnLetter[] = "abcdefgh";
+	string finalValue;
+	boxY = (44 + 8 * 86 - y) / 86;
+	boxX = (x - 365) / 86;
+	if (x < 365 || x > 365 + 86 * 8 || y < 44 || y > 44 + 8 * 86) { return "0"; }
+	finalValue = columnLetter[boxX] + ((char)(49 + boxY));
+	std::cout << finalValue;
+	return finalValue;
+}
 
 Graphic::Graphic()
 {
@@ -32,21 +44,31 @@ Graphic::Graphic()
 
 string Graphic::input(Chess &myChess,SDL_Event &e)
 {
-	string move;
+	string move,tempMove;
+	int posX, posY;
 	while (SDL_PollEvent(&e) != 0) {
-		
+		std::cout << "1. prnt";
 		if (e.type == SDL_QUIT) 
 		{
 			(myChess).endChess();
 		}
+		else if (e.type == SDL_MOUSEBUTTONDOWN)
+		{
+			SDL_GetMouseState(&posX, &posY);
+			std::cout << "2. prnt";
+			return getBoxSelection(posX, posY);
+		}
 		else
 		{
-			
-			std::cin >> move;
-			if (e.type == SDL_QUIT)
-				myChess.endChess();
-			return move;
+			std::cout << "3. prnt";
+			//std::cin >> move;
+			// yo redundant xa jasto layo malai
+			/*if (e.type == SDL_QUIT)
+				myChess.endChess();*/
+			return "0";
 		}
+
+
 		/*else if (e.type == SDL_MOUSEMOTION || e.type == SDL_MOUSEBUTTONDOWN || e.type == SDL_MOUSEBUTTONUP) {
 			int x, y;
 			SDL_GetMouseState(&x, &y);
