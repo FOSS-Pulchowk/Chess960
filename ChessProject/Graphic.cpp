@@ -42,7 +42,7 @@ Graphic::Graphic()
 	}
 }
 
-string Graphic::input(Chess &myChess,SDL_Event &e)
+string Graphic::input(Chess &myChess,SDL_Event &eve)
 {
 	string move,tempMove;
 	int posX, posY;

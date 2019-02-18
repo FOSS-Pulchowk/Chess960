@@ -20,7 +20,7 @@ public:
 	void createGame();
 	void close();*/
 	void run(Chess &myChess);
-	string input(Chess &myChess, SDL_Event &e);
+	string input(Chess &myChess, SDL_Event &eve);
 private:
 	//bool init();
 	//bool loadImg();

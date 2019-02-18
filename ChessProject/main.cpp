@@ -69,17 +69,14 @@ int main(int argc,char*args[])
 		//cout << "\nEnter move:";
 		//cin >> move;
 		move=myGraphic.input(myChess,myGraphic.e);
-		/*if (move.length() == 2)
+		if (move.length() == 2)
 		{
-			cout << 'a';
 			if (tempSelection == move)
 			{
-				cout << 'b';
 				tempSelection = "0";
 			}
 			else if (tempSelection == "0")
 			{
-				cout << 'c';
 				tempSelection = move;
 			}
 			else
