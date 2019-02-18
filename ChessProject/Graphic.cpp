@@ -48,7 +48,7 @@ int Graphic::getInput(Chess &myChess,SDL_Event *e,string &myMove)
 	if (SDL_PollEvent(&events))
 	{
 		//If a key was pressed
-		if (events.type == SDL_KEYDOWN)
+		/*if (events.type == SDL_KEYDOWN)
 		{
 			//Set the proper message surface
 			switch (events.key.keysym.sym)
@@ -79,15 +79,30 @@ int Graphic::getInput(Chess &myChess,SDL_Event *e,string &myMove)
 				return 1;
 			}
 		}
-
+		*/
 		//If the user has Xed out the window
-		else if (events.type == SDL_QUIT)
+		if (events.type == SDL_QUIT)
 		{
 			//Quit the program
+			myChess.endChess();
 			return 0;
-			//myChess.endChess();
+			
 		}
-		else return 0;
+		else
+		{
+			string tempMove;
+			std::cout << "Enter move: ";
+			std::cin >> tempMove;
+			if (myChess.execute(tempMove))
+			{
+				myChess.changeTurn();
+				return 1;
+			}
+			else
+			{
+				std::cout << "I cant execute the given move";
+			}
+		};
 	}
 }
 

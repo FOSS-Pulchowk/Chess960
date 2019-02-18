@@ -62,7 +62,7 @@ int main(int argc,char*args[])
 	myChess.moveToEmptySquare("e3e1");*/
 	int count = 1;
 	SDL_Event events;
-	string myMove="a1a2";
+	string myMove;
 	while (!myChess.isChessOver())
 	{
 		myGraphic.run(myChess);
