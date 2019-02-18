@@ -91,6 +91,7 @@ int Graphic::getInput(Chess &myChess,SDL_Event *e,string &myMove)
 		else
 		{
 			string tempMove;
+			std::cout << myChess.getCurrentPlayer() << " ";
 			std::cout << "Enter move: ";
 			std::cin >> tempMove;
 			if (myChess.execute(tempMove))
@@ -100,7 +101,7 @@ int Graphic::getInput(Chess &myChess,SDL_Event *e,string &myMove)
 			}
 			else
 			{
-				std::cout << "I cant execute the given move";
+				std::cout << "I cant execute the given move\n";
 			}
 		}
 	}
