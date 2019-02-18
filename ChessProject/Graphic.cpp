@@ -64,8 +64,8 @@ int Graphic::getInput(Chess &myChess,SDL_Event *e,string &myMove)
 				return 1;
 
 			}
-		}
-		else if (events.type==SDL_MOUSEBUTTONDOWN)
+		}*/
+		/*if (events.type==SDL_MOUSEBUTTONDOWN)
 		{
 			if (events.button.button== SDL_BUTTON_LEFT)
 			{
@@ -78,8 +78,8 @@ int Graphic::getInput(Chess &myChess,SDL_Event *e,string &myMove)
 				i += 4;
 				return 1;
 			}
-		}
-		*/
+		}*/
+		
 		//If the user has Xed out the window
 		if (events.type == SDL_QUIT)
 		{
@@ -102,7 +102,7 @@ int Graphic::getInput(Chess &myChess,SDL_Event *e,string &myMove)
 			{
 				std::cout << "I cant execute the given move";
 			}
-		};
+		}
 	}
 }
 

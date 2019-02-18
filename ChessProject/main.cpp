@@ -61,7 +61,7 @@ int main(int argc,char*args[])
 	cout <<"New Name" << (*myChess.currentBoard)[2][4].currentPiece->myName();
 	myChess.moveToEmptySquare("e3e1");*/
 	int count = 1;
-	SDL_Event events;
+	//SDL_Event events;
 	string myMove;
 	while (!myChess.isChessOver())
 	{
@@ -107,7 +107,7 @@ int main(int argc,char*args[])
 				myChess.endChess();
 			}
 		}*/
-		myGraphic.getInput(myChess,&events,myMove);
+		myGraphic.getInput(myChess,&(myGraphic.graphicEvents),myMove);
 
 		
 

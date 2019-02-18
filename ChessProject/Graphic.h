@@ -13,6 +13,7 @@ class Graphic
 	SDL_Rect posBoard[8][8];
 	SDL_Rect chessBoardPos;
 public:
+	SDL_Event graphicEvents;
 	//SDL_Event e;
 	Graphic();
 	/*~Graphic();
