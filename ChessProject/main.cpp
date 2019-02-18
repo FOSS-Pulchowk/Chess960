@@ -4,7 +4,7 @@
 #include "Graphic.h"
 #include "chess.h"
 //#include "rook.h"
-
+int i = 0;
 using std::cout;
 using std::cin;
 int main(int argc,char*args[])
@@ -61,14 +61,56 @@ int main(int argc,char*args[])
 	cout <<"New Name" << (*myChess.currentBoard)[2][4].currentPiece->myName();
 	myChess.moveToEmptySquare("e3e1");*/
 	int count = 1;
+	SDL_Event events;
+	string myMove="a1a2";
 	while (!myChess.isChessOver())
 	{
 		myGraphic.run(myChess);
 		//cout << (myChess.getCurrentPlayer() ? "\nWhite:" : "\nBlack:");
+		//string myMove;
+		//myMove=myGraphic.input(&myEvent);
+		//myMove = "e1e2";
+		//if (myChess.execute(myMove))
+		//{
+			//myChess.changeTurn();
+			//i = i + 4;
+		//}
+		//else
+		//{
+		//	std::cout << "false move";
+		//}
+
+		/*if (SDL_PollEvent(&events))
+		{
+			//If a key was pressed
+			if (events.type == SDL_KEYDOWN)
+			{
+				//Set the proper message surface
+				switch (events.key.keysym.sym)
+				{
+				case SDLK_UP: myMove = "e1e2"; break;
+				case SDLK_DOWN: myMove = "e8e7"; break;
+				case SDLK_LEFT: myMove = "e2e3"; break;
+				case SDLK_RIGHT: myMove = "e7e6"; break;
+				}
+				if (myChess.execute(myMove))
+				{
+					myChess.changeTurn();
+
+				}
+			}
+
+			//If the user has Xed out the window
+			else if (events.type == SDL_QUIT)
+			{
+				//Quit the program
+				myChess.endChess();
+			}
+		}*/
+		myGraphic.getInput(myChess,&events,myMove);
+
 		
-		//cout << "\nEnter move:";
-		//cin >> move;
-		move=myGraphic.input(myChess,myGraphic.e);
+
 		/*if (move.length() == 2)
 		{
 			cout << 'a';
