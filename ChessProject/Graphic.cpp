@@ -31,8 +31,8 @@ Graphic::Graphic()
 	chessBoard = IMG_Load("chessboard.png");
 	whiteKing = IMG_Load("ChessPieces/WhiteKing.png");
 
-	chessBoardPos.x = 302; chessBoardPos.y = 0;
-	int initialPosX = 365, initialPosY = 44, boxPosDiff = 86;
+	chessBoardPos.x = 299; chessBoardPos.y = 0;
+	int initialPosX = 323, initialPosY = 27, boxPosDiff = 91;
 	
 	for (int i=7; i >= 0; i--) {
 		for (int j=0; j < 8; j++) {
