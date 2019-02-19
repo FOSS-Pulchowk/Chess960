@@ -4,6 +4,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <fstream>
 using std::string;
 using std::vector;
 /*The abstract Piece class contains name and position of piece. Other objects inherit and override the virtual function in the base class. */
@@ -68,5 +69,20 @@ class Rook :public Piece
 {
 public:
 	Rook(string color);
+	int movesInEmptyBoard(string initialPosition, string finalPosition);
+};
+
+class Knight :public Piece
+{
+public:
+	Knight(string color);
+	int movesInEmptyBoard(string initialPosition, string finalPosition);
+};
+class Pawn :public Piece
+{
+	std::ifstream moveRefFile;
+	std::ifstream eatRefFile;
+public:
+	Pawn(string color);
 	int movesInEmptyBoard(string initialPosition, string finalPosition);
 };

@@ -166,3 +166,83 @@ int Rook::movesInEmptyBoard(string initialPosition, string finalPosition)
 	else if (checkRow == 0 && checkColumn != 0) { return 1; }
 	else { return 0; }
 }
+
+Knight::Knight(string color)
+{
+	this->name = "Knight";
+	// this->currentPosition = currentPosition;
+	if (color == "white") {
+		isWhite = true;
+		image = IMG_Load("ChessPieces/WhiteKnight.png");
+	}
+	else {
+		isWhite = false;
+		image = IMG_Load("ChessPieces/BlackKnight.png");
+	}
+}
+
+int Knight::movesInEmptyBoard(string initialPosition, string finalPosition)
+{
+	vector<int> initialPositionInNumber = getPositionInVector(initialPosition);
+	vector<int> finalPositionInNumber = getPositionInVector(finalPosition);
+	int checkColumn = abs(finalPositionInNumber[0] - initialPositionInNumber[0]);
+	int checkRow = abs(finalPositionInNumber[1] - initialPositionInNumber[1]);
+	if (checkColumn == 1 && checkRow == 2) { return 1; }
+	else if (checkColumn == 2 && checkRow == 1) { return 1; }
+	else { return 0; }
+}
+
+//gives integer value in serial from a1 to h8
+int getPositionInInteger(string position)
+{
+	return position[0] - 'a' + (position[1] - '1') * 8;
+}
+/*void Piece::setCurrentPosition(string position)
+{
+	//this->currentPosition = position;
+}*/
+
+Pawn::Pawn(string color)
+{
+	name = "Pawn";
+	//this->currentPosition = currentPosition;
+	if (color == "white")
+	{
+		this->isWhite = true;
+		image = IMG_Load("ChessPieces/whitePawn.png");
+		this->moveRefFile.open("PawnBottomMove.txt");
+		this->eatRefFile.open("PawnBottomEat.txt");
+	}
+	else
+	{
+		this->isWhite = false;
+		image = IMG_Load("ChessPieces/blackPawn.png");
+		this->moveRefFile.open("PawnTopMove.txt");
+		this->eatRefFile.open("PawnTopEat.txt");
+	}
+}
+
+int Pawn::movesInEmptyBoard(string initialPosition, string finalPosition)
+{
+	int initialPosEquivInteger = getPositionInInteger(initialPosition);
+	int finalPosEquivInteger = getPositionInInteger(finalPosition);
+	string initialPosMoveValue, initalPosEatValue;
+	for (int i = 0; i <= initialPosEquivInteger; i++)
+	{
+		std::getline(this->moveRefFile, initialPosMoveValue);
+		std::getline(this->eatRefFile, initalPosEatValue);
+	}
+	if ((initialPosMoveValue[finalPosEquivInteger] - '0') == 1)
+	{
+		this->moveRefFile.seekg(0, std::ios::beg);
+		return 1;
+	}
+	else if ((initalPosEatValue[finalPosEquivInteger] - '0') == 1)
+	{
+		this->eatRefFile.seekg(0, std::ios::beg);
+		return 2;
+	}
+	this->moveRefFile.seekg(0, std::ios::beg);
+	this->eatRefFile.seekg(0, std::ios::beg);
+	return 0;
+}

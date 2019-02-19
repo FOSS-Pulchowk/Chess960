@@ -3,7 +3,7 @@
 #include "chess.h"
 #include <iostream>
 
-
+extern int i;
 //Set the screen resolution
 
 
@@ -42,31 +42,125 @@ Graphic::Graphic()
 	}
 }
 
+<<<<<<< HEAD
 string Graphic::input(Chess &myChess,SDL_Event &eve)
+=======
+int Graphic::getInput(Chess &myChess,SDL_Event *e,string &myMove)
 {
-	string move,tempMove;
-	int posX, posY;
-	while (SDL_PollEvent(&e) != 0) {
-		std::cout << "1. prnt";
-		if (e.type == SDL_QUIT) 
+	SDL_Event events = *e;
+	if (SDL_PollEvent(&events))
+	{
+		//If a key was pressed
+		/*if (events.type == SDL_KEYDOWN)
 		{
-			(myChess).endChess();
-		}
-		else if (e.type == SDL_MOUSEBUTTONDOWN)
+			//Set the proper message surface
+			switch (events.key.keysym.sym)
+			{
+			case SDLK_UP: myMove = "e1e2"; break;
+			case SDLK_DOWN: myMove = "e8e7"; break;
+			case SDLK_LEFT: myMove = "e2e3"; break;
+			case SDLK_RIGHT: myMove = "e7e6"; break;
+			}
+			if (myChess.execute(myMove))
+			{
+				myChess.changeTurn();
+				return 1;
+
+			}
+		}*/
+		/*if (events.type==SDL_MOUSEBUTTONDOWN)
 		{
-			SDL_GetMouseState(&posX, &posY);
-			std::cout << "2. prnt";
-			return getBoxSelection(posX, posY);
+			if (events.button.button== SDL_BUTTON_LEFT)
+			{
+				string moveList = "e1e2e8e7e2e3e7e6";
+				myMove = moveList.substr(i,4);
+			}
+			if (myChess.execute(myMove))
+			{
+				myChess.changeTurn();
+				i += 4;
+				return 1;
+			}
+		}*/
+		
+		//If the user has Xed out the window
+		if (events.type == SDL_QUIT)
+		{
+			//Quit the program
+			myChess.endChess();
+			return 0;
+			
 		}
 		else
 		{
-			std::cout << "3. prnt";
+			string tempMove;
+			std::cout << myChess.getCurrentPlayer() << " ";
+			std::cout << "Enter move: ";
+			std::cin >> tempMove;
+			if (myChess.execute(tempMove))
+			{
+				myChess.changeTurn();
+				return 1;
+			}
+			else
+			{
+				std::cout << "I cant execute the given move\n";
+			}
+		}
+	}
+}
+
+string Graphic::input(SDL_Event *myEvent)
+>>>>>>> dc081163dbfea43407f350dd37210f8be484819e
+{
+	string moves = "e1e2e8e7e2e3e7e6e3e4e6e5";
+	string move,tempMove;
+	//int posX, posY;
+	while (SDL_PollEvent(myEvent) != 0) {
+		std::cout << "1. prnt\n";
+		if ((*myEvent).type == SDL_QUIT) 
+		{
+			
+			//(myChess).endChess();
+			return "e1e2";
+		}
+		else if ((*myEvent).type == SDL_KEYDOWN)
+		{
+			return moves.substr(i, 4);
+		}
+		/*else if (e.type == SDL_MOUSEBUTTONDOWN)
+		{
+			//SDL_GetMouseState(&posX, &posY);
+			std::cout << "2. prnt\n";
+			return "e1e2";
+			//return getBoxSelection(posX, posY);
+
+		}*/
+		/*else if (e.type==SDL_KEYDOWN)
+		{
+			if (e.key.keysym.sym==SDLK_3)
+			{
+				return "e1e2";
+			}
+		}*/
+		else
+		{
+			return "e1e2";
+		}
+		//else if (e.type==SDL_KEYDOWN)
+		//{
+			//std::cout << "Enter move:";
+			//std::cin >> move;
+			//if (eve)
+			//return mov;
+			//return moves.substr(i, 4);
+			//i = i + 4;
 			//std::cin >> move;
 			// yo redundant xa jasto layo malai
 			/*if (e.type == SDL_QUIT)
 				myChess.endChess();*/
-			return "0";
-		}
+			
+		//}
 
 
 		/*else if (e.type == SDL_MOUSEMOTION || e.type == SDL_MOUSEBUTTONDOWN || e.type == SDL_MOUSEBUTTONUP) {

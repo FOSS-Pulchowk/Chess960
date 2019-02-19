@@ -2,6 +2,7 @@
 #include "chess.h"
 #include <iostream>
 #include <cmath>
+#include <ctime>
 Chess::Chess(string name1, string name2, Board (*currentBoard)[8][8],OnePiece *ptr)
 {
 	whiteToPlay = true;
@@ -78,7 +79,17 @@ int Chess::capture(string choosenMove)
 	int destinationRow = destination[1] - '1' + 1;
 	Piece *sourcePiece = (*currentBoard)[sourceRow - 1][sourceFile - 1].currentPiece;
 	Piece *destinationPiece = (*currentBoard)[destinationRow - 1][destinationFile - 1].currentPiece;
-	bool canMove = sourcePiece->movesInEmptyBoard(source, destination);
+	bool canMove;
+	if (sourcePiece->myName() == "Pawn")
+	{
+		std::cout << "I am here pawn capture";
+		std::cout << "The function returns " << (sourcePiece->movesInEmptyBoard(source, destination) == 2);
+		canMove = (sourcePiece->movesInEmptyBoard(source, destination) == 2);
+	}
+	else
+	{
+		canMove = (sourcePiece->movesInEmptyBoard(source, destination));
+	}
 	bool playerMatchesPiece = (getCurrentPlayer() == sourcePiece->getColor());
 	bool isOpponentPiece = (getCurrentPlayer() != destinationPiece->getColor());
 	//std::cout << canMove;
@@ -313,7 +324,7 @@ int Chess::isNotBlocked(string choosenMove)
 				currX = currX+ movX;
 				currY = currY + movY;
 				std::cout << "I am inside while after incrementing. " << "currX:" << currX << " currY:" << currY << " \n";
-				SDL_Delay(1000);
+				//SDL_Delay(1000);
 			}
 		}
 	}
@@ -323,3 +334,169 @@ int Chess::isNotBlocked(string choosenMove)
 	}
 	return !blocked;
 }
+
+bool rookRepeatDecider(string temp, int tempNum)
+{
+	bool repeat;
+	if (tempNum == 0)
+	{
+		if (temp[1] == 'R')
+		{
+			repeat = true;
+		}
+		else { repeat = false; }
+	}
+	else if (tempNum == 7)
+	{
+		if (temp[6] == 'R')
+		{
+			repeat = true;
+		}
+		else { repeat = false; }
+	}
+	else
+	{
+		if (temp[tempNum - 1] == 'R' || temp[tempNum + 1] == 'R')
+		{
+			repeat = true;
+		}
+		else { repeat = false; }
+	}
+	return repeat;
+}
+string Chess::getPiecesConfig()
+{
+	string temp = "00000000";
+	int tempNum, posTemp[2];
+	bool rookPosGenRepeat = false;
+	srand(time(NULL));
+	tempNum = rand() % 8;
+	temp[tempNum] = 'R';
+	posTemp[0] = tempNum;
+	tempNum = rand() % 8;
+	rookPosGenRepeat = rookRepeatDecider(temp, tempNum);
+	while (temp[tempNum] != '0' || rookPosGenRepeat)
+	{
+		tempNum = rand() % 8;
+		rookPosGenRepeat = rookRepeatDecider(temp, tempNum);
+	}
+	temp[tempNum] = 'R';
+	posTemp[1] = tempNum;
+	tempNum = rand() % (abs(posTemp[1] - posTemp[0]) - 1);
+	if (posTemp[1] > posTemp[0]) { temp[posTemp[0] + tempNum + 1] = 'K'; }
+	else { temp[posTemp[1] + tempNum + 1] = 'K'; }
+	tempNum = rand() % 4;
+	while (temp[2 * tempNum] != '0')
+	{
+		tempNum = rand() % 4;
+	}
+	temp[2 * tempNum] = 'B';
+	tempNum = rand() % 4;
+	while (temp[2 * tempNum + 1] != '0')
+	{
+		tempNum = rand() % 4;
+	}
+	temp[2 * tempNum + 1] = 'B';
+	tempNum = rand() % 8;
+	for (int i = 0; i < 2; i++)
+	{
+		while (temp[tempNum] != '0')
+		{
+			tempNum = rand() % 8;
+		}
+		temp[tempNum] = 'N';
+		tempNum = rand() % 8;
+	}
+	for (int i = 0; i < 8; i++)
+	{
+		if (temp[i] == '0')
+		{
+			temp[i] = 'Q';
+			break;
+		}
+	}
+	return temp;
+}
+
+int Game::initializeBoard(Board(*myBoard)[8][8], OnePiece *noPiece)
+{
+	King *ptrToWhiteKing = new King("white");
+	King *ptrToBlackKing = new King("black");
+	Queen *ptrToWhiteQueen = new Queen("white");
+	Queen *ptrToBlackQueen = new Queen("black");
+	Bishop *ptrToWhiteBishop1 = new Bishop("white");
+	Bishop *ptrToWhiteBishop2 = new Bishop("white");
+	Bishop *ptrToBlackBishop1 = new Bishop("black");
+	Bishop *ptrToBlackBishop2 = new Bishop("black");
+	Knight *ptrToWhiteKnight1 = new Knight("white");
+	Knight *ptrToWhiteKnight2 = new Knight("white");
+	Knight *ptrToBlackKnight1 = new Knight("black");
+	Knight *ptrToBlackKnight2 = new Knight("black");
+	Rook *ptrToWhiteRook1 = new Rook("white");
+	Rook *ptrToWhiteRook2 = new Rook("white");
+	Rook *ptrToBlackRook1 = new Rook("black");
+	Rook *ptrToBlackRook2 = new Rook("black");
+
+	//OnePiece *ptrToOnePiece = new OnePiece("white");
+
+	Pawn *ptrToWhitePawn1 = new Pawn("white");
+	Pawn *ptrToWhitePawn2 = new Pawn("white");
+	Pawn *ptrToWhitePawn3 = new Pawn("white");
+	Pawn *ptrToWhitePawn4 = new Pawn("white");
+	Pawn *ptrToWhitePawn5 = new Pawn("white");
+	Pawn *ptrToWhitePawn6 = new Pawn("white");
+	Pawn *ptrToWhitePawn7 = new Pawn("white");
+	Pawn *ptrToWhitePawn8 = new Pawn("white");
+
+
+	Pawn *ptrToBlackPawn1 = new Pawn("black");
+	Pawn *ptrToBlackPawn2 = new Pawn("black");
+	Pawn *ptrToBlackPawn3 = new Pawn("black");
+	Pawn *ptrToBlackPawn4 = new Pawn("black");
+	Pawn *ptrToBlackPawn5 = new Pawn("black");
+	Pawn *ptrToBlackPawn6 = new Pawn("black");
+	Pawn *ptrToBlackPawn7 = new Pawn("black");
+	Pawn *ptrToBlackPawn8 = new Pawn("black");
+
+	setBoard(*myBoard, noPiece);
+
+	(*myBoard)[0][4].currentPiece = ptrToWhiteKing;
+	(*myBoard)[7][4].currentPiece = ptrToBlackKing;
+	(*myBoard)[0][3].currentPiece = ptrToWhiteQueen;
+	(*myBoard)[7][3].currentPiece = ptrToBlackQueen;
+	(*myBoard)[0][2].currentPiece = ptrToWhiteBishop1;
+	(*myBoard)[0][5].currentPiece = ptrToWhiteBishop2;
+	(*myBoard)[7][2].currentPiece = ptrToBlackBishop1;
+	(*myBoard)[7][5].currentPiece = ptrToBlackBishop2;
+	(*myBoard)[0][1].currentPiece = ptrToWhiteKnight1;
+	(*myBoard)[0][6].currentPiece = ptrToWhiteKnight2;
+	(*myBoard)[7][1].currentPiece = ptrToBlackKnight1;
+	(*myBoard)[7][6].currentPiece = ptrToBlackKnight2;
+	(*myBoard)[0][0].currentPiece = ptrToWhiteRook1;
+	(*myBoard)[0][7].currentPiece = ptrToWhiteRook2;
+	(*myBoard)[7][0].currentPiece = ptrToBlackRook1;
+	(*myBoard)[7][7].currentPiece = ptrToBlackRook2;
+
+	(*myBoard)[1][0].currentPiece = ptrToWhitePawn1;
+	(*myBoard)[1][1].currentPiece = ptrToWhitePawn2;
+	(*myBoard)[1][2].currentPiece = ptrToWhitePawn3;
+	(*myBoard)[1][3].currentPiece = ptrToWhitePawn4;
+	(*myBoard)[1][4].currentPiece = ptrToWhitePawn5;
+	(*myBoard)[1][5].currentPiece = ptrToWhitePawn6;
+	(*myBoard)[1][6].currentPiece = ptrToWhitePawn7;
+	(*myBoard)[1][7].currentPiece = ptrToWhitePawn8;
+
+	(*myBoard)[6][0].currentPiece = ptrToBlackPawn1;
+	(*myBoard)[6][1].currentPiece = ptrToBlackPawn2;
+	(*myBoard)[6][2].currentPiece = ptrToBlackPawn3;
+	(*myBoard)[6][3].currentPiece = ptrToBlackPawn4;
+	(*myBoard)[6][4].currentPiece = ptrToBlackPawn5;
+	(*myBoard)[6][5].currentPiece = ptrToBlackPawn6;
+	(*myBoard)[6][6].currentPiece = ptrToBlackPawn7;
+	(*myBoard)[6][7].currentPiece = ptrToBlackPawn8;
+	
+	return 1;
+	
+}
+
+
