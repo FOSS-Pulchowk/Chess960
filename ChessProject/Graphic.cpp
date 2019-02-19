@@ -41,10 +41,7 @@ Graphic::Graphic()
 		}
 	}
 }
-
-<<<<<<< HEAD
-string Graphic::input(Chess &myChess,SDL_Event &eve)
-=======
+//string Graphic::input(Chess &myChess,SDL_Event &eve)
 int Graphic::getInput(Chess &myChess,SDL_Event *e,string &myMove)
 {
 	SDL_Event events = *e;
@@ -111,7 +108,6 @@ int Graphic::getInput(Chess &myChess,SDL_Event *e,string &myMove)
 }
 
 string Graphic::input(SDL_Event *myEvent)
->>>>>>> dc081163dbfea43407f350dd37210f8be484819e
 {
 	string moves = "e1e2e8e7e2e3e7e6e3e4e6e5";
 	string move,tempMove;

@@ -83,13 +83,11 @@ int main(int argc,char*args[])
 	{
 		myGraphic.run(myChess);
 		//cout << (myChess.getCurrentPlayer() ? "\nWhite:" : "\nBlack:");
-<<<<<<< HEAD
 		
 		//cout << "\nEnter move:";
 		//cin >> move;
-		move=myGraphic.input(myChess,myGraphic.e);
-		if (move.length() == 2)
-=======
+		/*move=myGraphic.input(myChess,myGraphic.e);
+		if (move.length() == 2)*/
 		//string myMove;
 		//myMove=myGraphic.input(&myEvent);
 		//myMove = "e1e2";
@@ -132,7 +130,6 @@ int main(int argc,char*args[])
 		}*/
 		myGraphic.getInput(myChess,&(myGraphic.graphicEvents),myMove);
 		/*if (move.length() == 2)
->>>>>>> dc081163dbfea43407f350dd37210f8be484819e
 		{
 			if (tempSelection == move)
 			{

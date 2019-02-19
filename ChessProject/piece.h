@@ -80,8 +80,6 @@ public:
 };
 class Pawn :public Piece
 {
-	std::ifstream moveRefFile;
-	std::ifstream eatRefFile;
 public:
 	Pawn(string color);
 	int movesInEmptyBoard(string initialPosition, string finalPosition);

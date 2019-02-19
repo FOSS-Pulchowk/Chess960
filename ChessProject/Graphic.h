@@ -21,12 +21,9 @@ public:
 	void createGame();
 	void close();*/
 	void run(Chess &myChess);
-<<<<<<< HEAD
-	string input(Chess &myChess, SDL_Event &eve);
-=======
+	//string input(Chess &myChess, SDL_Event &eve);
 	string input(SDL_Event *e);
 	int getInput(Chess &myChess, SDL_Event *e, string &myMove);
->>>>>>> dc081163dbfea43407f350dd37210f8be484819e
 private:
 	//bool init();
 	//bool loadImg();

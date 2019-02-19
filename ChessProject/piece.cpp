@@ -210,39 +210,30 @@ Pawn::Pawn(string color)
 	{
 		this->isWhite = true;
 		image = IMG_Load("ChessPieces/whitePawn.png");
-		this->moveRefFile.open("PawnBottomMove.txt");
-		this->eatRefFile.open("PawnBottomEat.txt");
 	}
 	else
 	{
 		this->isWhite = false;
 		image = IMG_Load("ChessPieces/blackPawn.png");
-		this->moveRefFile.open("PawnTopMove.txt");
-		this->eatRefFile.open("PawnTopEat.txt");
 	}
 }
 
 int Pawn::movesInEmptyBoard(string initialPosition, string finalPosition)
 {
-	int initialPosEquivInteger = getPositionInInteger(initialPosition);
-	int finalPosEquivInteger = getPositionInInteger(finalPosition);
-	string initialPosMoveValue, initalPosEatValue;
-	for (int i = 0; i <= initialPosEquivInteger; i++)
+	if (isWhite && (finalPosition[0] == initialPosition[0]))
 	{
-		std::getline(this->moveRefFile, initialPosMoveValue);
-		std::getline(this->eatRefFile, initalPosEatValue);
+		if ((finalPosition[1] - initialPosition[1]) == 1 ) { return 1; }
+		else if (((initialPosition[1] - '0') == 2) && ((finalPosition[1] - initialPosition[1]) == 2)) { return 1; }
 	}
-	if ((initialPosMoveValue[finalPosEquivInteger] - '0') == 1)
+	else if (!isWhite && (finalPosition[0] == initialPosition[0]))
 	{
-		this->moveRefFile.seekg(0, std::ios::beg);
-		return 1;
+		if ((initialPosition[1] - finalPosition[1]) == 1) { return 1; }
+		else if (((initialPosition[1] - '0') == 7) && ((initialPosition[1] - finalPosition[1]) == 2)) { return 1; }
 	}
-	else if ((initalPosEatValue[finalPosEquivInteger] - '0') == 1)
+	if (((finalPosition[1]-initialPosition[1]) == 1) && ((finalPosition[0]-initialPosition[0]) == 1))
 	{
-		this->eatRefFile.seekg(0, std::ios::beg);
-		return 2;
+		if (isWhite && (finalPosition[1] > initialPosition[1])) { return 2; }
+		else if (!isWhite && (finalPosition[1] < initialPosition[1])) { return 2; }
 	}
-	this->moveRefFile.seekg(0, std::ios::beg);
-	this->eatRefFile.seekg(0, std::ios::beg);
 	return 0;
 }

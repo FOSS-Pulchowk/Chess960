@@ -31,11 +31,11 @@ int Chess::moveToEmptySquare(string choosenMove)
 	int destinationFile = destination[0] - 'a' + 1;
 	int destinationRow = destination[1] - '1' + 1;
 	Piece *sourcePiece = (*currentBoard)[sourceRow - 1][sourceFile - 1].currentPiece;
-	bool canMove = sourcePiece->movesInEmptyBoard(source, destination);
+	bool canMove = 0;
+	if (sourcePiece->movesInEmptyBoard(source, destination) == 1) { canMove = 1; }
 	int pathIsNotBlocked = isNotBlocked(choosenMove);
 	if (!canMove)
 	{
-		
 		std::cout << "I cant move " << sourcePiece->myName() << "in here" << "from " << source << "to " << destination << "\n";
 	}
 	bool playerMatchesPiece = (getCurrentPlayer() == sourcePiece->getColor());
