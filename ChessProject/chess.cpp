@@ -149,6 +149,7 @@ int Chess::execute(string choosenMove)
 	else
 	{
 		std::cout << "It is neither capture nor move";
+		return 0;
 	}
 	bool canMove = sourcePiece->movesInEmptyBoard(source, destination);
 	bool playerMatchesPiece = (getCurrentPlayer() == sourcePiece->getColor());
