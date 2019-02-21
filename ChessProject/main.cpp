@@ -28,12 +28,13 @@ int main(int argc,char*args[])
 	{
 		myGraphic.run(myChess);
 		//std::cout << (myChess.isAttacked(0, "e1")?"in check\n":"not in check\n");
-		//std::cout << (myChess.isKingInCheck(1) ? "It is in check\n" : "it is not in check\n");
+		
 		if (myGraphic.getInput(myChess, &(myGraphic.graphicEvents), myMove))
 		{
 			if (myChess.execute(myGraphic.inputMove))
 			{
 				myChess.changeTurn();
+				std::cout << (myChess.isKingInCheck(1) ? "It is in check\n" : "it is not in check\n");
 				myGraphic.inputMove = "";
 			}
 			else

@@ -10,6 +10,8 @@ Chess::Chess(string name1, string name2, Board (*currentBoard)[8][8],OnePiece *p
 	isOver = false;
 	whitePlayerName = name1;
 	blackPlayerName = name2;
+	limboPiece = ptr;
+	lastMove = "";
 	this->currentBoard = currentBoard;
 	this->ptrToNoPiece = ptr;
 	
@@ -99,6 +101,7 @@ int Chess::capture(string choosenMove)
 	{
 
 		destinationPiece->kill();
+		limboPiece = destinationPiece;
 		//(*currentBoard)[sourceRow - 1][sourceFile - 1].currentPiece = ptrToNoPiece;
 		(*currentBoard)[destinationRow - 1][destinationFile - 1].currentPiece = (*currentBoard)[sourceRow - 1][sourceFile - 1].currentPiece;
 		(*currentBoard)[sourceRow - 1][sourceFile - 1].currentPiece = ptrToNoPiece;
@@ -313,19 +316,19 @@ int Chess::isNotBlocked(string choosenMove)
 			movY = (source.y < destination.y) ? 1 : -1;
 			currX = source.x+ movX;
 			currY = source.y + movY;
-			std::cout << "movX:" << movX << " movY:" << movY << " currX:" << currX << " currY" << currY << "\n";
+			//std::cout << "movX:" << movX << " movY:" << movY << " currX:" << currX << " currY" << currY << "\n";
 			while (abs(currX - destination.x) > 0)
 			{
 				if (((*currentBoard)[currX - 1][currY - 1].currentPiece != ptrToNoPiece))
 				{
-					std::cout << (*currentBoard)[currX - 1][currY - 1].currentPiece->myName() << " blocks the path\n";
-					std::cout << "I am inside if";
+					//std::cout << (*currentBoard)[currX - 1][currY - 1].currentPiece->myName() << " blocks the path\n";
+					//std::cout << "I am inside if";
 					blocked = true;
 					break;
 				}
 				currX = currX+ movX;
 				currY = currY + movY;
-				std::cout << "I am inside while after incrementing. " << "currX:" << currX << " currY:" << currY << " \n";
+				//std::cout << "I am inside while after incrementing. " << "currX:" << currX << " currY:" << currY << " \n";
 				//SDL_Delay(1000);
 			}
 		}
