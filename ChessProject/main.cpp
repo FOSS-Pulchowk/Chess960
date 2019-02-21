@@ -79,7 +79,7 @@ int main(int argc,char*args[])
 	while (!myChess.isChessOver())
 	{
 		myGraphic.run(myChess);
-		std::cout << (myChess.canCapture(0, "h4e1")?"in check":"not in check");
+		std::cout << (myChess.isKingInCheck(myChess.getCurrentPlayer)?"in check":"not in check");
 		myGraphic.getInput(myChess,&(myGraphic.graphicEvents),myMove);
 		
 	}

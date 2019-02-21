@@ -6,7 +6,7 @@ using std::string;
 /*Contains basic Chess related information and pointer to the board */
 class Board;
 class Piece;
-
+enum Color { WHITE, BLACK };
 namespace Game
 {
 	int initializeBoard(Board (*myBoard)[8][8],OnePiece *noPiece);
@@ -24,6 +24,7 @@ class Chess
 public:
 	int isAttacked(bool color, string position);
 	int canCapture(bool color,string choosenMove);
+	int isKingInCheck(bool color);
 	Board(*currentBoard)[8][8];
 	Chess(string name1, string name2, Board (*currentBoard)[8][8],OnePiece *ptr);
 	int moveToEmptySquare(string choosenMove);
@@ -62,6 +63,13 @@ struct Position
 		y = location[0] - 'a' + 1;
 		x = location[1] - '0';
 		return *this;
+	}
+	string getString()
+	{
+		string temp;
+		temp.push_back(y + 'a' - 1);
+		temp.push_back(x + '1' - 1);
+		return temp;
 	}
 };
 

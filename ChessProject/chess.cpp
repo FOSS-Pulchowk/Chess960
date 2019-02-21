@@ -3,6 +3,7 @@
 #include <iostream>
 #include <cmath>
 #include <ctime>
+
 Chess::Chess(string name1, string name2, Board (*currentBoard)[8][8],OnePiece *ptr)
 {
 	whiteToPlay = true;
@@ -554,6 +555,25 @@ int Chess::canCapture(bool color,string choosenMove)
 	{
 		return 0;
 	}
+}
+
+int Chess::isKingInCheck(bool color)
+{
+	Position kingPosition;
+	for (char row = 0; row< 8; row++)
+	{
+		for (char col = 0; col < 8; col++)
+		{
+			Piece *currentPiece = (*currentBoard)[row][col].currentPiece;
+			if (currentPiece->myName() == "King" && currentPiece->getColor() == color)
+			{
+				kingPosition.x = row + 1;
+				kingPosition.y = col + 1;
+			}
+		}
+	}
+	return isAttacked(color, kingPosition.getString());
+
 }
 
 
