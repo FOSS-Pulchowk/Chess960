@@ -22,6 +22,8 @@ class Chess
 	bool whiteKingIsChecked;
 	bool blackKingIsChecked;
 public:
+	int isAttacked(string color, string position);
+	int canCapture(bool color,string choosenMove);
 	Board(*currentBoard)[8][8];
 	Chess(string name1, string name2, Board (*currentBoard)[8][8],OnePiece *ptr);
 	int moveToEmptySquare(string choosenMove);
@@ -62,3 +64,5 @@ struct Position
 		return *this;
 	}
 };
+
+
