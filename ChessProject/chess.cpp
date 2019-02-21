@@ -572,7 +572,8 @@ int Chess::isKingInCheck(bool color)
 			}
 		}
 	}
-	return isAttacked(color, kingPosition.getString());
+	std::cout << "King is in " << kingPosition.getString() << "\n";
+	return isAttacked(!color, kingPosition.getString());
 
 }
 

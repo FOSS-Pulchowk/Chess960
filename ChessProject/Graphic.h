@@ -14,6 +14,7 @@ class Graphic
 	SDL_Rect chessBoardPos;
 public:
 	SDL_Event graphicEvents;
+	string inputMove;
 	//SDL_Event e;
 	Graphic();
 	/*~Graphic();

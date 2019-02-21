@@ -79,8 +79,20 @@ int main(int argc,char*args[])
 	while (!myChess.isChessOver())
 	{
 		myGraphic.run(myChess);
-		std::cout << (myChess.isKingInCheck(myChess.getCurrentPlayer)?"in check":"not in check");
+		//std::cout << (myChess.isAttacked(0, "e1")?"in check\n":"not in check\n");
+		//std::cout << (myChess.isKingInCheck(1) ? "It is in check\n" : "it is not in check\n");
 		myGraphic.getInput(myChess,&(myGraphic.graphicEvents),myMove);
+		/*if (!myMove.empty())
+		{
+			if (myChess.execute(myMove))
+			{
+				myChess.changeTurn();
+			}
+			else
+			{
+				std::cout << "I cant execute given move\n";
+			}
+		}*/
 		
 	}
 	return 0;
