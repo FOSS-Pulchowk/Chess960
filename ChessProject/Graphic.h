@@ -9,7 +9,7 @@ class Graphic
 	SDL_Surface* chessBoard;
 	SDL_Surface* whiteKing;
 	SDL_Window *window;
-	SDL_Surface*screenSurface;
+	SDL_Surface*screenSurface, *highlight;
 	SDL_Rect posBoard[8][8];
 	SDL_Rect chessBoardPos;
 public:

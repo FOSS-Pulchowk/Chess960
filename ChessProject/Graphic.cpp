@@ -13,14 +13,12 @@ string getBoxSelection(int x, int y)
 {
 	int boxY, boxX;
 	char columnLetter[] = "abcdefgh";
-	string finalValue;
-	boxY = (44 + 8 * 86 - y) / 86;
-	boxX = (x - 365) / 86;
-	std::cout << "The value of boxY and boxX are : " << boxY << " and " << boxX << " \n";
-	if (x < 365 || x > 365 + 86 * 8 || y < 44 || y > 44 + 8 * 86) { return ""; }
+	string finalValue="";
+	boxY = (27 + 8 * 91 - y) / 91;
+	boxX = (x - 323) / 91;
+	if (x < 323 || x > 323 + 86 * 8 || y < 27 || y > 27 + 8 * 91) { return ""; }
 	finalValue.push_back(boxX + 'a');
 	finalValue.push_back(boxY + '1');
-	std::cout << finalValue;
 	return finalValue;
 }
 
@@ -33,6 +31,7 @@ Graphic::Graphic()
 	chessBoard = IMG_Load("chessboard.png");
 	whiteKing = IMG_Load("ChessPieces/WhiteKing.png");
 	inputMove = "";
+	highlight = IMG_Load("highlight.png");
 	chessBoardPos.x = 299; chessBoardPos.y = 0;
 	int initialPosX = 323, initialPosY = 27, boxPosDiff = 91;
 	
@@ -299,6 +298,11 @@ void Graphic::run(Chess &myChess)
 		for (int j=0; j < 8; j++) {
 			SDL_BlitSurface((*myChess.currentBoard)[i][j].currentPiece->image, NULL, screenSurface, &posBoard[i][j]);
 		}
+	}
+
+	if (inputMove != "")
+	{
+		SDL_BlitSurface(highlight, NULL, screenSurface, &posBoard[(int)(inputMove[1] - '1')][(int)(inputMove[0] - 'a')]);
 	}
 	
 	SDL_UpdateWindowSurface(window);
