@@ -105,6 +105,21 @@ bool Piece::kill()
 		return 0;
 	}
 }
+
+bool Piece::resurrect()
+{
+	if (alive)
+	{
+		std::cout << "Piece is alreay alive\n";
+		return 0;
+	}
+	else
+	{
+		alive = 1;
+		std::cout << "Piece resurrected successfully\n";
+		return 1;
+	}
+}
 Queen::Queen(string color)
 {
 	this->name = "Queen";

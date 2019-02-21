@@ -99,6 +99,10 @@ int Graphic::getInput(Chess &myChess,SDL_Event *e,string &myMove)
 				return 1;
 			}
 		}
+		else if (events.type == SDL_KEYDOWN)
+		{
+			return 2;
+		}
 		else
 		{
 			return 0;

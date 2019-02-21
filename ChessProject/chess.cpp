@@ -49,6 +49,7 @@ int Chess::moveToEmptySquare(string choosenMove)
 	{
 		(*currentBoard)[destinationRow-1][destinationFile-1].currentPiece = (*currentBoard)[sourceRow-1][sourceFile-1].currentPiece;
 		(*currentBoard)[sourceRow-1][sourceFile-1].currentPiece = ptrToNoPiece;
+		limboPiece = ptrToNoPiece;
 		//string destinationPosition = (*currentBoard)[destinationRow-1][destinationFile-1].getMyLocation();
 		//(*currentBoard)[destinationRow-1][destinationFile-1].currentPiece->setCurrentPosition(destinationPosition);
 		//std::cout << "Move done Successfully\n";
@@ -123,6 +124,18 @@ int Chess::capture(string choosenMove)
 		}
 		return 0;
 	}
+}
+
+int Chess::undo()
+{
+	Position source(lastMove.substr(0, 2));
+	Position destination(lastMove.substr(2, 2));
+	limboPiece->resurrect();
+	(*currentBoard)[source.x - 1][source.y - 1].currentPiece = (*currentBoard)[destination.x - 1][destination.y - 1].currentPiece;
+	(*currentBoard)[destination.x - 1][destination.y - 1].currentPiece = limboPiece;
+	changeTurn();
+	return 1;
+	
 }
 int Chess::execute(string choosenMove)
 {

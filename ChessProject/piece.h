@@ -23,6 +23,7 @@ public:
 	virtual int movesInEmptyBoard(string initialPosition, string finalPosition) = 0;
 	bool isAlive() { return alive; }
 	bool kill();
+	bool resurrect();
 	bool getColor() { return isWhite; }
 };
 

@@ -22,6 +22,7 @@ class Chess
 	bool whiteKingIsChecked;
 	bool blackKingIsChecked;
 public:
+	int undo();
 	Piece *limboPiece;
 	string lastMove;
 	int isAttacked(bool color, string position);
