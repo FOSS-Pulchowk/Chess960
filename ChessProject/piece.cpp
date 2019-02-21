@@ -230,7 +230,7 @@ int Pawn::movesInEmptyBoard(string initialPosition, string finalPosition)
 		if ((initialPosition[1] - finalPosition[1]) == 1) { return 1; }
 		else if (((initialPosition[1] - '0') == 7) && ((initialPosition[1] - finalPosition[1]) == 2)) { return 1; }
 	}
-	if (((finalPosition[1]-initialPosition[1]) == 1) && ((finalPosition[0]-initialPosition[0]) == 1))
+	if ((abs(finalPosition[1]-initialPosition[1]) == 1) && (abs(finalPosition[0]-initialPosition[0]) == 1))
 	{
 		if (isWhite && (finalPosition[1] > initialPosition[1])) { return 2; }
 		else if (!isWhite && (finalPosition[1] < initialPosition[1])) { return 2; }
