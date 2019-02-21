@@ -16,8 +16,10 @@ string getBoxSelection(int x, int y)
 	string finalValue;
 	boxY = (44 + 8 * 86 - y) / 86;
 	boxX = (x - 365) / 86;
-	if (x < 365 || x > 365 + 86 * 8 || y < 44 || y > 44 + 8 * 86) { return "0"; }
-	finalValue = columnLetter[boxX] + ((char)(49 + boxY));
+	std::cout << "The value of boxY and boxX are : " << boxY << " and " << boxX << " \n";
+	if (x < 365 || x > 365 + 86 * 8 || y < 44 || y > 44 + 8 * 86) { return ""; }
+	finalValue.push_back(boxX + 'a');
+	finalValue.push_back(boxY + '1');
 	std::cout << finalValue;
 	return finalValue;
 }
@@ -73,31 +75,34 @@ int Graphic::getInput(Chess &myChess,SDL_Event *e,string &myMove)
 			return 0;
 			
 		}
-		/*else if (events.type == SDL_MOUSEBUTTONDOWN)
+		else if (events.type == SDL_MOUSEBUTTONDOWN)
 		{
 			SDL_GetMouseState(&posX, &posY);
-			std::cout << "2. inMouse event\n";
+			std::cout << "2. inMouse event:"<<posX << " " << posY <<"\n";
 			//return "e1e2";
-			if (inputMove == "")
+			if (inputMove.size()!=2)
 			{
-				inputMove = inputMove + getBoxSelection(posX, posY);
-				std::cout << "I got " << inputMove << " as first move\n";
-				return "";
+				string click = getBoxSelection(posX, posY);
+				inputMove =click;
+				std::cout << "I got " << click<< " as first move\n";
+				return 0;
 			}
 			else if (inputMove.size() == 2)
 			{
-				inputMove=inputMove+ getBoxSelection(posX, posY);
-				if (myChess.execute(inputMove))
+				string click = getBoxSelection(posX, posY);
+				if (click == inputMove)
 				{
-					myChess.changeTurn();
 					inputMove = "";
-					return 1;
+					return 0;
 				}
-				else
-				{
-					inputMove = "";
-					std::cout << "I cant execute given move\n";
-				}*/
+				inputMove = inputMove + getBoxSelection(posX, posY);
+				return 1;
+			}
+		}
+		else
+		{
+			return 0;
+		}
 				//return inputMove;
 
 			//}
@@ -105,7 +110,7 @@ int Graphic::getInput(Chess &myChess,SDL_Event *e,string &myMove)
 			
 
 		
-		else
+		/*else
 		{
 			string tempMove;
 			std::cout << myChess.getCurrentPlayer() << " ";
@@ -120,75 +125,11 @@ int Graphic::getInput(Chess &myChess,SDL_Event *e,string &myMove)
 			{
 				std::cout << "I cant execute the given move\n";
 			}
-		}
+		}*/
 	}
 }
 
-string Graphic::input(SDL_Event *myEvent)
-{
-	string moves = "e1e2e8e7e2e3e7e6e3e4e6e5";
-	string move,tempMove;
-	
-	while (SDL_PollEvent(myEvent) != 0) {
-		std::cout << "1. prnt\n";
-		if ((*myEvent).type == SDL_QUIT) 
-		{
-			
-			//(myChess).endChess();
-			return "";
-		}
-		else if ((*myEvent).type == SDL_KEYDOWN)
-		{
-			return moves.substr(i, 4);
-		}
-		/*else if ((*myEvent).type == SDL_MOUSEBUTTONDOWN)
-		{
-			SDL_GetMouseState(&posX, &posY);
-			std::cout << "2. inMouse event\n";
-			//return "e1e2";
-			return getBoxSelection(posX, posY);
 
-		}*/
-		/*else if (e.type==SDL_KEYDOWN)
-		{
-			if (e.key.keysym.sym==SDLK_3)
-			{
-				return "e1e2";
-			}
-		}*/
-		else
-		{
-			return "e1e2";
-		}
-		//else if (e.type==SDL_KEYDOWN)
-		//{
-			//std::cout << "Enter move:";
-			//std::cin >> move;
-			//if (eve)
-			//return mov;
-			//return moves.substr(i, 4);
-			//i = i + 4;
-			//std::cin >> move;
-			// yo redundant xa jasto layo malai
-			/*if (e.type == SDL_QUIT)
-				myChess.endChess();*/
-			
-		//}
-
-
-		/*else if (e.type == SDL_MOUSEMOTION || e.type == SDL_MOUSEBUTTONDOWN || e.type == SDL_MOUSEBUTTONUP) {
-			int x, y;
-			SDL_GetMouseState(&x, &y);
-			if (x > ButtonPos.x&&x<(ButtonPos.x + Button->w) && y>ButtonPos.y&&y < (ButtonPos.y + Button->h)) {
-				SDL_FreeSurface(Button);
-				Button = SDL_LoadBMP("button_hover.bmp");
-			}
-			else {
-				SDL_FreeSurface(Button);
-				Button = SDL_LoadBMP("button.bmp");
-			}*/
-	}
-}
 
 /*
 Graphic::~Graphic()
