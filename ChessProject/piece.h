@@ -53,7 +53,7 @@ public:
 	}
 	int movesInEmptyBoard(string initialPosition, string finalPosition)
 	{
-		std::cout << "No Piece exists here";
+		//std::cout << "No Piece exists here";
 		return 0;
 	}
 };

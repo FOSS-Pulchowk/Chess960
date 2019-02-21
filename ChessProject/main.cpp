@@ -72,87 +72,16 @@ int main(int argc,char*args[])
 	*/
 	Chess myChess("Player1", "Player2", &myBoard,&noPiece);
 	
-	/*myChess.moveToEmptySquare("e2e3");
-	//cout << "\n" << (*myChess.currentBoard)[1][4].currentPiece->movesInEmptyBoard("e2", "e3");
-	cout <<"New Name" << (*myChess.currentBoard)[2][4].currentPiece->myName();
-	myChess.moveToEmptySquare("e3e1");*/
+	
 	int count = 1;
 	//SDL_Event events;
 	string myMove;
 	while (!myChess.isChessOver())
 	{
 		myGraphic.run(myChess);
-		//cout << (myChess.getCurrentPlayer() ? "\nWhite:" : "\nBlack:");
-		
-		//cout << "\nEnter move:";
-		//cin >> move;
-		/*move=myGraphic.input(myChess,myGraphic.e);
-		if (move.length() == 2)*/
-		//string myMove;
-		//myMove=myGraphic.input(&myEvent);
-		//myMove = "e1e2";
-		//if (myChess.execute(myMove))
-		//{
-			//myChess.changeTurn();
-			//i = i + 4;
-		//}
-		//else
-		//{
-		//	std::cout << "false move";
-		//}
-
-		/*if (SDL_PollEvent(&events))
-		{
-			//If a key was pressed
-			if (events.type == SDL_KEYDOWN)
-			{
-				//Set the proper message surface
-				switch (events.key.keysym.sym)
-				{
-				case SDLK_UP: myMove = "e1e2"; break;
-				case SDLK_DOWN: myMove = "e8e7"; break;
-				case SDLK_LEFT: myMove = "e2e3"; break;
-				case SDLK_RIGHT: myMove = "e7e6"; break;
-				}
-				if (myChess.execute(myMove))
-				{
-					myChess.changeTurn();
-
-				}
-			}
-
-			//If the user has Xed out the window
-			else if (events.type == SDL_QUIT)
-			{
-				//Quit the program
-				myChess.endChess();
-			}
-		}*/
+		std::cout << (myChess.canCapture(0, "h4e1")?"in check":"not in check");
 		myGraphic.getInput(myChess,&(myGraphic.graphicEvents),myMove);
-		/*if (move.length() == 2)
-		{
-			if (tempSelection == move)
-			{
-				tempSelection = "0";
-			}
-			else if (tempSelection == "0")
-			{
-				tempSelection = move;
-			}
-			else
-			{
-				myChess.execute(tempSelection+move);
-				tempSelection = "0";
-			}
-		}
-		/*
-		if (move=="")
-			myChess.endChess();
-		if (myChess.execute(move))
-		{
-			myChess.changeTurn();
-		}*/
-
+		
 	}
 	return 0;
 }

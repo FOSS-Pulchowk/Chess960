@@ -48,8 +48,8 @@ int Chess::moveToEmptySquare(string choosenMove)
 		(*currentBoard)[sourceRow-1][sourceFile-1].currentPiece = ptrToNoPiece;
 		//string destinationPosition = (*currentBoard)[destinationRow-1][destinationFile-1].getMyLocation();
 		//(*currentBoard)[destinationRow-1][destinationFile-1].currentPiece->setCurrentPosition(destinationPosition);
-		std::cout << "Move done Successfully\n";
-		std::cout << sourcePieceName << " moved from " << source << " to " << destination << "\n";
+		//std::cout << "Move done Successfully\n";
+		//std::cout << sourcePieceName << " moved from " << source << " to " << destination << "\n";
 		return 1;
 	}	
 	else
@@ -464,7 +464,7 @@ int Game::initializeBoard(Board(*myBoard)[8][8], OnePiece *noPiece)
 	(*myBoard)[0][4].currentPiece = ptrToWhiteKing;
 	(*myBoard)[7][4].currentPiece = ptrToBlackKing;
 	(*myBoard)[0][3].currentPiece = ptrToWhiteQueen;
-	(*myBoard)[7][3].currentPiece = ptrToBlackQueen;
+	(*myBoard)[3][7].currentPiece = ptrToBlackQueen;
 	(*myBoard)[0][2].currentPiece = ptrToWhiteBishop1;
 	(*myBoard)[0][5].currentPiece = ptrToWhiteBishop2;
 	(*myBoard)[7][2].currentPiece = ptrToBlackBishop1;
@@ -515,6 +515,11 @@ int Chess::isAttacked(bool colorOfAttacker,string position)
 			{
 				break;
 			}
+			else
+			{
+				std::cout << (*currentBoard)[row][col].currentPiece->myName() << " cant captrue on e1\n";
+
+			}
 			
 		}
 	}
@@ -523,19 +528,21 @@ int Chess::isAttacked(bool colorOfAttacker,string position)
 int Chess::canCapture(bool color,string choosenMove)
 {
 	Position source(choosenMove.substr(0, 2));
-	Position destination(choosenMove.substr(1, 2));
+	Position destination(choosenMove.substr(2, 2));
+	//std::cout << "current string in loop" << choosenMove;
+
 	Piece *sourcePiece = (*currentBoard)[source.x - 1][source.y - 1].currentPiece;
 	Piece *destinationPiece = (*currentBoard)[destination.x - 1][destination.y - 1].currentPiece;
 	bool canMove;
 	if (sourcePiece->myName() == "Pawn")
 	{
-		std::cout << "I am here pawn capture";
-		std::cout << "The function returns " << (sourcePiece->movesInEmptyBoard(choosenMove.substr(0,2),choosenMove.substr(1,2)) == 2);
-		canMove = (sourcePiece->movesInEmptyBoard(choosenMove.substr(0, 2), choosenMove.substr(1, 2)) == 2);
+		//std::cout << "I am here pawn capture";
+		//std::cout << "The function returns " << (sourcePiece->movesInEmptyBoard(choosenMove.substr(0,2),choosenMove.substr(1,2)) == 2);
+		canMove = (sourcePiece->movesInEmptyBoard(choosenMove.substr(0, 2), choosenMove.substr(2, 2)) == 2);
 	}
 	else
 	{
-		canMove = (sourcePiece->movesInEmptyBoard(choosenMove.substr(0, 2), choosenMove.substr(1, 2)));
+		canMove = (sourcePiece->movesInEmptyBoard(choosenMove.substr(0, 2), choosenMove.substr(2, 2)));
 	}
 	bool playerMatchesPiece = (color == sourcePiece->getColor());
 	bool isOpponentPiece = (sourcePiece->getColor() != destinationPiece->getColor());
