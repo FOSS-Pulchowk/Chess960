@@ -26,7 +26,7 @@ Graphic::Graphic()
 {
 	SDL_Init(SDL_INIT_VIDEO);
 	
-	window = SDL_CreateWindow("title", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 1366, 768, SDL_WINDOW_SHOWN);
+	window = SDL_CreateWindow("title", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 1366, 768, SDL_WINDOW_FULLSCREEN);
 	screenSurface = SDL_GetWindowSurface(window);
 	chessBoard = IMG_Load("chessboard.png");
 	whiteKing = IMG_Load("ChessPieces/WhiteKing.png");
