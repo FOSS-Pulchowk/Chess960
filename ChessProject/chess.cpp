@@ -113,7 +113,8 @@ int Chess::capture(string choosenMove)
 	Piece *sourcePiece = (*currentBoard)[sourceRow - 1][sourceFile - 1].currentPiece;
 	Piece *destinationPiece = (*currentBoard)[destinationRow - 1][destinationFile - 1].currentPiece;
 	bool canMove;
-	if (sourcePiece->myName() == "Pawn")
+	dynamic_cast <Pawn*>(sourcePiece)->promoted;
+	if (sourcePiece->myName() == "Pawn" && !(dynamic_cast <Pawn*>(sourcePiece)->promoted))
 	{
 		std::cout << "I am here pawn capture";
 		std::cout << "The function returns " << (sourcePiece->movesInEmptyBoard(source, destination) == 2);
@@ -630,7 +631,7 @@ int Game::initializeBoard(Board(*myBoard)[8][8], OnePiece *noPiece, Chess *myche
 	(*myBoard)[6][5].currentPiece = ptrToBlackPawn6;
 	(*myBoard)[6][6].currentPiece = ptrToBlackPawn7;
 	(*myBoard)[6][7].currentPiece = ptrToBlackPawn8;
-	
+	//dynamic_cast<Pawn *>((*myBoard)[1][0].currentPiece)->promote("Queen");
 
 	return 1;
 	
