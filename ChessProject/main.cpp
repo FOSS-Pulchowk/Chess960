@@ -29,6 +29,7 @@ int main(int argc,char*args[])
 		{
 			if (myChess.execute(myGraphic.inputMove))
 			{
+				std::cerr << "I am executing\n";
 				myChess.lastMove = myGraphic.inputMove;
 				string move = myChess.lastMove;
 				if (abs(move[1] - move[3]) == 2 && (*myChess.currentBoard)[move[3] - '1'][move[2] - 'a'].currentPiece->myName() == "Pawn") { myChess.pawnDoubleStep = true; }

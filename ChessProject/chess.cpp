@@ -47,6 +47,7 @@ int Chess::moveToEmptySquare(string choosenMove)
 	
 	if (canMove && playerMatchesPiece && pathIsNotBlocked)
 	{
+		std::cerr << "I am in move to empty square";
 		(*currentBoard)[destinationRow-1][destinationFile-1].currentPiece = (*currentBoard)[sourceRow-1][sourceFile-1].currentPiece;
 		(*currentBoard)[sourceRow-1][sourceFile-1].currentPiece = ptrToNoPiece;
 		limboPiece = ptrToNoPiece;
@@ -191,19 +192,16 @@ int Chess::execute(string choosenMove)
 	int destinationRow = destination[1] - '1' + 1;
 	Piece *sourcePiece = (*currentBoard)[sourceRow - 1][sourceFile - 1].currentPiece;
 	Piece *destinationPiece = (*currentBoard)[destinationRow - 1][destinationFile - 1].currentPiece;
-	if (sourcePiece->myName() == "King")
+	if (sourcePiece->myName() == "King" && sourcePos.x == destinationPos.x && abs(sourcePos.y - destinationPos.y) == 2)
 	{
-		if (sourcePos.x == destinationPos.x && abs(sourcePos.y - destinationPos.y) == 2)
+		std::cout << "Castle Selected\n";
+		if (castle(choosenMove))
 		{
-			std::cout << "Castle Selected\n";
-			if (castle(choosenMove))
-			{
-				return 1;
-			}
-			else
-			{
-				std::cerr << "Cant castle\n";
-			}
+			return 1;
+		}
+		else
+		{
+			std::cerr << "Cant castle\n";
 		}
 	}
 	else if (destinationPiece->myName() == "OnePiece")

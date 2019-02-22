@@ -26,7 +26,7 @@ Graphic::Graphic()
 {
 	SDL_Init(SDL_INIT_VIDEO);
 	
-	window = SDL_CreateWindow("title", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 1366, 768, SDL_WINDOW_SHOWN||SDL_WINDOW_FULLSCREEN);
+	window = SDL_CreateWindow("title", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 1366, 768, SDL_WINDOW_SHOWN);
 	screenSurface = SDL_GetWindowSurface(window);
 	chessBoard = IMG_Load("chessboard.png");
 	whiteKing = IMG_Load("ChessPieces/WhiteKing.png");
@@ -95,6 +95,7 @@ int Graphic::getInput(Chess &myChess,SDL_Event *e,string &myMove)
 					return 0;
 				}
 				inputMove = inputMove + getBoxSelection(posX, posY);
+				std::cout << "\n" << "secong move: " << inputMove;
 				return 1;
 			}
 		}
