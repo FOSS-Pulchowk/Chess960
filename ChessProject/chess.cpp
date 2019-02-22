@@ -193,7 +193,7 @@ int Chess::execute(string choosenMove)
 	int destinationRow = destination[1] - '1' + 1;
 	Piece *sourcePiece = (*currentBoard)[sourceRow - 1][sourceFile - 1].currentPiece;
 	Piece *destinationPiece = (*currentBoard)[destinationRow - 1][destinationFile - 1].currentPiece;
-	if (sourcePiece->myName() == "King" && sourcePos.x == destinationPos.x && abs(sourcePos.y - destinationPos.y) == 2)
+	/*if (sourcePiece->myName() == "King" && sourcePos.x == destinationPos.x && abs(sourcePos.y - destinationPos.y) == 2)
 	{
 		std::cout << "Castle Selected\n";
 		if (castle(choosenMove))
@@ -205,7 +205,8 @@ int Chess::execute(string choosenMove)
 			std::cerr << "Cant castle\n";
 		}
 	}
-	else if (destinationPiece->myName() == "OnePiece")
+	else */
+	if (destinationPiece->myName() == "OnePiece")
 	{
 		std::cout << "Sending move to empty square\n";
 		if (pawnDoubleStep && choosenMove[1] == lastMove[3] && abs(choosenMove[0] - lastMove[2]) == 1)
@@ -719,17 +720,7 @@ int Chess::isKingInCheck(bool color)
 			}
 		}
 	}
-	string move = "h4";
-	move = move + kingPosition.getString();
-	std::cout << "The move is " << move << "\n";
-	if (canCapture(0, move))
-	{
-		std::cout << " can capture the king from kingInCheck \n";
-	}
-	else
-	{
-		std::cout << "cant captrue king from kingInCheck\n";
-	}
+	
 	std::cout << "King is in " << kingPosition.getString() << "\n";
 	int result= isAttacked(!color, kingPosition.getString());
 	std::cout << "is attacked returns " << result << "\n";

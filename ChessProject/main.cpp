@@ -20,7 +20,7 @@ int main(int argc,char*args[])
 	Chess myChess("Player1", "Player2", &myBoard,&noPiece);
 	Game::initializeBoard(&myBoard, &noPiece, &myChess);
 	//dynamic_cast<Pawn*>((*(myChess.currentBoard))[1][0]).currentPiece)->promote("Queen");
-	dynamic_cast<Pawn*>((*myChess.currentBoard)[1][0].currentPiece)->promote("Queen");
+	//dynamic_cast<Pawn*>((*myChess.currentBoard)[1][0].currentPiece)->promote("Queen");
 
 	int count = 1;
 	//SDL_Event events;
