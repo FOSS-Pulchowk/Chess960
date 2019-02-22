@@ -7,6 +7,11 @@ using std::string;
 class Board;
 class Piece;
 enum Color { WHITE, BLACK };
+namespace Game
+{
+	int initializeBoard(Board (*myBoard)[8][8],OnePiece *noPiece);
+	//void putPiece(Board (*myBoard)[8][8], Piece *myPiece,Position location);
+}
 class Chess
 {
 	string whitePlayerName;
@@ -17,8 +22,9 @@ class Chess
 	bool whiteKingIsChecked;
 	bool blackKingIsChecked;
 public:
+	vector <string> validMoves(string source);
+	int canMoveHere(string choosenMove);
 	int undo();
-	int piecesIntValue[8];
 	Piece *limboPiece;
 	string lastMove;
 	int isAttacked(bool color, string position);
@@ -71,11 +77,5 @@ struct Position
 		return temp;
 	}
 };
-
-namespace Game
-{
-	int initializeBoard(Board(*myBoard)[8][8], OnePiece *noPiece, Chess *myChess);
-	//void putPiece(Board (*myBoard)[8][8], Piece *myPiece,Position location);
-}
 
 
