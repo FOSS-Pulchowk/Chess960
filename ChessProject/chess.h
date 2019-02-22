@@ -7,6 +7,11 @@ using std::string;
 class Board;
 class Piece;
 enum Color { WHITE, BLACK };
+/*namespace Game
+{
+	int initializeBoard(Board (*myBoard)[8][8],OnePiece *noPiece);
+	//void putPiece(Board (*myBoard)[8][8], Piece *myPiece,Position location);
+}*/
 class Chess
 {
 	string whitePlayerName;
@@ -82,5 +87,3 @@ namespace Game
 	int initializeBoard(Board(*myBoard)[8][8], OnePiece *noPiece, Chess *mychess);
 	//void putPiece(Board (*myBoard)[8][8], Piece *myPiece,Position location);
 }
-
-

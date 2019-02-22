@@ -540,6 +540,9 @@ string Chess::getPiecesConfig()
 
 int Game::initializeBoard(Board(*myBoard)[8][8], OnePiece *noPiece, Chess *mychess)
 {
+	//yo extra ho hai, debugging ko lagi rakhy thyo
+	string locationData = (*mychess).getPiecesConfig();
+
 	King *ptrToWhiteKing = new King("white");
 	King *ptrToBlackKing = new King("black");
 	Queen *ptrToWhiteQueen = new Queen("white");
@@ -579,7 +582,7 @@ int Game::initializeBoard(Board(*myBoard)[8][8], OnePiece *noPiece, Chess *myche
 	Pawn *ptrToBlackPawn8 = new Pawn("black");
 
 	setBoard(*myBoard, noPiece);
-	
+	/*
 	(*myBoard)[0][4].currentPiece = ptrToWhiteKing;
 	(*myBoard)[7][4].currentPiece = ptrToBlackKing;
 	(*myBoard)[0][3].currentPiece = ptrToWhiteQueen;
@@ -596,7 +599,9 @@ int Game::initializeBoard(Board(*myBoard)[8][8], OnePiece *noPiece, Chess *myche
 	(*myBoard)[0][7].currentPiece = ptrToWhiteRook2;
 	(*myBoard)[7][0].currentPiece = ptrToBlackRook1;
 	(*myBoard)[7][7].currentPiece = ptrToBlackRook2;
-	/*
+	(*myBoard)[7][7].currentPiece = ptrToBlackRook2;*/
+
+
 	(*myBoard)[0][(*mychess).piecesIntValue[2]].currentPiece = ptrToWhiteKing;
 	(*myBoard)[7][(*mychess).piecesIntValue[2]].currentPiece = ptrToBlackKing;
 	(*myBoard)[0][(*mychess).piecesIntValue[7]].currentPiece = ptrToWhiteQueen;
@@ -613,7 +618,8 @@ int Game::initializeBoard(Board(*myBoard)[8][8], OnePiece *noPiece, Chess *myche
 	(*myBoard)[0][(*mychess).piecesIntValue[1]].currentPiece = ptrToWhiteRook2;
 	(*myBoard)[7][(*mychess).piecesIntValue[0]].currentPiece = ptrToBlackRook1;
 	(*myBoard)[7][(*mychess).piecesIntValue[1]].currentPiece = ptrToBlackRook2;
-	*/
+
+
 	(*myBoard)[1][0].currentPiece = ptrToWhitePawn1;
 	(*myBoard)[1][1].currentPiece = ptrToWhitePawn2;
 	(*myBoard)[1][2].currentPiece = ptrToWhitePawn3;
