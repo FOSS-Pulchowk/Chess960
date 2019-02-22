@@ -223,6 +223,8 @@ Pawn::Pawn(string color)
 {
 	name = "Pawn";
 	alive = true;
+	promoted = false;
+	promotedPiece = NULL;
 	//this->currentPosition = currentPosition;
 	if (color == "white")
 	{
@@ -238,20 +240,45 @@ Pawn::Pawn(string color)
 
 int Pawn::movesInEmptyBoard(string initialPosition, string finalPosition)
 {
-	if (isWhite && (finalPosition[0] == initialPosition[0]))
+	if (!promoted)
 	{
-		if ((finalPosition[1] - initialPosition[1]) == 1 ) { return 1; }
-		else if (((initialPosition[1] - '0') == 2) && ((finalPosition[1] - initialPosition[1]) == 2)) { return 1; }
+		if (isWhite && (finalPosition[0] == initialPosition[0]))
+		{
+			if ((finalPosition[1] - initialPosition[1]) == 1) { return 1; }
+			else if (((initialPosition[1] - '0') == 2) && ((finalPosition[1] - initialPosition[1]) == 2)) { return 1; }
+		}
+		else if (!isWhite && (finalPosition[0] == initialPosition[0]))
+		{
+			if ((initialPosition[1] - finalPosition[1]) == 1) { return 1; }
+			else if (((initialPosition[1] - '0') == 7) && ((initialPosition[1] - finalPosition[1]) == 2)) { return 1; }
+		}
+		if ((abs(finalPosition[1] - initialPosition[1]) == 1) && (abs(finalPosition[0] - initialPosition[0]) == 1))
+		{
+			if (isWhite && (finalPosition[1] > initialPosition[1])) { return 2; }
+			else if (!isWhite && (finalPosition[1] < initialPosition[1])) { return 2; }
+		}
+		return 0;
 	}
-	else if (!isWhite && (finalPosition[0] == initialPosition[0]))
+	else
 	{
-		if ((initialPosition[1] - finalPosition[1]) == 1) { return 1; }
-		else if (((initialPosition[1] - '0') == 7) && ((initialPosition[1] - finalPosition[1]) == 2)) { return 1; }
+		return promotedPiece->movesInEmptyBoard(initialPosition, finalPosition);
 	}
-	if ((abs(finalPosition[1]-initialPosition[1]) == 1) && (abs(finalPosition[0]-initialPosition[0]) == 1))
+}
+int Pawn::promote(string piece)
+{
+	if (piece == "Queen")
 	{
-		if (isWhite && (finalPosition[1] > initialPosition[1])) { return 2; }
-		else if (!isWhite && (finalPosition[1] < initialPosition[1])) { return 2; }
+		if (getColor())
+		{
+			promotedPiece = new Queen("white");
+		}
+		else
+		{
+			promotedPiece = new Queen("black");
+		}
+		promoted = true;
+		image = promotedPiece->image;
+		std::cerr << "I am promoteing\n";
 	}
-	return 0;
+	return promoted;
 }
