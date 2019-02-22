@@ -14,7 +14,7 @@ Chess::Chess(string name1, string name2, Board (*currentBoard)[8][8],OnePiece *p
 	lastMove = "";
 	this->currentBoard = currentBoard;
 	this->ptrToNoPiece = ptr;
-	
+	pawnDoubleStep = false;
 }
 bool Chess::getCurrentPlayer() { return whiteToPlay; }
 bool Chess::isChessOver()
@@ -209,6 +209,16 @@ int Chess::execute(string choosenMove)
 	else if (destinationPiece->myName() == "OnePiece")
 	{
 		std::cout << "Sending move to empty square\n";
+		if (pawnDoubleStep && choosenMove[1] == lastMove[3] && abs(choosenMove[0] - lastMove[2]) == 1)
+		{
+			if (enPassantValidity(choosenMove))
+			{
+				(*currentBoard)[destinationRow - 1][destinationFile - 1].currentPiece = (*currentBoard)[sourceRow - 1][sourceFile - 1].currentPiece;
+				(*currentBoard)[sourceRow - 1][sourceFile - 1].currentPiece = ptrToNoPiece;
+				(*currentBoard)[lastMove[3] - '1'][lastMove[2] - 'a'].currentPiece = ptrToNoPiece;
+				return 1;
+			}
+		}
 		if (moveToEmptySquare(choosenMove))
 		{
 			if (isKingInCheck(getCurrentPlayer()))
@@ -740,5 +750,17 @@ vector <string> Chess:: validMoves(string source)
 		}
 	}
 	return moves;
+}
+bool Chess::enPassantValidity(string piece)
+{
+	int sourceFile = piece[0] - 'a';
+	int sourceRow = piece[1] - '1';
+	int destinationFile = piece[2] - 'a';
+	int destinationRow = piece[3] - '1';
+	Piece *sourcePiece = (*currentBoard)[sourceRow][sourceFile].currentPiece;
+	Piece *destinationPiece = (*currentBoard)[destinationRow][destinationFile].currentPiece;
+	if (sourcePiece->getColor() && sourceRow == 4 && piece[2] == lastMove[2] && piece[3]-lastMove[3] == 1){ return true; }
+	else if (!sourcePiece->getColor() && sourceRow == 3 && piece[2] == lastMove[2] && lastMove[3] - piece[3] == 1) { return true; }
+	return false;
 }
 

@@ -24,6 +24,20 @@ int main(int argc,char*args[])
 	while (!myChess.isChessOver())
 	{
 		myGraphic.run(myChess);
+<<<<<<< HEAD
+=======
+		vector<string> moves = myChess.validMoves("h4");
+		int i = 0;
+		std::cout << "Valid Moves:";
+		while (i<moves.size())
+		{
+			std::cout << moves[i] << "  ";
+			i++;
+		}
+		std::cout << ":end\n\n";
+		SDL_Delay(10);
+		//std::cout << (myChess.isAttacked(0, "e1")?"in check\n":"not in check\n");
+>>>>>>> 8a2d7d6940b1971a57bbe5dee5d6df2ce57164e4
 		int inputTrue = myGraphic.getInput(myChess, &(myGraphic.graphicEvents), myMove);
 		if (inputTrue==1)
 		{

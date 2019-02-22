@@ -30,9 +30,6 @@ int main(int argc,char*args[])
 			if (myChess.execute(myGraphic.inputMove))
 			{
 				myChess.lastMove = myGraphic.inputMove;
-				string move = myChess.lastMove;
-				if (abs(move[1] - move[3]) == 2 && (*myChess.currentBoard)[move[3] - '1'][move[2] - 'a'].currentPiece->myName() == "Pawn") { myChess.pawnDoubleStep = true; }
-				else { myChess.pawnDoubleStep = false; }
 				myChess.changeTurn();
 				//std::cout << (myChess.isKingInCheck(1) ? "It is in check\n" : "it is not in check\n");
 				myGraphic.inputMove = "";
