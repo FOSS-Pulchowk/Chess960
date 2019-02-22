@@ -14,7 +14,7 @@ string getBoxSelection(int x, int y)
 	int boxY, boxX;
 	char columnLetter[] = "abcdefgh";
 	string finalValue="";
-	boxY = (27 + 8 * 91 - y) / 91;
+	boxY = (27 + 8 * 90 - y) / 91;
 	boxX = (x - 323) / 91;
 	if (x < 323 || x > 323 + 86 * 8 || y < 27 || y > 27 + 8 * 91) { return ""; }
 	finalValue.push_back(boxX + 'a');
@@ -32,8 +32,8 @@ Graphic::Graphic()
 	whiteKing = IMG_Load("ChessPieces/WhiteKing.png");
 	inputMove = "";
 	highlight = IMG_Load("highlight.png");
-	chessBoardPos.x = 299; chessBoardPos.y = 0;
-	int initialPosX = 323, initialPosY = 27, boxPosDiff = 91;
+	chessBoardPos.x = 0; chessBoardPos.y = 0;
+	int initialPosX = 322, initialPosY = 26, boxPosDiff = 91;
 	
 	for (int i=7; i >= 0; i--) {
 		for (int j=0; j < 8; j++) {
@@ -95,6 +95,7 @@ int Graphic::getInput(Chess &myChess,SDL_Event *e,string &myMove)
 					return 0;
 				}
 				inputMove = inputMove + getBoxSelection(posX, posY);
+				std::cout << "\n" << "secong move: " << inputMove;
 				return 1;
 			}
 		}
@@ -297,6 +298,10 @@ void Graphic::run(Chess &myChess)
 {
 
 	SDL_BlitSurface(chessBoard, NULL, screenSurface, &chessBoardPos);
+	if (inputMove != "")
+	{
+		SDL_BlitSurface(highlight, NULL, screenSurface, &posBoard[(int)(inputMove[1] - '1')][(int)(inputMove[0] - 'a')]);
+	}
 	
 	for (int i=7; i >= 0; i--) {
 		for (int j=0; j < 8; j++) {
@@ -304,10 +309,7 @@ void Graphic::run(Chess &myChess)
 		}
 	}
 
-	if (inputMove != "")
-	{
-		SDL_BlitSurface(highlight, NULL, screenSurface, &posBoard[(int)(inputMove[1] - '1')][(int)(inputMove[0] - 'a')]);
-	}
+	
 	
 	SDL_UpdateWindowSurface(window);
 	SDL_Delay(1);

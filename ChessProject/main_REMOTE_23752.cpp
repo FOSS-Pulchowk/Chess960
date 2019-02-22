@@ -14,18 +14,12 @@ int main(int argc,char*args[])
 	string tempSelection = "0"; // extra haleko
 	Board myBoard[8][8];
 	OnePiece noPiece("white");
-<<<<<<< HEAD
-	//Game::initializeBoard(&myBoard,&noPiece);
+	Game::initializeBoard(&myBoard,&noPiece);
 	//setBoard(myBoard, &noPiece);
-=======
->>>>>>> 5d70296250e7f2daa18e203ad039fb74275e2d79
 	Board(*pointer)[8][8] = &myBoard;
+	
 	Chess myChess("Player1", "Player2", &myBoard,&noPiece);
-	Game::initializeBoard(&myBoard, &noPiece, &myChess);
-<<<<<<< HEAD
-
-=======
->>>>>>> 5d70296250e7f2daa18e203ad039fb74275e2d79
+	
 	
 	int count = 1;
 	//SDL_Event events;
@@ -33,12 +27,22 @@ int main(int argc,char*args[])
 	while (!myChess.isChessOver())
 	{
 		myGraphic.run(myChess);
+		vector<string> moves = myChess.validMoves("h4");
+		int i = 0;
+		std::cout << "Valid Moves:";
+		while (i<moves.size())
+		{
+			std::cout << moves[i] << "  ";
+			i++;
+		}
+		std::cout << ":end\n\n";
+		SDL_Delay(10);
+		//std::cout << (myChess.isAttacked(0, "e1")?"in check\n":"not in check\n");
 		int inputTrue = myGraphic.getInput(myChess, &(myGraphic.graphicEvents), myMove);
 		if (inputTrue==1)
 		{
 			if (myChess.execute(myGraphic.inputMove))
 			{
-				std::cerr << "I am executing\n";
 				myChess.lastMove = myGraphic.inputMove;
 				string move = myChess.lastMove;
 				if (abs(move[1] - move[3]) == 2 && (*myChess.currentBoard)[move[3] - '1'][move[2] - 'a'].currentPiece->myName() == "Pawn") { myChess.pawnDoubleStep = true; }

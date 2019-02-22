@@ -47,6 +47,7 @@ int Chess::moveToEmptySquare(string choosenMove)
 	
 	if (canMove && playerMatchesPiece && pathIsNotBlocked)
 	{
+		std::cerr << "I am in move to empty square";
 		(*currentBoard)[destinationRow-1][destinationFile-1].currentPiece = (*currentBoard)[sourceRow-1][sourceFile-1].currentPiece;
 		(*currentBoard)[sourceRow-1][sourceFile-1].currentPiece = ptrToNoPiece;
 		limboPiece = ptrToNoPiece;
@@ -153,6 +154,11 @@ int Chess::capture(string choosenMove)
 		return 0;
 	}
 }
+int Chess::castle(string choosenMove)
+{
+	Position source;
+	return 0;
+}
 
 int Chess::undo()
 {
@@ -178,13 +184,27 @@ int Chess::execute(string choosenMove)
 {
 	string source = choosenMove.substr(0, 2);
 	string destination = choosenMove.substr(2, 2);
+	Position sourcePos(source);
+	Position destinationPos(destination);
 	int sourceFile = source[0] - 'a' + 1;
 	int sourceRow = source[1] - '1' + 1;
 	int destinationFile = destination[0] - 'a' + 1;
 	int destinationRow = destination[1] - '1' + 1;
 	Piece *sourcePiece = (*currentBoard)[sourceRow - 1][sourceFile - 1].currentPiece;
 	Piece *destinationPiece = (*currentBoard)[destinationRow - 1][destinationFile - 1].currentPiece;
-	if (destinationPiece->myName() == "OnePiece")
+	if (sourcePiece->myName() == "King" && sourcePos.x == destinationPos.x && abs(sourcePos.y - destinationPos.y) == 2)
+	{
+		std::cout << "Castle Selected\n";
+		if (castle(choosenMove))
+		{
+			return 1;
+		}
+		else
+		{
+			std::cerr << "Cant castle\n";
+		}
+	}
+	else if (destinationPiece->myName() == "OnePiece")
 	{
 		std::cout << "Sending move to empty square\n";
 		if (pawnDoubleStep && choosenMove[1] == lastMove[3] && abs(choosenMove[0] - lastMove[2]) == 1)
@@ -219,6 +239,7 @@ int Chess::execute(string choosenMove)
 			if (isKingInCheck(getCurrentPlayer()))
 			{
 				undo();
+				//return 0;
 			}
 			return 1;
 		}
@@ -449,6 +470,7 @@ bool rookRepeatDecider(string temp, int tempNum)
 }
 string Chess::getPiecesConfig()
 {
+
 	string temp = "00000000";
 	int tempNum, posTemp[2];
 	bool rookPosGenRepeat = false;
@@ -558,11 +580,15 @@ int Game::initializeBoard(Board(*myBoard)[8][8], OnePiece *noPiece, Chess *myche
 	Pawn *ptrToBlackPawn8 = new Pawn("black");
 
 	setBoard(*myBoard, noPiece);
+<<<<<<< HEAD
 	/*
+=======
+	
+>>>>>>> 5d70296250e7f2daa18e203ad039fb74275e2d79
 	(*myBoard)[0][4].currentPiece = ptrToWhiteKing;
 	(*myBoard)[7][4].currentPiece = ptrToBlackKing;
 	(*myBoard)[0][3].currentPiece = ptrToWhiteQueen;
-	(*myBoard)[3][7].currentPiece = ptrToBlackQueen;
+	(*myBoard)[7][3].currentPiece = ptrToBlackQueen;
 	(*myBoard)[0][2].currentPiece = ptrToWhiteBishop1;
 	(*myBoard)[0][5].currentPiece = ptrToWhiteBishop2;
 	(*myBoard)[7][2].currentPiece = ptrToBlackBishop1;
@@ -574,8 +600,13 @@ int Game::initializeBoard(Board(*myBoard)[8][8], OnePiece *noPiece, Chess *myche
 	(*myBoard)[0][0].currentPiece = ptrToWhiteRook1;
 	(*myBoard)[0][7].currentPiece = ptrToWhiteRook2;
 	(*myBoard)[7][0].currentPiece = ptrToBlackRook1;
+<<<<<<< HEAD
 	(*myBoard)[7][7].currentPiece = ptrToBlackRook2;*/
 
+=======
+	(*myBoard)[7][7].currentPiece = ptrToBlackRook2;
+	/*
+>>>>>>> 5d70296250e7f2daa18e203ad039fb74275e2d79
 	(*myBoard)[0][(*mychess).piecesIntValue[2]].currentPiece = ptrToWhiteKing;
 	(*myBoard)[7][(*mychess).piecesIntValue[2]].currentPiece = ptrToBlackKing;
 	(*myBoard)[0][(*mychess).piecesIntValue[7]].currentPiece = ptrToWhiteQueen;
@@ -592,7 +623,11 @@ int Game::initializeBoard(Board(*myBoard)[8][8], OnePiece *noPiece, Chess *myche
 	(*myBoard)[0][(*mychess).piecesIntValue[1]].currentPiece = ptrToWhiteRook2;
 	(*myBoard)[7][(*mychess).piecesIntValue[0]].currentPiece = ptrToBlackRook1;
 	(*myBoard)[7][(*mychess).piecesIntValue[1]].currentPiece = ptrToBlackRook2;
+<<<<<<< HEAD
 
+=======
+	*/
+>>>>>>> 5d70296250e7f2daa18e203ad039fb74275e2d79
 	(*myBoard)[1][0].currentPiece = ptrToWhitePawn1;
 	(*myBoard)[1][1].currentPiece = ptrToWhitePawn2;
 	(*myBoard)[1][2].currentPiece = ptrToWhitePawn3;
@@ -611,6 +646,7 @@ int Game::initializeBoard(Board(*myBoard)[8][8], OnePiece *noPiece, Chess *myche
 	(*myBoard)[6][6].currentPiece = ptrToBlackPawn7;
 	(*myBoard)[6][7].currentPiece = ptrToBlackPawn8;
 	
+
 	return 1;
 	
 }

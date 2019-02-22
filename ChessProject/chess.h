@@ -7,11 +7,14 @@ using std::string;
 class Board;
 class Piece;
 enum Color { WHITE, BLACK };
+<<<<<<< HEAD
 /*namespace Game
 {
 	int initializeBoard(Board (*myBoard)[8][8],OnePiece *noPiece);
 	//void putPiece(Board (*myBoard)[8][8], Piece *myPiece,Position location);
 }*/
+=======
+>>>>>>> 5d70296250e7f2daa18e203ad039fb74275e2d79
 class Chess
 {
 	string whitePlayerName;
@@ -24,6 +27,7 @@ class Chess
 public:
 	vector <string> validMoves(string source);
 	int canMoveHere(string choosenMove);
+	int castle(string choosenMove);
 	int undo();
 	int piecesIntValue[8];
 	Piece *limboPiece;
@@ -83,6 +87,14 @@ struct Position
 
 namespace Game
 {
+<<<<<<< HEAD
 	int initializeBoard(Board(*myBoard)[8][8], OnePiece *noPiece, Chess *myChess);
 	//void putPiece(Board (*myBoard)[8][8], Piece *myPiece,Position location);
 }
+=======
+	int initializeBoard(Board(*myBoard)[8][8], OnePiece *noPiece, Chess *mychess);
+	//void putPiece(Board (*myBoard)[8][8], Piece *myPiece,Position location);
+}
+
+
+>>>>>>> 5d70296250e7f2daa18e203ad039fb74275e2d79
