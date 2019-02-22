@@ -79,24 +79,27 @@ int Graphic::getInput(Chess &myChess,SDL_Event *e,string &myMove)
 			SDL_GetMouseState(&posX, &posY);
 			std::cout << "2. inMouse event:"<<posX << " " << posY <<"\n";
 			//return "e1e2";
-			if (inputMove.size()!=2)
+			string boxVar = getBoxSelection(posX, posY);
+			if (boxVar != "")
 			{
-				string click = getBoxSelection(posX, posY);
-				inputMove =click;
-				std::cout << "I got " << click<< " as first move\n";
-				return 0;
-			}
-			else if (inputMove.size() == 2)
-			{
-				string click = getBoxSelection(posX, posY);
-				if (click == inputMove)
+				if (inputMove.size() != 2)
 				{
-					inputMove = "";
+					//string click = getBoxSelection(posX, posY);
+					inputMove = boxVar;;
+					std::cout << "I got " << inputMove << " as first move\n";
 					return 0;
 				}
-				inputMove = inputMove + getBoxSelection(posX, posY);
-				std::cout << "\n" << "secong move: " << inputMove;
-				return 1;
+				else if (inputMove.size() == 2)
+				{
+					string click = getBoxSelection(posX, posY);
+					if (click == inputMove)
+					{
+						inputMove = "";
+						return 0;
+					}
+					inputMove = inputMove + getBoxSelection(posX, posY);
+					return 1;
+				}
 			}
 		}
 		else if (events.type == SDL_KEYDOWN)
