@@ -391,6 +391,7 @@ string Chess::getPiecesConfig()
 	tempNum = rand() % 8;
 	temp[tempNum] = 'R';
 	posTemp[0] = tempNum;
+	piecesIntValue[0] = tempNum;
 	tempNum = rand() % 8;
 	rookPosGenRepeat = rookRepeatDecider(temp, tempNum);
 	while (temp[tempNum] != '0' || rookPosGenRepeat)
@@ -399,22 +400,33 @@ string Chess::getPiecesConfig()
 		rookPosGenRepeat = rookRepeatDecider(temp, tempNum);
 	}
 	temp[tempNum] = 'R';
+	piecesIntValue[1] = tempNum;
 	posTemp[1] = tempNum;
 	tempNum = rand() % (abs(posTemp[1] - posTemp[0]) - 1);
-	if (posTemp[1] > posTemp[0]) { temp[posTemp[0] + tempNum + 1] = 'K'; }
-	else { temp[posTemp[1] + tempNum + 1] = 'K'; }
+	if (posTemp[1] > posTemp[0]) 
+	{ 
+		temp[posTemp[0] + tempNum + 1] = 'K';
+		piecesIntValue[2] = posTemp[0] + tempNum + 1;
+	}
+	else 
+	{
+		temp[posTemp[1] + tempNum + 1] = 'K';
+		piecesIntValue[2] = posTemp[1] + tempNum + 1;
+	}
 	tempNum = rand() % 4;
 	while (temp[2 * tempNum] != '0')
 	{
 		tempNum = rand() % 4;
 	}
 	temp[2 * tempNum] = 'B';
+	piecesIntValue[3] = tempNum * 2;
 	tempNum = rand() % 4;
 	while (temp[2 * tempNum + 1] != '0')
 	{
 		tempNum = rand() % 4;
 	}
 	temp[2 * tempNum + 1] = 'B';
+	piecesIntValue[4] = tempNum * 2 + 1;
 	tempNum = rand() % 8;
 	for (int i = 0; i < 2; i++)
 	{
@@ -423,6 +435,7 @@ string Chess::getPiecesConfig()
 			tempNum = rand() % 8;
 		}
 		temp[tempNum] = 'N';
+		piecesIntValue[5 + i] = tempNum;
 		tempNum = rand() % 8;
 	}
 	for (int i = 0; i < 8; i++)
@@ -430,14 +443,18 @@ string Chess::getPiecesConfig()
 		if (temp[i] == '0')
 		{
 			temp[i] = 'Q';
+			piecesIntValue[7] = i;
 			break;
 		}
 	}
 	return temp;
 }
 
-int Game::initializeBoard(Board(*myBoard)[8][8], OnePiece *noPiece)
+int Game::initializeBoard(Board(*myBoard)[8][8], OnePiece *noPiece, Chess *mychess)
 {
+	string locationData = (*mychess).getPiecesConfig();
+	std::cout << locationData;
+	for (int i = 0; i < 8; i++) { std::cout << (*mychess).piecesIntValue[i]; }
 	King *ptrToWhiteKing = new King("white");
 	King *ptrToBlackKing = new King("black");
 	Queen *ptrToWhiteQueen = new Queen("white");
@@ -478,22 +495,22 @@ int Game::initializeBoard(Board(*myBoard)[8][8], OnePiece *noPiece)
 
 	setBoard(*myBoard, noPiece);
 
-	(*myBoard)[0][4].currentPiece = ptrToWhiteKing;
-	(*myBoard)[7][4].currentPiece = ptrToBlackKing;
-	(*myBoard)[0][3].currentPiece = ptrToWhiteQueen;
-	(*myBoard)[3][7].currentPiece = ptrToBlackQueen;
-	(*myBoard)[0][2].currentPiece = ptrToWhiteBishop1;
-	(*myBoard)[0][5].currentPiece = ptrToWhiteBishop2;
-	(*myBoard)[7][2].currentPiece = ptrToBlackBishop1;
-	(*myBoard)[7][5].currentPiece = ptrToBlackBishop2;
-	(*myBoard)[0][1].currentPiece = ptrToWhiteKnight1;
-	(*myBoard)[0][6].currentPiece = ptrToWhiteKnight2;
-	(*myBoard)[7][1].currentPiece = ptrToBlackKnight1;
-	(*myBoard)[7][6].currentPiece = ptrToBlackKnight2;
-	(*myBoard)[0][0].currentPiece = ptrToWhiteRook1;
-	(*myBoard)[0][7].currentPiece = ptrToWhiteRook2;
-	(*myBoard)[7][0].currentPiece = ptrToBlackRook1;
-	(*myBoard)[7][7].currentPiece = ptrToBlackRook2;
+	(*myBoard)[0][(*mychess).piecesIntValue[2]].currentPiece = ptrToWhiteKing;
+	(*myBoard)[7][(*mychess).piecesIntValue[2]].currentPiece = ptrToBlackKing;
+	(*myBoard)[0][(*mychess).piecesIntValue[7]].currentPiece = ptrToWhiteQueen;
+	(*myBoard)[7][(*mychess).piecesIntValue[7]].currentPiece = ptrToBlackQueen;
+	(*myBoard)[0][(*mychess).piecesIntValue[3]].currentPiece = ptrToWhiteBishop1;
+	(*myBoard)[0][(*mychess).piecesIntValue[4]].currentPiece = ptrToWhiteBishop2;
+	(*myBoard)[7][(*mychess).piecesIntValue[3]].currentPiece = ptrToBlackBishop1;
+	(*myBoard)[7][(*mychess).piecesIntValue[4]].currentPiece = ptrToBlackBishop2;
+	(*myBoard)[0][(*mychess).piecesIntValue[5]].currentPiece = ptrToWhiteKnight1;
+	(*myBoard)[0][(*mychess).piecesIntValue[6]].currentPiece = ptrToWhiteKnight2;
+	(*myBoard)[7][(*mychess).piecesIntValue[5]].currentPiece = ptrToBlackKnight1;
+	(*myBoard)[7][(*mychess).piecesIntValue[6]].currentPiece = ptrToBlackKnight2;
+	(*myBoard)[0][(*mychess).piecesIntValue[0]].currentPiece = ptrToWhiteRook1;
+	(*myBoard)[0][(*mychess).piecesIntValue[1]].currentPiece = ptrToWhiteRook2;
+	(*myBoard)[7][(*mychess).piecesIntValue[0]].currentPiece = ptrToBlackRook1;
+	(*myBoard)[7][(*mychess).piecesIntValue[1]].currentPiece = ptrToBlackRook2;
 
 	(*myBoard)[1][0].currentPiece = ptrToWhitePawn1;
 	(*myBoard)[1][1].currentPiece = ptrToWhitePawn2;
