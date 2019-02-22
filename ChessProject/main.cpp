@@ -14,18 +14,11 @@ int main(int argc,char*args[])
 	string tempSelection = "0"; // extra haleko
 	Board myBoard[8][8];
 	OnePiece noPiece("white");
-<<<<<<< HEAD
 	//Game::initializeBoard(&myBoard,&noPiece);
 	//setBoard(myBoard, &noPiece);
-=======
->>>>>>> 5d70296250e7f2daa18e203ad039fb74275e2d79
 	Board(*pointer)[8][8] = &myBoard;
 	Chess myChess("Player1", "Player2", &myBoard,&noPiece);
 	Game::initializeBoard(&myBoard, &noPiece, &myChess);
-<<<<<<< HEAD
-
-=======
->>>>>>> 5d70296250e7f2daa18e203ad039fb74275e2d79
 	
 	int count = 1;
 	//SDL_Event events;
