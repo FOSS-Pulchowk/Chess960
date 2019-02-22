@@ -153,6 +153,11 @@ int Chess::capture(string choosenMove)
 		return 0;
 	}
 }
+int Chess::castle(string choosenMove)
+{
+	Position source;
+	return 0;
+}
 
 int Chess::undo()
 {
@@ -178,13 +183,30 @@ int Chess::execute(string choosenMove)
 {
 	string source = choosenMove.substr(0, 2);
 	string destination = choosenMove.substr(2, 2);
+	Position sourcePos(source);
+	Position destinationPos(destination);
 	int sourceFile = source[0] - 'a' + 1;
 	int sourceRow = source[1] - '1' + 1;
 	int destinationFile = destination[0] - 'a' + 1;
 	int destinationRow = destination[1] - '1' + 1;
 	Piece *sourcePiece = (*currentBoard)[sourceRow - 1][sourceFile - 1].currentPiece;
 	Piece *destinationPiece = (*currentBoard)[destinationRow - 1][destinationFile - 1].currentPiece;
-	if (destinationPiece->myName() == "OnePiece")
+	if (sourcePiece->myName() == "King")
+	{
+		if (sourcePos.x == destinationPos.x && abs(sourcePos.y - destinationPos.y) == 2)
+		{
+			std::cout << "Castle Selected\n";
+			if (castle(choosenMove))
+			{
+				return 1;
+			}
+			else
+			{
+				std::cerr << "Cant castle\n";
+			}
+		}
+	}
+	else if (destinationPiece->myName() == "OnePiece")
 	{
 		std::cout << "Sending move to empty square\n";
 		if (moveToEmptySquare(choosenMove))
@@ -209,6 +231,7 @@ int Chess::execute(string choosenMove)
 			if (isKingInCheck(getCurrentPlayer()))
 			{
 				undo();
+				//return 0;
 			}
 			return 1;
 		}
@@ -439,6 +462,7 @@ bool rookRepeatDecider(string temp, int tempNum)
 }
 string Chess::getPiecesConfig()
 {
+
 	string temp = "00000000";
 	int tempNum, posTemp[2];
 	bool rookPosGenRepeat = false;
@@ -446,6 +470,7 @@ string Chess::getPiecesConfig()
 	tempNum = rand() % 8;
 	temp[tempNum] = 'R';
 	posTemp[0] = tempNum;
+	piecesIntValue[0] = tempNum;
 	tempNum = rand() % 8;
 	rookPosGenRepeat = rookRepeatDecider(temp, tempNum);
 	while (temp[tempNum] != '0' || rookPosGenRepeat)
@@ -454,22 +479,33 @@ string Chess::getPiecesConfig()
 		rookPosGenRepeat = rookRepeatDecider(temp, tempNum);
 	}
 	temp[tempNum] = 'R';
+	piecesIntValue[1] = tempNum;
 	posTemp[1] = tempNum;
 	tempNum = rand() % (abs(posTemp[1] - posTemp[0]) - 1);
-	if (posTemp[1] > posTemp[0]) { temp[posTemp[0] + tempNum + 1] = 'K'; }
-	else { temp[posTemp[1] + tempNum + 1] = 'K'; }
+	if (posTemp[1] > posTemp[0])
+	{
+		temp[posTemp[0] + tempNum + 1] = 'K';
+		piecesIntValue[2] = posTemp[0] + tempNum + 1;
+	}
+	else
+	{
+		temp[posTemp[1] + tempNum + 1] = 'K';
+		piecesIntValue[2] = posTemp[1] + tempNum + 1;
+	}
 	tempNum = rand() % 4;
 	while (temp[2 * tempNum] != '0')
 	{
 		tempNum = rand() % 4;
 	}
 	temp[2 * tempNum] = 'B';
+	piecesIntValue[3] = tempNum * 2;
 	tempNum = rand() % 4;
 	while (temp[2 * tempNum + 1] != '0')
 	{
 		tempNum = rand() % 4;
 	}
 	temp[2 * tempNum + 1] = 'B';
+	piecesIntValue[4] = tempNum * 2 + 1;
 	tempNum = rand() % 8;
 	for (int i = 0; i < 2; i++)
 	{
@@ -478,6 +514,7 @@ string Chess::getPiecesConfig()
 			tempNum = rand() % 8;
 		}
 		temp[tempNum] = 'N';
+		piecesIntValue[5 + i] = tempNum;
 		tempNum = rand() % 8;
 	}
 	for (int i = 0; i < 8; i++)
@@ -485,13 +522,14 @@ string Chess::getPiecesConfig()
 		if (temp[i] == '0')
 		{
 			temp[i] = 'Q';
+			piecesIntValue[7] = i;
 			break;
 		}
 	}
 	return temp;
 }
 
-int Game::initializeBoard(Board(*myBoard)[8][8], OnePiece *noPiece)
+int Game::initializeBoard(Board(*myBoard)[8][8], OnePiece *noPiece, Chess *mychess)
 {
 	King *ptrToWhiteKing = new King("white");
 	King *ptrToBlackKing = new King("black");
@@ -532,11 +570,11 @@ int Game::initializeBoard(Board(*myBoard)[8][8], OnePiece *noPiece)
 	Pawn *ptrToBlackPawn8 = new Pawn("black");
 
 	setBoard(*myBoard, noPiece);
-
+	
 	(*myBoard)[0][4].currentPiece = ptrToWhiteKing;
 	(*myBoard)[7][4].currentPiece = ptrToBlackKing;
 	(*myBoard)[0][3].currentPiece = ptrToWhiteQueen;
-	(*myBoard)[3][7].currentPiece = ptrToBlackQueen;
+	(*myBoard)[7][3].currentPiece = ptrToBlackQueen;
 	(*myBoard)[0][2].currentPiece = ptrToWhiteBishop1;
 	(*myBoard)[0][5].currentPiece = ptrToWhiteBishop2;
 	(*myBoard)[7][2].currentPiece = ptrToBlackBishop1;
@@ -549,7 +587,24 @@ int Game::initializeBoard(Board(*myBoard)[8][8], OnePiece *noPiece)
 	(*myBoard)[0][7].currentPiece = ptrToWhiteRook2;
 	(*myBoard)[7][0].currentPiece = ptrToBlackRook1;
 	(*myBoard)[7][7].currentPiece = ptrToBlackRook2;
-
+	/*
+	(*myBoard)[0][(*mychess).piecesIntValue[2]].currentPiece = ptrToWhiteKing;
+	(*myBoard)[7][(*mychess).piecesIntValue[2]].currentPiece = ptrToBlackKing;
+	(*myBoard)[0][(*mychess).piecesIntValue[7]].currentPiece = ptrToWhiteQueen;
+	(*myBoard)[7][(*mychess).piecesIntValue[7]].currentPiece = ptrToBlackQueen;
+	(*myBoard)[0][(*mychess).piecesIntValue[3]].currentPiece = ptrToWhiteBishop1;
+	(*myBoard)[0][(*mychess).piecesIntValue[4]].currentPiece = ptrToWhiteBishop2;
+	(*myBoard)[7][(*mychess).piecesIntValue[3]].currentPiece = ptrToBlackBishop1;
+	(*myBoard)[7][(*mychess).piecesIntValue[4]].currentPiece = ptrToBlackBishop2;
+	(*myBoard)[0][(*mychess).piecesIntValue[5]].currentPiece = ptrToWhiteKnight1;
+	(*myBoard)[0][(*mychess).piecesIntValue[6]].currentPiece = ptrToWhiteKnight2;
+	(*myBoard)[7][(*mychess).piecesIntValue[5]].currentPiece = ptrToBlackKnight1;
+	(*myBoard)[7][(*mychess).piecesIntValue[6]].currentPiece = ptrToBlackKnight2;
+	(*myBoard)[0][(*mychess).piecesIntValue[0]].currentPiece = ptrToWhiteRook1;
+	(*myBoard)[0][(*mychess).piecesIntValue[1]].currentPiece = ptrToWhiteRook2;
+	(*myBoard)[7][(*mychess).piecesIntValue[0]].currentPiece = ptrToBlackRook1;
+	(*myBoard)[7][(*mychess).piecesIntValue[1]].currentPiece = ptrToBlackRook2;
+	*/
 	(*myBoard)[1][0].currentPiece = ptrToWhitePawn1;
 	(*myBoard)[1][1].currentPiece = ptrToWhitePawn2;
 	(*myBoard)[1][2].currentPiece = ptrToWhitePawn3;
@@ -568,6 +623,7 @@ int Game::initializeBoard(Board(*myBoard)[8][8], OnePiece *noPiece)
 	(*myBoard)[6][6].currentPiece = ptrToBlackPawn7;
 	(*myBoard)[6][7].currentPiece = ptrToBlackPawn8;
 	
+
 	return 1;
 	
 }
