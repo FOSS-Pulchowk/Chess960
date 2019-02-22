@@ -27,6 +27,7 @@ public:
 	int undo();
 	Piece *limboPiece;
 	string lastMove;
+	bool pawnDoubleStep;
 	int isAttacked(bool color, string position);
 	int canCapture(bool color,string choosenMove);
 	int isKingInCheck(bool color);
@@ -51,6 +52,7 @@ public:
 	}
 
 	string getPiecesConfig();
+	bool enPassantValidity(string piece);
 };
 
 struct Position
