@@ -36,7 +36,7 @@ int main(int argc,char*args[])
 			{
 				myChess.lastMove = myGraphic.inputMove;
 				myChess.changeTurn();
-				std::cout << (myChess.isKingInCheck(1) ? "It is in check\n" : "it is not in check\n");
+				//std::cout << (myChess.isKingInCheck(1) ? "It is in check\n" : "it is not in check\n");
 				myGraphic.inputMove = "";
 			}
 			else

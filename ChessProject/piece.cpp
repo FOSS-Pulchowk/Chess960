@@ -158,6 +158,7 @@ int Queen::movesInEmptyBoard(string initialPosition, string finalPosition)
 Rook::Rook(string color)
 {
 	this->name = "Rook";
+	alive = true;
 	//this->currentPosition = currentPosition;
 	if (color == "white")
 	{ 
@@ -185,6 +186,7 @@ int Rook::movesInEmptyBoard(string initialPosition, string finalPosition)
 Knight::Knight(string color)
 {
 	this->name = "Knight";
+	alive = true;
 	// this->currentPosition = currentPosition;
 	if (color == "white") {
 		isWhite = true;
@@ -220,6 +222,7 @@ int getPositionInInteger(string position)
 Pawn::Pawn(string color)
 {
 	name = "Pawn";
+	alive = true;
 	//this->currentPosition = currentPosition;
 	if (color == "white")
 	{

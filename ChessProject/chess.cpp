@@ -50,6 +50,7 @@ int Chess::moveToEmptySquare(string choosenMove)
 		(*currentBoard)[destinationRow-1][destinationFile-1].currentPiece = (*currentBoard)[sourceRow-1][sourceFile-1].currentPiece;
 		(*currentBoard)[sourceRow-1][sourceFile-1].currentPiece = ptrToNoPiece;
 		limboPiece = ptrToNoPiece;
+		lastMove = choosenMove;
 		//string destinationPosition = (*currentBoard)[destinationRow-1][destinationFile-1].getMyLocation();
 		//(*currentBoard)[destinationRow-1][destinationFile-1].currentPiece->setCurrentPosition(destinationPosition);
 		//std::cout << "Move done Successfully\n";
@@ -128,13 +129,22 @@ int Chess::capture(string choosenMove)
 
 int Chess::undo()
 {
-	Position source(lastMove.substr(0, 2));
-	Position destination(lastMove.substr(2, 2));
-	limboPiece->resurrect();
-	(*currentBoard)[source.x - 1][source.y - 1].currentPiece = (*currentBoard)[destination.x - 1][destination.y - 1].currentPiece;
-	(*currentBoard)[destination.x - 1][destination.y - 1].currentPiece = limboPiece;
-	changeTurn();
-	return 1;
+	if (!lastMove.empty())
+	{
+		Position source(lastMove.substr(0, 2));
+		Position destination(lastMove.substr(2, 2));
+		limboPiece->resurrect();
+		(*currentBoard)[source.x - 1][source.y - 1].currentPiece = (*currentBoard)[destination.x - 1][destination.y - 1].currentPiece;
+		(*currentBoard)[destination.x - 1][destination.y - 1].currentPiece = limboPiece;
+		lastMove = "";
+		changeTurn();
+		return 1;
+	}
+	else
+	{
+		std::cout << "Cant undo\n";
+		return 0;
+	}
 	
 }
 int Chess::execute(string choosenMove)
@@ -151,17 +161,34 @@ int Chess::execute(string choosenMove)
 	{
 		std::cout << "Sending move to empty square\n";
 		if (moveToEmptySquare(choosenMove))
+		{
+			if (isKingInCheck(getCurrentPlayer()))
+			{
+				std::cout << "i am in undo\n";
+				undo();
+			}
 			return 1;
+		}
 		else
+		{
 			return 0;
+		}
 	}
 	else if (destinationPiece->myName()!="OnePiece" && destinationPiece->getColor()!=getCurrentPlayer())
 	{
 		std::cout << "Sending mvoe to capture\n";
 		if (capture(choosenMove))
+		{
+			if (isKingInCheck(getCurrentPlayer()))
+			{
+				undo();
+			}
 			return 1;
+		}
 		else
+		{
 			return 0;
+		}
 	}
 	else
 	{
@@ -195,7 +222,7 @@ int Chess::isNotBlocked(string choosenMove)
 	bool blocked = false;
 	if (inStraightLine)
 	{
-		std::cout << "Source and destination " << source.x << "," << source.y << "\n";
+		std::cout << "Source and destination " << source.x << "," << source.y << ":"<<destination.x << "," << destination.y<<"\n";
 		int currX;
 		int currY;
 		if (source.x == destination.x && source.y == destination.y)
@@ -350,6 +377,7 @@ int Chess::isNotBlocked(string choosenMove)
 	{
 	blocked = false;
 	}
+	
 	return !blocked;
 }
 
@@ -537,21 +565,25 @@ int Game::initializeBoard(Board(*myBoard)[8][8], OnePiece *noPiece, Chess *myche
 int Chess::isAttacked(bool colorOfAttacker,string position)
 {
 	Position pos(position);
-	bool result;
+	bool result=0;
 	for (char row = 0; row < 8; row++)
 	{
 		for (char col = 0; col < 8; col++)
 		{
 			string source;
-			source.push_back(row + 'a');
-			source.push_back(col + '1');
+			source.push_back(col + 'a');
+			source.push_back(row + '1');
 			if (result = canCapture(colorOfAttacker, source + position)) //This is assignment and not comparision
 			{
+				std::cout << (*currentBoard)[row][col].currentPiece->myName() << " can captrue on e1 from isAttacked\n";
+				result = 1;
+				return 1;
 				break;
 			}
 			else
 			{
-				std::cout << (*currentBoard)[row][col].currentPiece->myName() << " cant captrue on e1\n";
+				std::cout << "Cant capture reutrned 0;";
+				//std::cout << (*currentBoard)[row][col].currentPiece->myName() << " cant captrue on e1\n";
 
 			}
 			
@@ -559,7 +591,7 @@ int Chess::isAttacked(bool colorOfAttacker,string position)
 	}
 	return result;
 }
-int Chess::canCapture(bool color,string choosenMove)
+int Chess::canCapture(bool colorOfAttacker,string choosenMove)
 {
 	Position source(choosenMove.substr(0, 2));
 	Position destination(choosenMove.substr(2, 2));
@@ -578,10 +610,11 @@ int Chess::canCapture(bool color,string choosenMove)
 	{
 		canMove = (sourcePiece->movesInEmptyBoard(choosenMove.substr(0, 2), choosenMove.substr(2, 2)));
 	}
-	bool playerMatchesPiece = (color == sourcePiece->getColor());
+	bool playerMatchesPiece = (colorOfAttacker == sourcePiece->getColor());
 	bool isOpponentPiece = (sourcePiece->getColor() != destinationPiece->getColor());
 	if (canMove  && playerMatchesPiece && isOpponentPiece && isNotBlocked(choosenMove))
 	{
+		std::cout << "I am in capture checking. \n";
 		return 1;
 	}
 	else
@@ -605,8 +638,21 @@ int Chess::isKingInCheck(bool color)
 			}
 		}
 	}
+	string move = "h4";
+	move = move + kingPosition.getString();
+	std::cout << "The move is " << move << "\n";
+	if (canCapture(0, move))
+	{
+		std::cout << " can capture the king from kingInCheck \n";
+	}
+	else
+	{
+		std::cout << "cant captrue king from kingInCheck\n";
+	}
 	std::cout << "King is in " << kingPosition.getString() << "\n";
-	return isAttacked(!color, kingPosition.getString());
+	int result= isAttacked(!color, kingPosition.getString());
+	std::cout << "is attacked returns " << result << "\n";
+	return result;
 
 }
 
