@@ -3,6 +3,7 @@
 #include <iostream>
 #include <cmath>
 #include <ctime>
+#include <chrono>
 
 Chess::Chess(string name1, string name2, Board (*currentBoard)[8][8],OnePiece *ptr)
 {
@@ -24,6 +25,14 @@ bool Chess::isChessOver()
 void Chess::changeTurn()
 {
 	whiteToPlay = !whiteToPlay;
+}
+void Chess::reset()
+{
+	whiteToPlay = true;
+	lastMove = "";
+	pawnDoubleStep = false;
+	pawnEnPassant = false;
+	enPassantPawnPosforRessurect = "";
 }
 int Chess::moveToEmptySquare(string choosenMove)
 {
@@ -169,8 +178,12 @@ int Chess::undo()
 		Position destination(lastMove.substr(2, 2));
 		limboPiece->resurrect();
 		(*currentBoard)[source.x - 1][source.y - 1].currentPiece = (*currentBoard)[destination.x - 1][destination.y - 1].currentPiece;
-		(*currentBoard)[destination.x - 1][destination.y - 1].currentPiece = limboPiece;
+		(*currentBoard)[destination.x - 1][destination.y - 1].currentPiece = ptrToNoPiece;
+		if (pawnEnPassant) { (*currentBoard)[enPassantPawnPosforRessurect[1] - '1'][enPassantPawnPosforRessurect[0] - 'a'].currentPiece = limboPiece; }
+		else { (*currentBoard)[destination.x - 1][destination.y - 1].currentPiece = limboPiece; }
 		lastMove = "";
+		pawnDoubleStep = false;
+		//if (pawnEnPassant) { pawnDoubleStep = true;}
 		changeTurn();
 		return 1;
 	}
@@ -187,12 +200,13 @@ int Chess::execute(string choosenMove)
 	string destination = choosenMove.substr(2, 2);
 	Position sourcePos(source);
 	Position destinationPos(destination);
-	int sourceFile = source[0] - 'a' + 1;
-	int sourceRow = source[1] - '1' + 1;
-	int destinationFile = destination[0] - 'a' + 1;
-	int destinationRow = destination[1] - '1' + 1;
-	Piece *sourcePiece = (*currentBoard)[sourceRow - 1][sourceFile - 1].currentPiece;
-	Piece *destinationPiece = (*currentBoard)[destinationRow - 1][destinationFile - 1].currentPiece;
+	int sourceFile = source[0] - 'a';
+	int sourceRow = source[1] - '1';
+	int destinationFile = destination[0] - 'a';
+	int destinationRow = destination[1] - '1';
+	Piece *sourcePiece = (*currentBoard)[sourceRow][sourceFile].currentPiece;
+	Piece *destinationPiece = (*currentBoard)[destinationRow][destinationFile].currentPiece;
+	pawnEnPassant = false;
 	/*if (sourcePiece->myName() == "King" && sourcePos.x == destinationPos.x && abs(sourcePos.y - destinationPos.y) == 2)
 	{
 		std::cout << "Castle Selected\n";
@@ -211,13 +225,26 @@ int Chess::execute(string choosenMove)
 		std::cout << "Sending move to empty square\n";
 		if (pawnDoubleStep && choosenMove[1] == lastMove[3] && abs(choosenMove[0] - lastMove[2]) == 1)
 		{
-			if (enPassantValidity(choosenMove))
+			if ((sourcePiece->getColor() && sourceRow == 4 && choosenMove[2] == lastMove[2] && choosenMove[3] - lastMove[3] == 1) || (!sourcePiece->getColor() && sourceRow == 3 && choosenMove[2] == lastMove[2] && lastMove[3] - choosenMove[3] == 1))
+			{
+				
+				(*currentBoard)[destinationRow][destinationFile].currentPiece = (*currentBoard)[sourceRow][sourceFile].currentPiece;
+				(*currentBoard)[sourceRow][sourceFile].currentPiece = ptrToNoPiece;
+				limboPiece = (*currentBoard)[lastMove[3] - '1'][lastMove[2] - 'a'].currentPiece;
+				(*currentBoard)[lastMove[3] - '1'][lastMove[2] - 'a'].currentPiece = ptrToNoPiece;
+				enPassantPawnPosforRessurect = lastMove.substr(2, 2);
+				pawnEnPassant = true;
+				return 1;
+			}
+			else if (!sourcePiece->getColor() && sourceRow == 3 && choosenMove[2] == lastMove[2] && lastMove[3] - choosenMove[3] == 1) { return true; }
+			return false;
+			/*if (enPassantValidity(choosenMove))
 			{
 				(*currentBoard)[destinationRow - 1][destinationFile - 1].currentPiece = (*currentBoard)[sourceRow - 1][sourceFile - 1].currentPiece;
 				(*currentBoard)[sourceRow - 1][sourceFile - 1].currentPiece = ptrToNoPiece;
 				(*currentBoard)[lastMove[3] - '1'][lastMove[2] - 'a'].currentPiece = ptrToNoPiece;
 				return 1;
-			}
+			}*/
 		}
 		if (moveToEmptySquare(choosenMove))
 		{
@@ -543,7 +570,7 @@ int Game::initializeBoard(Board(*myBoard)[8][8], OnePiece *noPiece, Chess *myche
 {
 	//yo extra ho hai, debugging ko lagi rakhy thyo
 	string locationData = (*mychess).getPiecesConfig();
-
+	
 	King *ptrToWhiteKing = new King("white");
 	King *ptrToBlackKing = new King("black");
 	Queen *ptrToWhiteQueen = new Queen("white");
@@ -581,9 +608,9 @@ int Game::initializeBoard(Board(*myBoard)[8][8], OnePiece *noPiece, Chess *myche
 	Pawn *ptrToBlackPawn6 = new Pawn("black");
 	Pawn *ptrToBlackPawn7 = new Pawn("black");
 	Pawn *ptrToBlackPawn8 = new Pawn("black");
-
+	
 	setBoard(*myBoard, noPiece);
-	/*
+	
 	(*myBoard)[0][4].currentPiece = ptrToWhiteKing;
 	(*myBoard)[7][4].currentPiece = ptrToBlackKing;
 	(*myBoard)[0][3].currentPiece = ptrToWhiteQueen;
@@ -600,7 +627,7 @@ int Game::initializeBoard(Board(*myBoard)[8][8], OnePiece *noPiece, Chess *myche
 	(*myBoard)[0][7].currentPiece = ptrToWhiteRook2;
 	(*myBoard)[7][0].currentPiece = ptrToBlackRook1;
 	(*myBoard)[7][7].currentPiece = ptrToBlackRook2;
-	(*myBoard)[7][7].currentPiece = ptrToBlackRook2;*/
+	(*myBoard)[7][7].currentPiece = ptrToBlackRook2;
 
 
 	(*myBoard)[0][(*mychess).piecesIntValue[2]].currentPiece = ptrToWhiteKing;
@@ -747,7 +774,65 @@ vector <string> Chess:: validMoves(string source)
 	}
 	return moves;
 }
-bool Chess::enPassantValidity(string piece)
+
+void Chess::save()
+{
+	string color, piece;
+	string file_name;
+	/*cout << "Type file name to be saved(no extension):";
+
+	getline(cin, filename);*/
+	file_name = "state.dat";
+
+	std::ofstream ofs(file_name);
+	if (ofs.is_open())
+	{
+		// Write the date and time of save operation 
+		/*auto time_now = std::chrono::system_clock::now();
+		std::time_t end_time = std::chrono::system_clock::to_time_t(time_now);
+		ofs << "[Chess console] Saved at: " << std::ctime(&end_time);*/
+
+		// Write the moves
+
+		for (int i = 0; i < 8; i++)
+		{
+			for (int j = 0; j < 8; j++)
+			{
+				if ((*currentBoard)[i][j].currentPiece->getColor())
+				{
+					//color = "white";
+					piece = (*currentBoard)[i][j].currentPiece->myName();
+					if (piece == "Rook") { ofs << "wR" << i << j << std::endl; }
+					if (piece == "King") { ofs << "wK" << i << j << std::endl; }
+					if (piece == "Pawn") { ofs << "wP" << i << j << std::endl; }
+					if (piece == "Knight") { ofs << "wG" << i << j << std::endl; }
+					if (piece == "Queen") { ofs << "wQ" << i << j << std::endl; }
+					if (piece == "Bishop") { ofs << "wB" << i << j << std::endl; }
+				}
+				else
+				{
+					//color = "black";
+					piece = (*currentBoard)[i][j].currentPiece->myName();
+					if (piece == "Rook") { ofs << "bR" << i << j << std::endl; }
+					if (piece == "King") { ofs << "bK" << i << j << std::endl; }
+					if (piece == "Pawn") { ofs << "bP" << i << j << std::endl; }
+					if (piece == "Knight") { ofs << "bG" << i << j << std::endl; }
+					if (piece == "Queen") { ofs << "bQ" << i << j << std::endl; }
+					if (piece == "Bishop") { ofs << "bB" << i << j << std::endl; }
+				}
+			}
+		}
+		std::cout << "Game saved as " << file_name;
+	}
+	else
+	{
+		std::cout << "Error creating file! Save failed\n";
+	}
+	ofs.close();
+	return;
+}
+
+/*bool Chess::enPassantValidity(string piece)
 {
 	int sourceFile = piece[0] - 'a';
 	int sourceRow = piece[1] - '1';
@@ -758,5 +843,5 @@ bool Chess::enPassantValidity(string piece)
 	if (sourcePiece->getColor() && sourceRow == 4 && piece[2] == lastMove[2] && piece[3]-lastMove[3] == 1){ return true; }
 	else if (!sourcePiece->getColor() && sourceRow == 3 && piece[2] == lastMove[2] && lastMove[3] - piece[3] == 1) { return true; }
 	return false;
-}
+}*/
 

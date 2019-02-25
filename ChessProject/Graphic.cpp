@@ -16,7 +16,13 @@ string getBoxSelection(int x, int y)
 	string finalValue="";
 	boxY = (27 + 8 * 90 - y) / 91;
 	boxX = (x - 323) / 91;
-	if (x < 323 || x > 323 + 86 * 8 || y < 27 || y > 27 + 8 * 91) { return ""; }
+	if (x > 18 && x < (18 + 123) && y>357 && y < (357 + 118)) { return "3"; }
+	else if (x > (18 + 123 + 16) && x < (18 + 123 * 2 + 16) && y>357 && y < (357 + 118)) { return "4"; }
+	else if (x > 18 && x < (18 + 123) && y>(357 + 118 + 16) && y < (357 + 118 * 2 + 16)) { return "5"; }
+	else if (x > (18 + 123 + 16) && x < (18 + 123 * 2 + 16) && y>(357 + 118 + 16) && y < (357 + 118 * 2 + 16)) { return "6"; }
+	else if (x > 18 && x < (18 + 123) && y>(357 + 118 * 2 + 16 * 2) && y < (357 + 118 * 3 + 16 * 2)) { return "7"; }
+	else if (x > (18 + 123 + 16) && x < (18 + 123 * 2 + 16) && y>(357 + 118 * 2 + 16 * 2) && y < (357 + 118 * 3 + 16 * 2)) { return "8"; }
+	else if (x < 323 || x > 323 + 86 * 8 || y < 27 || y > 27 + 8 * 91) { return ""; }
 	finalValue.push_back(boxX + 'a');
 	finalValue.push_back(boxY + '1');
 	return finalValue;
@@ -29,12 +35,43 @@ Graphic::Graphic()
 	window = SDL_CreateWindow("title", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 1366, 768, SDL_WINDOW_FULLSCREEN);
 	screenSurface = SDL_GetWindowSurface(window);
 	chessBoard = IMG_Load("chessboard.png");
-	whiteKing = IMG_Load("ChessPieces/WhiteKing.png");
+	//whiteKing = IMG_Load("ChessPieces/WhiteKing.png");
 	inputMove = "";
+	for (int i = 0; i < 6; i++){ drawIconState[i] = 1; }
 	highlight = IMG_Load("highlight.png");
 	chessBoardPos.x = 0; chessBoardPos.y = 0;
 	int initialPosX = 322, initialPosY = 26, boxPosDiff = 91;
+
+	drawIcon[0][0] = IMG_Load("Icons/newGame-clicked.png");
+	drawIcon[0][1] = IMG_Load("Icons/newGame.png");
+	drawIcon[0][2] = IMG_Load("Icons/newGame-hover.png");
+							   
+	drawIcon[1][0] = IMG_Load("Icons/save-clicked.png");
+	drawIcon[1][1] = IMG_Load("Icons/save.png");
+	drawIcon[1][2] = IMG_Load("Icons/save-hover.png");
+							   
+	drawIcon[2][0] = IMG_Load("Icons/draw-clicked.png");
+	drawIcon[2][1] = IMG_Load("Icons/draw.png");
+	drawIcon[2][2] = IMG_Load("Icons/draw-hover.png");
+							   
+	drawIcon[3][0] = IMG_Load("Icons/resign-clicked.png");
+	drawIcon[3][1] = IMG_Load("Icons/resign.png");
+	drawIcon[3][2] = IMG_Load("Icons/resign-hover.png");
+							   
+	drawIcon[4][0] = IMG_Load("Icons/undo-clicked.png");
+	drawIcon[4][1] = IMG_Load("Icons/undo.png");
+	drawIcon[4][2] = IMG_Load("Icons/undo-hover.png");
+							   
+	drawIcon[5][0] = IMG_Load("Icons/exit-clicked.png");
+	drawIcon[5][1] = IMG_Load("Icons/exit.png");
+	drawIcon[5][2] = IMG_Load("Icons/exit-hover.png");
+
+	int initialIconPosX = 18, initialIconPosY = 357, diffIconPos = 16, iconHeight = 118, iconWidth = 123;
 	
+	for (int i = 0; i < 6; i++) {
+		drawIconPos[i].x = initialIconPosX + (i % 2)*iconWidth + (i % 2)*diffIconPos;
+		drawIconPos[i].y = initialIconPosY + (i / 2)*iconHeight + (i / 2)*diffIconPos;
+	}
 	for (int i=7; i >= 0; i--) {
 		for (int j=0; j < 8; j++) {
 			posBoard[i][j].y = initialPosY + (boxPosDiff*(7 - i));
@@ -80,12 +117,12 @@ int Graphic::getInput(Chess &myChess,SDL_Event *e,string &myMove)
 			std::cout << "2. inMouse event:"<<posX << " " << posY <<"\n";
 			//return "e1e2";
 			string boxVar = getBoxSelection(posX, posY);
-			if (boxVar != "")
+			if (boxVar.size() == 2)
 			{
 				if (inputMove.size() != 2)
 				{
 					//string click = getBoxSelection(posX, posY);
-					inputMove = boxVar;;
+					inputMove = boxVar;
 					std::cout << "I got " << inputMove << " as first move\n";
 					return 0;
 				}
@@ -101,10 +138,32 @@ int Graphic::getInput(Chess &myChess,SDL_Event *e,string &myMove)
 					return 1;
 				}
 			}
+			else if (boxVar.size() == 1) 
+			{ 
+				drawIconState[(int)(boxVar[0] - '3')] = 2; 
+				return 0;
+			}
+			return 0;
 		}
 		else if (events.type == SDL_KEYDOWN)
 		{
 			return 2;
+		}
+		else if (events.type == SDL_MOUSEBUTTONUP)
+		{
+			SDL_GetMouseState(&posX, &posY);
+			string boxVar = getBoxSelection(posX, posY);
+			drawIconState[(int)(boxVar[0] - '3')] = 0;
+			if (boxVar.size() == 1){ return (boxVar[0] - '0'); }
+			return 0;
+		}
+		else if (events.type == SDL_MOUSEMOTION)
+		{
+			SDL_GetMouseState(&posX, &posY);
+			string boxVar = getBoxSelection(posX, posY);
+			if (boxVar.size() == 1) { for (int i = 0; i < 6; i++) { drawIconState[i] = 1; }; drawIconState[(int)(boxVar[0] - '3')] = 0; }
+			else{ for (int i = 0; i < 6; i++) { drawIconState[i] = 1; }}
+			return 0;
 		}
 		else
 		{
@@ -305,7 +364,10 @@ void Graphic::run(Chess &myChess)
 	{
 		SDL_BlitSurface(highlight, NULL, screenSurface, &posBoard[(int)(inputMove[1] - '1')][(int)(inputMove[0] - 'a')]);
 	}
-	
+	for (int i = 0; i < 6; i++)
+	{
+		SDL_BlitSurface(drawIcon[i][drawIconState[i]], NULL, screenSurface, &drawIconPos[i]);
+	}
 	for (int i=7; i >= 0; i--) {
 		for (int j=0; j < 8; j++) {
 			SDL_BlitSurface((*myChess.currentBoard)[i][j].currentPiece->image, NULL, screenSurface, &posBoard[i][j]);
@@ -317,4 +379,12 @@ void Graphic::run(Chess &myChess)
 	SDL_UpdateWindowSurface(window);
 	SDL_Delay(1);
 
+}
+
+void Graphic::freeSurface()
+{
+	SDL_FreeSurface(chessBoard);
+	SDL_FreeSurface(screenSurface);
+	SDL_FreeSurface(highlight);
+	for (int i = 0; i < 6; i++) { for (int j = 0; j < 3; j++) { SDL_FreeSurface(drawIcon[i][j]); } }
 }

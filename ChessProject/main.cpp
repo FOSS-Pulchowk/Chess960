@@ -52,8 +52,32 @@ int main(int argc,char*args[])
 		{
 			myChess.undo();
 		}
-	
-		
+		else if (inputTrue == 3) // new game
+		{
+			Game::initializeBoard(&myBoard, &noPiece, &myChess);
+			myChess.reset(); // k k chaine no new game ma yesh vitra hai
+		}
+		else if (inputTrue == 4) // save/load
+		{
+			myChess.save();
+		}
+		else if (inputTrue == 5) // draw
+		{
+			
+		}
+		else if (inputTrue == 6) // resign
+		{
+			
+		}
+		else if (inputTrue == 7) // undo
+		{
+			myChess.undo();
+		}
+		else if (inputTrue == 8) // exit
+		{
+			//myGraphic.freeSurface(); // yah vitra k k free garne ho lekhne... pointer haru
+			std::exit;
+		}
 	}
 	return 0;
 }
