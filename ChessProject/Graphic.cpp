@@ -106,6 +106,22 @@ Graphic::Graphic()
 			posBoard[i][j].x = initialPosX + (boxPosDiff*j);
 		}
 	}
+	for (int i = 0; i < 3; i++)
+	{
+		for (int j = 0; j < 5; j++)
+		{
+			deadPos[1][i * 5 + j].x = 1063 + j * 54;
+			deadPos[1][i * 5 + j].y = 457 + i * 96;
+		}
+	}
+	for (int i = 0; i < 3; i++)
+	{
+		for (int j = 0; j < 5; j++)
+		{
+			deadPos[0][i * 5 + j].x = 7 + j * 54;
+			deadPos[0][i * 5 + j].y = 20 + i * 96;
+		}
+	}
 }
 //string Graphic::input(Chess &myChess,SDL_Event &eve)
 int Graphic::getInput(Chess &myChess,SDL_Event *e,string &myMove)
@@ -403,6 +419,15 @@ void Graphic::run(Chess &myChess)
 			SDL_BlitSurface((*myChess.currentBoard)[i][j].currentPiece->image, NULL, screenSurface, &posBoard[i][j]);
 		}
 	}
+	for (int i = 0; i < 2; i++)
+	{
+		for (int j = 0; j < 15; j++)
+		{
+			if(myChess.deadBoard[i][j].currentPiece->myName() != "OnePiece")
+			{ SDL_BlitSurface(myChess.deadBoard[i][j].currentPiece->image, NULL, screenSurface, &deadPos[i][j]); }
+		}
+	}
+
 
 	
 	

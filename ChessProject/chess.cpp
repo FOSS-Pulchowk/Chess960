@@ -15,6 +15,7 @@ Chess::Chess(string name1, string name2, Board (*currentBoard)[8][8],OnePiece *p
 	lastMove = "";
 	this->currentBoard = currentBoard;
 	this->ptrToNoPiece = ptr;
+	for (int i = 0; i < 2; i++) { for (int j = 0; j < 15; j++) { deadBoard[i][j].currentPiece = ptrToNoPiece; } }
 	pawnDoubleStep = false;
 }
 bool Chess::getCurrentPlayer() { return whiteToPlay; }
@@ -142,6 +143,16 @@ int Chess::capture(string choosenMove)
 
 		destinationPiece->kill();
 		limboPiece = destinationPiece;
+		if(destinationPiece->getColor())
+		{
+			deadBoard[0][deadCount[0]].currentPiece = destinationPiece;
+			deadCount[0]++;
+		}
+		else
+		{
+			deadBoard[1][deadCount[1]].currentPiece = destinationPiece;
+			deadCount[1]++;
+		}
 		//(*currentBoard)[sourceRow - 1][sourceFile - 1].currentPiece = ptrToNoPiece;
 		(*currentBoard)[destinationRow - 1][destinationFile - 1].currentPiece = (*currentBoard)[sourceRow - 1][sourceFile - 1].currentPiece;
 		(*currentBoard)[sourceRow - 1][sourceFile - 1].currentPiece = ptrToNoPiece;
@@ -177,6 +188,16 @@ int Chess::undo()
 		Position source(lastMove.substr(0, 2));
 		Position destination(lastMove.substr(2, 2));
 		limboPiece->resurrect();
+		if (limboPiece->getColor())
+		{ 
+			deadCount[0]--;
+			deadBoard[0][deadCount[0]].currentPiece = ptrToNoPiece;
+		}
+		else
+		{
+			deadCount[1]--;
+			deadBoard[1][deadCount[1]].currentPiece = ptrToNoPiece;
+		}
 		(*currentBoard)[source.x - 1][source.y - 1].currentPiece = (*currentBoard)[destination.x - 1][destination.y - 1].currentPiece;
 		(*currentBoard)[destination.x - 1][destination.y - 1].currentPiece = ptrToNoPiece;
 		if (pawnEnPassant) { (*currentBoard)[enPassantPawnPosforRessurect[1] - '1'][enPassantPawnPosforRessurect[0] - 'a'].currentPiece = limboPiece; }

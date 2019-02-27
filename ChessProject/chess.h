@@ -68,6 +68,8 @@ public:
 	int canCapture(bool color,string choosenMove);
 	int isKingInCheck(bool color);
 	Board(*currentBoard)[8][8];
+	Board deadBoard[2][15];
+	int deadCount[2] = { 0, 0 };
 	Chess(string name1, string name2, Board (*currentBoard)[8][8],OnePiece *ptr);
 	int moveToEmptySquare(string choosenMove);
 	int isNotBlocked(string choosenMove);

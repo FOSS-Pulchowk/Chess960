@@ -11,7 +11,7 @@ class Graphic
 	SDL_Window *window;
 	SDL_Surface*screenSurface, *highlight, *drawIcon[6][3], *loadingSurface, *mainmenuSurface, *dash;
 	SDL_Surface *title, *hover, *settingSurface, *settingActive;
-	SDL_Rect posBoard[8][8];
+	SDL_Rect posBoard[8][8], deadPos[2][16];
 	SDL_Rect chessBoardPos, additionChessBoardPos;
 	SDL_Rect drawIconPos[6];
 	int drawIconState[6], currentMousePos[2];
