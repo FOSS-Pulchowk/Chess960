@@ -862,8 +862,8 @@ int Chess::score()
 			{
 				if ((*currentBoard)[i][j].currentPiece->myName() == "Pawn")
 				{
-					if (i == 7) { white += 3; }
-					if (i < 7) { white += 1; }
+					if (i == 6) { white += 3; }
+					if (i < 6) { white += 1; }
 				}
 				else if ((*currentBoard)[i][j].currentPiece->myName() == "Bishop")
 				{
@@ -883,8 +883,8 @@ int Chess::score()
 			{
 				if ((*currentBoard)[i][j].currentPiece->myName() == "Pawn")
 				{
-					if (i == 0) { black -= 3; }
-					if (i > 0) { black -= 1; }
+					if (i == 1) { black -= 3; }
+					if (i > 1) { black -= 1; }
 				}
 				else if ((*currentBoard)[i][j].currentPiece->myName() == "Bishop")
 				{
