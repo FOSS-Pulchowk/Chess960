@@ -3,12 +3,17 @@
 #include <SDL_image.h>
 #include "Graphic.h"
 #include "chess.h"
+#include "program.h"
 //#include "rook.h"
 int i = 0;
 using std::cout;
 using std::cin;
 int main(int argc,char*args[])
 {
+	Program myProgram;
+	myProgram.init();
+
+	/*
 	Graphic myGraphic;
 	string move;
 	string tempSelection = "0"; // extra haleko
@@ -97,5 +102,6 @@ int main(int argc,char*args[])
 		}
 		
 	}
+	*/
 	return 0;
 }
