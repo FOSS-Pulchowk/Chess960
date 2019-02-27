@@ -381,6 +381,7 @@ void Graphic::run(Chess &myChess)
 	{
 		SDL_BlitSurface(drawIcon[i][drawIconState[i]], NULL, screenSurface, &drawIconPos[i]);
 	}
+	posBoard[7][2].y = 26;
 	for (int i=7; i >= 0; i--) {
 		for (int j=0; j < 8; j++) {
 			SDL_BlitSurface((*myChess.currentBoard)[i][j].currentPiece->image, NULL, screenSurface, &posBoard[i][j]);
