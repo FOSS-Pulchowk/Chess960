@@ -108,94 +108,97 @@ Graphic::Graphic()
 	}
 }
 //string Graphic::input(Chess &myChess,SDL_Event &eve)
-int Graphic::getInput(Chess &myChess,SDL_Event *e,string &myMove)
+int Graphic::getInput(Chess &myChess, SDL_Event *e, string &myMove)
 {
-	SDL_Event events = *e;
-	int posX, posY;
-	if (SDL_PollEvent(&events))
-	{
-		
-		/*if (events.type==SDL_MOUSEBUTTONDOWN)
+
+		SDL_Event events = *e;
+		int posX, posY;
+		if (SDL_PollEvent(&events))
 		{
-			if (events.button.button== SDL_BUTTON_LEFT)
+
+			/*if (events.type==SDL_MOUSEBUTTONDOWN)
 			{
-				string moveList = "e1e2e8e7e2e3e7e6";
-				myMove = moveList.substr(i,4);
-			}
-			if (myChess.execute(myMove))
-			{
-				myChess.changeTurn();
-				i += 4;
-				return 1;
-			}
-		}*/
-		
-		//If the user has Xed out the window
-		if (events.type == SDL_QUIT)
-		{
-			//Quit the program
-			myChess.endChess();
-			return 0;
-			
-		}
-		else if (events.type == SDL_MOUSEBUTTONDOWN)
-		{
-			SDL_GetMouseState(&posX, &posY);
-			std::cout << "2. inMouse event:"<<posX << " " << posY <<"\n";
-			//return "e1e2";
-			string boxVar = getBoxSelection(posX, posY);
-			if (boxVar.size() == 2)
-			{
-				if (inputMove.size() != 2)
+				if (events.button.button== SDL_BUTTON_LEFT)
 				{
-					//string click = getBoxSelection(posX, posY);
-					inputMove = boxVar;
-					std::cout << "I got " << inputMove << " as first move\n";
-					return 0;
+					string moveList = "e1e2e8e7e2e3e7e6";
+					myMove = moveList.substr(i,4);
 				}
-				else if (inputMove.size() == 2)
+				if (myChess.execute(myMove))
 				{
-					string click = getBoxSelection(posX, posY);
-					if (click == inputMove)
-					{
-						inputMove = "";
-						return 0;
-					}
-					inputMove = inputMove + getBoxSelection(posX, posY);
+					myChess.changeTurn();
+					i += 4;
 					return 1;
 				}
+			}*/
+
+			//If the user has Xed out the window
+			if (events.type == SDL_QUIT)
+			{
+				//Quit the program
+				myChess.endChess();
+				return 0;
+
 			}
-			else if (boxVar.size() == 1) 
-			{ 
-				drawIconState[(int)(boxVar[0] - '3')] = 2; 
+			else if (events.type == SDL_MOUSEBUTTONDOWN)
+			{
+				SDL_GetMouseState(&posX, &posY);
+				std::cout << "2. inMouse event:" << posX << " " << posY << "\n";
+				//return "e1e2";
+				string boxVar = getBoxSelection(posX, posY);
+				if (boxVar.size() == 2)
+				{
+					if (inputMove.size() != 2)
+					{
+						//string click = getBoxSelection(posX, posY);
+						inputMove = boxVar;
+						std::cout << "I got " << inputMove << " as first move\n";
+						return 0;
+					}
+					else if (inputMove.size() == 2)
+					{
+						string click = getBoxSelection(posX, posY);
+						if (click == inputMove)
+						{
+							inputMove = "";
+							return 0;
+						}
+						inputMove = inputMove + getBoxSelection(posX, posY);
+						return 1;
+					}
+				}
+				else if (boxVar.size() == 1)
+				{
+					drawIconState[(int)(boxVar[0] - '3')] = 2;
+					return 0;
+				}
 				return 0;
 			}
-			return 0;
+			else if (events.type == SDL_KEYDOWN)
+			{
+				return 2;
+			}
+			else if (events.type == SDL_MOUSEBUTTONUP)
+			{
+				SDL_GetMouseState(&posX, &posY);
+				string boxVar = getBoxSelection(posX, posY);
+				drawIconState[(int)(boxVar[0] - '3')] = 0;
+				if (boxVar.size() == 1) { return (boxVar[0] - '0'); }
+				return 0;
+			}
+			else if (events.type == SDL_MOUSEMOTION)
+			{
+				SDL_GetMouseState(&posX, &posY);
+				string boxVar = getBoxSelection(posX, posY);
+				if (boxVar.size() == 1) { for (int i = 0; i < 6; i++) { drawIconState[i] = 1; }; drawIconState[(int)(boxVar[0] - '3')] = 0; }
+				else { for (int i = 0; i < 6; i++) { drawIconState[i] = 1; } }
+				return 0;
+			}
+			else
+			{
+				return 0;
+			}
 		}
-		else if (events.type == SDL_KEYDOWN)
-		{
-			return 2;
-		}
-		else if (events.type == SDL_MOUSEBUTTONUP)
-		{
-			SDL_GetMouseState(&posX, &posY);
-			string boxVar = getBoxSelection(posX, posY);
-			drawIconState[(int)(boxVar[0] - '3')] = 0;
-			if (boxVar.size() == 1){ return (boxVar[0] - '0'); }
-			return 0;
-		}
-		else if (events.type == SDL_MOUSEMOTION)
-		{
-			SDL_GetMouseState(&posX, &posY);
-			string boxVar = getBoxSelection(posX, posY);
-			if (boxVar.size() == 1) { for (int i = 0; i < 6; i++) { drawIconState[i] = 1; }; drawIconState[(int)(boxVar[0] - '3')] = 0; }
-			else{ for (int i = 0; i < 6; i++) { drawIconState[i] = 1; }}
-			return 0;
-		}
-		else
-		{
-			return 0;
-		}
+	
 				//return inputMove;
 
 			//}
@@ -219,7 +222,7 @@ int Graphic::getInput(Chess &myChess,SDL_Event *e,string &myMove)
 				std::cout << "I cant execute the given move\n";
 			}
 		}*/
-	}
+	
 }
 
 
