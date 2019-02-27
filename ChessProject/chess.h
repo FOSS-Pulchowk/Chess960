@@ -73,6 +73,7 @@ public:
 	int isNotBlocked(string choosenMove);
 	void changeTurn();
 	void reset();
+	int score();
 	void save();
 	bool isChessOver();
 	bool getCurrentPlayer();

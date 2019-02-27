@@ -850,3 +850,57 @@ void Chess::save()
 	return false;
 }*/
 
+int Chess::score()
+{
+	int count = 0,black = 0, white = 0;
+	for (int i = 0; i < 8; i++) { for (int j = 0; j < 8; j++) { if ((*currentBoard)[i][j].currentPiece->isAlive()) { count++; } } }
+	for (int i = 0; i < 8; i++)
+	{
+		for (int j = 0; j < 8; j++)
+		{
+			if ((*currentBoard)[i][j].currentPiece->getColor())
+			{
+				if ((*currentBoard)[i][j].currentPiece->myName() == "Pawn")
+				{
+					if (i == 7) { white += 3; }
+					if (i < 7) { white += 1; }
+				}
+				else if ((*currentBoard)[i][j].currentPiece->myName() == "Bishop")
+				{
+					if (count > 20) { white += 35; }
+					else { white += 30; }
+				}
+				else if ((*currentBoard)[i][j].currentPiece->myName() == "Knight")
+				{
+					if (count > 20) { white += 30; }
+					else { white += 35; }
+				}
+				else if ((*currentBoard)[i][j].currentPiece->myName() == "Rook") { white += 50; }
+				else if ((*currentBoard)[i][j].currentPiece->myName() == "Queen") { white += 90; }
+				else if ((*currentBoard)[i][j].currentPiece->myName() == "Pawn") { white += 100; }
+			}
+			else
+			{
+				if ((*currentBoard)[i][j].currentPiece->myName() == "Pawn")
+				{
+					if (i == 0) { black -= 3; }
+					if (i > 0) { black -= 1; }
+				}
+				else if ((*currentBoard)[i][j].currentPiece->myName() == "Bishop")
+				{
+					if (count > 20) { black -= 35; }
+					else { black -= 30; }
+				}
+				else if ((*currentBoard)[i][j].currentPiece->myName() == "Knight")
+				{
+					if (count > 20) { black -= 30; }
+					else { black -= 35; }
+				}
+				else if ((*currentBoard)[i][j].currentPiece->myName() == "Rook") { black -= 50; }
+				else if ((*currentBoard)[i][j].currentPiece->myName() == "Queen") { black -= 90; }
+				else if ((*currentBoard)[i][j].currentPiece->myName() == "Pawn") { black -= 100; }
+			}
+		}
+	}
+	return white + black;
+}
