@@ -172,7 +172,7 @@ int Chess::castle(string choosenMove)
 
 int Chess::undo()
 {
-	if (!lastMove.empty())
+	if (!lastMove.empty() && canUndo)
 	{
 		Position source(lastMove.substr(0, 2));
 		Position destination(lastMove.substr(2, 2));
@@ -181,10 +181,12 @@ int Chess::undo()
 		(*currentBoard)[destination.x - 1][destination.y - 1].currentPiece = ptrToNoPiece;
 		if (pawnEnPassant) { (*currentBoard)[enPassantPawnPosforRessurect[1] - '1'][enPassantPawnPosforRessurect[0] - 'a'].currentPiece = limboPiece; }
 		else { (*currentBoard)[destination.x - 1][destination.y - 1].currentPiece = limboPiece; }
-		lastMove = "";
-		pawnDoubleStep = false;
-		//if (pawnEnPassant) { pawnDoubleStep = true;}
+		//lastMove = "";
+		lastMove = lastMove2;
+		pawnDoubleStep = pawnDoubleStep2;
+		//if (pawnEnPassant) { pawnDoubleStep = true; }
 		changeTurn();
+		canUndo = false;
 		return 1;
 	}
 	else
@@ -206,6 +208,7 @@ int Chess::execute(string choosenMove)
 	int destinationRow = destination[1] - '1';
 	Piece *sourcePiece = (*currentBoard)[sourceRow][sourceFile].currentPiece;
 	Piece *destinationPiece = (*currentBoard)[destinationRow][destinationFile].currentPiece;
+	pawnEnPassant2 = pawnEnPassant;
 	pawnEnPassant = false;
 	/*if (sourcePiece->myName() == "King" && sourcePos.x == destinationPos.x && abs(sourcePos.y - destinationPos.y) == 2)
 	{
@@ -223,22 +226,24 @@ int Chess::execute(string choosenMove)
 	if (destinationPiece->myName() == "OnePiece")
 	{
 		std::cout << "Sending move to empty square\n";
-		if (pawnDoubleStep && choosenMove[1] == lastMove[3] && abs(choosenMove[0] - lastMove[2]) == 1)
+		if (pawnDoubleStep && choosenMove[1] == lastMove[3] && abs(choosenMove[0] - lastMove[2]) == 1 && choosenMove[2] == lastMove[2] )
 		{
-			if ((sourcePiece->getColor() && sourceRow == 4 && choosenMove[2] == lastMove[2] && choosenMove[3] - lastMove[3] == 1) || (!sourcePiece->getColor() && sourceRow == 3 && choosenMove[2] == lastMove[2] && lastMove[3] - choosenMove[3] == 1))
+			std::cout << "first condiyion000000000";
+			if ((sourcePiece->getColor() && sourceRow == 4 /*&& choosenMove[2] == lastMove2[2]*/ && choosenMove[3] - lastMove[3] == 1) || (!sourcePiece->getColor() && sourceRow == 3 /*&& choosenMove[2] == lastMove2[2]*/ && lastMove[3] - choosenMove[3] == 1))
 			{
-				
+				std::cout << "second condiyion000000000";
 				(*currentBoard)[destinationRow][destinationFile].currentPiece = (*currentBoard)[sourceRow][sourceFile].currentPiece;
 				(*currentBoard)[sourceRow][sourceFile].currentPiece = ptrToNoPiece;
 				limboPiece = (*currentBoard)[lastMove[3] - '1'][lastMove[2] - 'a'].currentPiece;
 				(*currentBoard)[lastMove[3] - '1'][lastMove[2] - 'a'].currentPiece = ptrToNoPiece;
 				enPassantPawnPosforRessurect = lastMove.substr(2, 2);
+				pawnEnPassant2 = pawnEnPassant;
 				pawnEnPassant = true;
 				return 1;
 			}
-			else if (!sourcePiece->getColor() && sourceRow == 3 && choosenMove[2] == lastMove[2] && lastMove[3] - choosenMove[3] == 1) { return true; }
+			/*else if (!sourcePiece->getColor() && sourceRow == 3 && choosenMove[2] == lastMove2[2] && lastMove2[3] - choosenMove[3] == 1) { return true; }
 			return false;
-			/*if (enPassantValidity(choosenMove))
+			if (enPassantValidity(choosenMove))
 			{
 				(*currentBoard)[destinationRow - 1][destinationFile - 1].currentPiece = (*currentBoard)[sourceRow - 1][sourceFile - 1].currentPiece;
 				(*currentBoard)[sourceRow - 1][sourceFile - 1].currentPiece = ptrToNoPiece;
@@ -246,7 +251,7 @@ int Chess::execute(string choosenMove)
 				return 1;
 			}*/
 		}
-		if (moveToEmptySquare(choosenMove))
+		else if (moveToEmptySquare(choosenMove))
 		{
 			if (isKingInCheck(getCurrentPlayer()))
 			{

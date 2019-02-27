@@ -27,14 +27,28 @@ string getBoxSelection(int x, int y)
 	finalValue.push_back(boxY + '1');
 	return finalValue;
 }
+int getMenuSelection(int x, int y)
+{
+	if (x > 1050 && x < 1331 && y > 328 && y < 407) { return 1; }
+	else if (x > 1050 && x < 1331 && y > 407 && y < 486) { return 2; }
+	else if (x > 1050 && x < 1331 && y > 486 && y < 565) { return 3; }
+	else if (x > 1050 && x < 1331 && y > 565 && y < 644) { return 4; }
+	return 0;
+}
 
 Graphic::Graphic()
 {
 	SDL_Init(SDL_INIT_VIDEO);
 	
-	window = SDL_CreateWindow("title", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 1366, 768, SDL_WINDOW_FULLSCREEN);
+	window = SDL_CreateWindow("title", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 1366, 768, SDL_WINDOW_SHOWN);
 	screenSurface = SDL_GetWindowSurface(window);
 	chessBoard = IMG_Load("chessboard.png");
+	loadingSurface = IMG_Load("loadingscreen.png");
+	mainmenuSurface = IMG_Load("mainmenu.png");
+	dash = IMG_Load("dash.png");
+	currentWindowView = "loading";
+	title = IMG_Load("MainMenu.bmp");
+	hover = IMG_Load("buttonHover.png");
 	//whiteKing = IMG_Load("ChessPieces/WhiteKing.png");
 	inputMove = "";
 	for (int i = 0; i < 6; i++){ drawIconState[i] = 1; }
@@ -82,7 +96,6 @@ Graphic::Graphic()
 //string Graphic::input(Chess &myChess,SDL_Event &eve)
 int Graphic::getInput(Chess &myChess,SDL_Event *e,string &myMove)
 {
-
 	SDL_Event events = *e;
 	int posX, posY;
 	if (SDL_PollEvent(&events))
@@ -387,4 +400,68 @@ void Graphic::freeSurface()
 	SDL_FreeSurface(screenSurface);
 	SDL_FreeSurface(highlight);
 	for (int i = 0; i < 6; i++) { for (int j = 0; j < 3; j++) { SDL_FreeSurface(drawIcon[i][j]); } }
+}
+
+void Graphic::loadingScreen()
+{
+	SDL_Rect dashPos,picPos;
+	picPos.x = 0;
+	picPos.y = 0;
+	dashPos.x = 55;
+	dashPos.y = 710;
+	SDL_BlitSurface(loadingSurface, NULL, screenSurface, &picPos);
+	SDL_UpdateWindowSurface(window);
+	SDL_Delay(1000);
+	for (int i = 0; i < 9; i++)
+	{		
+		SDL_BlitSurface(dash, NULL, screenSurface, &dashPos);
+		SDL_UpdateWindowSurface(window);
+		dashPos.x += 30;
+		SDL_Delay(200);
+	}
+	currentWindowView = "mainmenu";
+}
+
+void Graphic::mainmenu(Chess &myChess)
+{
+	SDL_Rect picPos,titlePos,hoverPos;
+	picPos.x = 0;
+	picPos.y = 0;
+	titlePos.x = 800;
+	titlePos.y = 150;
+	bool continueLoop = true;
+	int x, y;
+	//SDL_Delay(5000);
+	while (continueLoop)
+	{
+		hoverPos.x = 1050;
+		hoverPos.y = 328;
+		if (SDL_PollEvent(&graphicEvents))
+		{
+			SDL_BlitSurface(mainmenuSurface, NULL, screenSurface, &picPos);
+			SDL_BlitSurface(title, NULL, screenSurface, &titlePos);
+			if (graphicEvents.type == SDL_MOUSEMOTION)
+			{
+				SDL_GetMouseState(&x, &y);
+				highLightMenuItem = getMenuSelection(x, y);
+				hoverPos.y += ((highLightMenuItem-1) * 79);
+				if(highLightMenuItem){ SDL_BlitSurface(hover, NULL, screenSurface, &hoverPos); }
+			}
+			else if (graphicEvents.type == SDL_MOUSEBUTTONDOWN)
+			{
+				if(highLightMenuItem == 1)
+				{
+					currentWindowView = "gameplay";
+					continueLoop = false;
+				}
+				else if (highLightMenuItem == 4)
+				{
+					currentWindowView = "gameplay";
+					myChess.endChess();
+					continueLoop = false;
+				}
+			}
+		}
+		SDL_UpdateWindowSurface(window);
+	}
 }

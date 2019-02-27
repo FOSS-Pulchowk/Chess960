@@ -61,8 +61,8 @@ public:
 	int undo();
 	int piecesIntValue[8];
 	Piece *limboPiece;
-	string lastMove;
-	bool pawnDoubleStep, pawnEnPassant;
+	string lastMove, lastMove2;
+	bool pawnDoubleStep, pawnEnPassant, pawnDoubleStep2, pawnEnPassant2, canUndo;
 	string enPassantPawnPosforRessurect;
 	int isAttacked(bool color, string position);
 	int canCapture(bool color,string choosenMove);

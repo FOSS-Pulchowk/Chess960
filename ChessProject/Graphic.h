@@ -9,7 +9,8 @@ class Graphic
 	SDL_Surface* chessBoard;
 	//SDL_Surface* whiteKing;
 	SDL_Window *window;
-	SDL_Surface*screenSurface, *highlight, *drawIcon[6][3];
+	SDL_Surface*screenSurface, *highlight, *drawIcon[6][3],*loadingSurface,*mainmenuSurface, *dash;
+	SDL_Surface *title,*hover;
 	SDL_Rect posBoard[8][8];
 	SDL_Rect chessBoardPos;
 	SDL_Rect drawIconPos[6];
@@ -17,7 +18,11 @@ class Graphic
 public:
 	SDL_Event graphicEvents;
 	string inputMove;
+	string currentWindowView;
 	void freeSurface();
+	void loadingScreen();
+	void mainmenu(Chess &myChess);
+	int highLightMenuItem;
 	//SDL_Event e;
 	Graphic();
 	/*~Graphic();
