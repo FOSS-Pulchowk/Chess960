@@ -512,11 +512,6 @@ void Graphic::Setting()
 					continueLoop = false;
 				}
 			}
-			if(graphicEvents.type == SDL_KEYDOWN)
-			{
-				currentWindowView = "mainmenu";
-				continueLoop = false;
-			}
 		}
 		SDL_UpdateWindowSurface(window);
 	}
