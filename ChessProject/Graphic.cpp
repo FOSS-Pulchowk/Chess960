@@ -35,6 +35,14 @@ int getMenuSelection(int x, int y)
 	else if (x > 1050 && x < 1331 && y > 565 && y < 644) { return 4; }
 	return 0;
 }
+int getSettingSelection(int x, int y)
+{
+	if (x > 93 && x < 393 && y > 209 && y < 509) { return 0; }
+	else if (x > 508 && x < 808 && y > 209 && y < 509) { return 1; }
+	else if (x > 923 && x < 1223 && y > 209 && y < 509) { return 2; }
+	else if (x > 1203 && x < 1328 && y > 24 && y < 149) { return 9; }
+	return 8;
+}
 
 Graphic::Graphic()
 {
@@ -43,17 +51,23 @@ Graphic::Graphic()
 	window = SDL_CreateWindow("title", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 1366, 768, SDL_WINDOW_SHOWN);
 	screenSurface = SDL_GetWindowSurface(window);
 	chessBoard = IMG_Load("chessboard.png");
+	blueBoard = IMG_Load("ChessBoard/chessboardbluestone.png");
+	darkBoard = IMG_Load("ChessBoard/chessboardblackstone.png");
 	loadingSurface = IMG_Load("loadingscreen.png");
 	mainmenuSurface = IMG_Load("mainmenu.png");
 	dash = IMG_Load("dash.png");
+	settingSurface = IMG_Load("setting.png");
+	settingActive = IMG_Load("boardhighlight.png");
 	currentWindowView = "loading";
 	title = IMG_Load("MainMenu.bmp");
 	hover = IMG_Load("buttonHover.png");
+	chessBoardNo = 1;
 	//whiteKing = IMG_Load("ChessPieces/WhiteKing.png");
 	inputMove = "";
 	for (int i = 0; i < 6; i++){ drawIconState[i] = 1; }
 	highlight = IMG_Load("highlight.png");
 	chessBoardPos.x = 0; chessBoardPos.y = 0;
+	additionChessBoardPos.x = 299; additionChessBoardPos.y = 0;
 	int initialPosX = 322, initialPosY = 26, boxPosDiff = 91;
 
 	drawIcon[0][0] = IMG_Load("Icons/newGame-clicked.png");
@@ -373,6 +387,8 @@ void Graphic::run(Chess &myChess)
 {
 
 	SDL_BlitSurface(chessBoard, NULL, screenSurface, &chessBoardPos);
+	if (chessBoardNo == 0) { SDL_BlitSurface(blueBoard, NULL, screenSurface, &additionChessBoardPos); }
+	else if (chessBoardNo == 2) { SDL_BlitSurface(darkBoard, NULL, screenSurface, &additionChessBoardPos); }
 	if (inputMove != "")
 	{
 		SDL_BlitSurface(highlight, NULL, screenSurface, &posBoard[(int)(inputMove[1] - '1')][(int)(inputMove[0] - 'a')]);
@@ -381,7 +397,7 @@ void Graphic::run(Chess &myChess)
 	{
 		SDL_BlitSurface(drawIcon[i][drawIconState[i]], NULL, screenSurface, &drawIconPos[i]);
 	}
-	posBoard[7][2].y = 26;
+	posBoard[7][3].y = 26;
 	for (int i=7; i >= 0; i--) {
 		for (int j=0; j < 8; j++) {
 			SDL_BlitSurface((*myChess.currentBoard)[i][j].currentPiece->image, NULL, screenSurface, &posBoard[i][j]);
@@ -432,7 +448,6 @@ void Graphic::mainmenu(Chess &myChess)
 	titlePos.y = 150;
 	bool continueLoop = true;
 	int x, y;
-	//SDL_Delay(5000);
 	while (continueLoop)
 	{
 		hoverPos.x = 1050;
@@ -455,12 +470,52 @@ void Graphic::mainmenu(Chess &myChess)
 					currentWindowView = "gameplay";
 					continueLoop = false;
 				}
+				else if (highLightMenuItem == 3)
+				{
+					currentWindowView = "setting";
+					continueLoop = false;
+				}
 				else if (highLightMenuItem == 4)
 				{
 					currentWindowView = "gameplay";
 					myChess.endChess();
 					continueLoop = false;
 				}
+			}
+		}
+		SDL_UpdateWindowSurface(window);
+	}
+}
+
+void Graphic::Setting()
+{
+	SDL_Rect picPos, activePos;
+	picPos.x = 0;
+	picPos.y = 0;
+	bool continueLoop = true;
+	int x, y;
+	while (continueLoop)
+	{
+		activePos.x = 93 + chessBoardNo * 415;
+		activePos.y = 209;
+		if (SDL_PollEvent(&graphicEvents))
+		{
+			SDL_BlitSurface(settingSurface, NULL, screenSurface, &picPos);
+			SDL_BlitSurface(settingActive, NULL, screenSurface, &activePos);
+			if (graphicEvents.type == SDL_MOUSEBUTTONDOWN)
+			{
+				SDL_GetMouseState(&x, &y);
+				if (getSettingSelection(x, y) < 3) { chessBoardNo = getSettingSelection(x, y); }
+				else if (getSettingSelection(x, y) == 9)
+				{
+					currentWindowView = "mainmenu";
+					continueLoop = false;
+				}
+			}
+			if(graphicEvents.type == SDL_KEYDOWN)
+			{
+				currentWindowView = "mainmenu";
+				continueLoop = false;
 			}
 		}
 		SDL_UpdateWindowSurface(window);

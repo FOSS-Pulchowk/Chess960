@@ -6,13 +6,13 @@
 #include "chess.h"
 class Graphic
 {
-	SDL_Surface* chessBoard;
+	SDL_Surface* chessBoard, *blueBoard, *darkBoard;
 	//SDL_Surface* whiteKing;
 	SDL_Window *window;
-	SDL_Surface*screenSurface, *highlight, *drawIcon[6][3],*loadingSurface,*mainmenuSurface, *dash;
-	SDL_Surface *title,*hover;
+	SDL_Surface*screenSurface, *highlight, *drawIcon[6][3], *loadingSurface, *mainmenuSurface, *dash;
+	SDL_Surface *title, *hover, *settingSurface, *settingActive;
 	SDL_Rect posBoard[8][8];
-	SDL_Rect chessBoardPos;
+	SDL_Rect chessBoardPos, additionChessBoardPos;
 	SDL_Rect drawIconPos[6];
 	int drawIconState[6], currentMousePos[2];
 public:
@@ -21,7 +21,9 @@ public:
 	string currentWindowView;
 	void freeSurface();
 	void loadingScreen();
+	int chessBoardNo;
 	void mainmenu(Chess &myChess);
+	void Setting();
 	int highLightMenuItem;
 	//SDL_Event e;
 	Graphic();

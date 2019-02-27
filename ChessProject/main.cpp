@@ -31,9 +31,13 @@ int main(int argc,char*args[])
 		else if (myGraphic.currentWindowView == "mainmenu") 
 		{
 			myGraphic.mainmenu(myChess);
-			Game::initializeBoard(&myBoard, &noPiece, &myChess);
-			myChess.reset();
+			if(myGraphic.currentWindowView == "gameplay")
+			{
+				Game::initializeBoard(&myBoard, &noPiece, &myChess);
+				myChess.reset();
+			}
 		}
+		else if (myGraphic.currentWindowView == "setting") { myGraphic.Setting(); }
 		else if (myGraphic.currentWindowView == "gameplay")
 		{
 			myGraphic.run(myChess);
