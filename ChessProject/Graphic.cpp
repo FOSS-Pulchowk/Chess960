@@ -467,7 +467,7 @@ void Graphic::loadingScreen()
 	currentWindowView = "mainmenu";
 }
 
-void Graphic::mainmenu(Chess &myChess)
+bool Graphic::mainmenu(Chess &myChess)
 {
 	SDL_Rect picPos,titlePos,hoverPos;
 	picPos.x = 0;
@@ -505,14 +505,16 @@ void Graphic::mainmenu(Chess &myChess)
 				}
 				else if (highLightMenuItem == 4)
 				{
-					currentWindowView = "gameplay";
+					//currentWindowView = "gameplay";
 					myChess.endChess();
 					continueLoop = false;
+					return true;
 				}
 			}
 		}
 		SDL_UpdateWindowSurface(window);
 	}
+	return false;
 }
 
 void Graphic::Setting()

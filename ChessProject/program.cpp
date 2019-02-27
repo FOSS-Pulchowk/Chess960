@@ -16,11 +16,13 @@ void Program::init()
 	Chess myChess = *ptrToChess;
 	//Board (*myBoard)[8][8] = ptrToBoard;
 	OnePiece noPiece = *ptrToNoPiece;
+	bool exitFromMenu;
 	string myMove;
 	myGraphic.loadingScreen();
 	while (isRunning)
 	{
-		myGraphic.mainmenu(*ptrToChess);
+		exitFromMenu = myGraphic.mainmenu(*ptrToChess);
+		if (exitFromMenu) { isRunning = false; }
 		std::cout << "\n" << myGraphic.currentWindowView << "\n";
 		if (myGraphic.currentWindowView == "gameplay")
 		{
@@ -70,7 +72,11 @@ void Program::init()
 				{
 
 				}
-				else if (inputTrue == 6) { myGraphic.currentWindowView = "mainmenu"; } // resign
+				else if (inputTrue == 6)  // resign
+				{ 
+					myGraphic.currentWindowView = "mainmenu";
+					myChess.endChess();
+				}
 				else if (inputTrue == 7) // undo
 				{
 					myChess.undo();
@@ -79,6 +85,7 @@ void Program::init()
 				{
 					//myGraphic.freeSurface(); // yah vitra k k free garne ho lekhne... pointer haru
 					myChess.endChess();
+					isRunning = false;
 					return;
 				}
 			}

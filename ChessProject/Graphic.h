@@ -22,7 +22,7 @@ public:
 	void freeSurface();
 	void loadingScreen();
 	int chessBoardNo;
-	void mainmenu(Chess &myChess);
+	bool mainmenu(Chess &myChess);
 	void Setting();
 	int highLightMenuItem;
 	//SDL_Event e;
