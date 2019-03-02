@@ -7,7 +7,7 @@ using std::string;
 /*Contains basic Chess related information and pointer to the board */
 class Board;
 class Piece;
-enum Color { WHITE, BLACK };
+enum Color { BLACK,WHITE,NONE };
 /*namespace Game
 {
 	int initializeBoard(Board (*myBoard)[8][8],OnePiece *noPiece);
@@ -17,8 +17,6 @@ class Chess
 {
 	bool whiteToPlay;
 	bool isOver;
-	bool whiteKingIsChecked;
-	bool blackKingIsChecked;
 
 	static OnePiece *ptrToNoPiece;
 	
@@ -62,8 +60,12 @@ class Chess
 	
 public:
 	Board(*ptrToBoard)[8][8];// = new Board[1][8][8];
+	Piece *whitePieces[16];
+	Piece *blackPieces[16];
 	string whitePlayerName;
 	string blackPlayerName;
+	vector<string>  getAllMoves();
+	string getSingleMove();
 	Chess(string name1, string name2);
 	Chess(Chess&obj);
 	int initializeBoard();
@@ -83,7 +85,6 @@ public:
 	int canCapture(bool color,string choosenMove);
 	int isKingInCheck(bool color);
 	Board(*currentBoard)[8][8];
-
 	int moveToEmptySquare(string choosenMove);
 	int isNotBlocked(string choosenMove);
 	void changeTurn();
@@ -92,19 +93,13 @@ public:
 	void save();
 	bool isChessOver() const;
 	bool getCurrentPlayer() const;
-	void checkState();
+	int checkState();
 	void endChess();
 	int capture(string choosenMove);
 	int execute(string move);
-	bool isWhiteChecked()
-	{
-		return whiteKingIsChecked;
-	}
-	bool isBlackChecked()
-	{
-		return blackKingIsChecked;
-	}
+	string getKing(Color color);
 
+	
 	string getPiecesConfig();
 	//void setBoard(Board currentBoard[8][8]);
 	//void copyBoard(Board (*sourceBoard)[8][8]);

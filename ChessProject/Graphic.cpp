@@ -110,6 +110,22 @@ Graphic::Graphic()
 			posBoard[i][j].x = initialPosX + (boxPosDiff*j);
 		}
 	}
+	for (int i = 0; i < 3; i++)
+	{
+		for (int j = 0; j < 5; j++)
+		{
+			deadPos[1][i * 5 + j].x = 1063 + j * 54;
+			deadPos[1][i * 5 + j].y = 457 + i * 96;
+		}
+	}
+	for (int i = 0; i < 3; i++)
+	{
+		for (int j = 0; j < 5; j++)
+		{
+			deadPos[0][i * 5 + j].x = 7 + j * 54;
+			deadPos[0][i * 5 + j].y = 20 + i * 96;
+		}
+	}
 }
 //string Graphic::input(Chess &myChess,SDL_Event &eve)
 int Graphic::getInput(Chess &myChess, SDL_Event *e, string &myMove)
@@ -266,6 +282,32 @@ void Graphic::run(Chess &myChess)
 		for (int j=0; j < 8; j++) {
 			SDL_BlitSurface((*myChess.currentBoard)[i][j].currentPiece->image, NULL, screenSurface, &posBoard[i][j]);
 			//SDL_BlitSurface(highlight, NULL, screenSurface, &posBoard[i][j]);
+		}
+	}
+	int j = 0;
+	for (int i = 0;  i< 16; i++)
+	{
+		if (!myChess.whitePieces[i]->isAlive() && myChess.whitePieces[i]->myName()!="King")
+		{
+			SDL_BlitSurface(myChess.whitePieces[i]->image, NULL, screenSurface, &deadPos[0][j]);
+			/*if(i!=15)
+				SDL_BlitSurface(myChess.whitePieces[i]->image, NULL, screenSurface, &deadPos[1][j]);
+			else
+				SDL_BlitSurface(myChess.whitePieces[i]->image, NULL, screenSurface, &deadPos[1][4]);*/
+			j++;
+		}
+	}
+	int k = 0;
+	for (int i = 0;i < 16; i++)
+	{
+		if (!myChess.blackPieces[i]->isAlive() && myChess.blackPieces[i]->myName() != "King")
+		{
+			SDL_BlitSurface(myChess.blackPieces[i]->image, NULL, screenSurface, &deadPos[1][k]);
+			k++;
+			/*if (i != 15)
+				SDL_BlitSurface(myChess.blackPieces[i]->image, NULL, screenSurface, &deadPos[0][i]);
+			else
+				SDL_BlitSurface(myChess.blackPieces[i]->image, NULL, screenSurface, &deadPos[0][4]);*/
 		}
 	}
 
