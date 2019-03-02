@@ -32,6 +32,7 @@ int main(int argc,char*args[])
 		if (inputTrue == 1)
 		{
 			backUpState = new Chess(*ptrToChess);
+			std::cout << " I created backup chess\n";
 			//*lastState = myChess;
 			//lastState = new Chess(*ptrToChess);
 			int result = (*ptrToChess).execute(myGraphic.inputMove);
@@ -63,6 +64,13 @@ int main(int argc,char*args[])
 			}
 			else if (result==2)
 			{
+				if (lastState != NULL)
+				{
+					delete lastState;
+					lastState = NULL;
+				}
+				lastState = backUpState;
+				canRevert = 1;
 				goto label;				
 			}
 			else

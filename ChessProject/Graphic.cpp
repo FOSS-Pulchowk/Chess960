@@ -146,7 +146,7 @@ int Graphic::getInput(Chess &myChess, SDL_Event *e, string &myMove)
 			else if (events.type == SDL_MOUSEBUTTONDOWN)
 			{
 				SDL_GetMouseState(&posX, &posY);
-				std::cout << "2. inMouse event:" << posX << " " << posY << "\n";
+				//std::cout << "2. inMouse event:" << posX << " " << posY << "\n";
 				//return "e1e2";
 				string boxVar = getBoxSelection(posX, posY);
 				if (boxVar.size() == 2)
