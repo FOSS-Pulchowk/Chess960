@@ -19,8 +19,9 @@ int main(int argc,char*args[])
 	
 	//delete ptrToChess;
 	string myMove;
-	Chess *lastState = new Chess(*ptrToChess);
-	std::cout << ((*ptrToChess).getCurrentPlayer() ? "White " : "Black ") << "to play.\n";
+	int canRevert = 0;
+	Chess *lastState = NULL;
+	Chess *backUpState = NULL;
 	while (!(*ptrToChess).isChessOver())
 	{
 		//std::cout << "IS Over outside: " << (*ptrToChess).isChessOver();
@@ -30,10 +31,9 @@ int main(int argc,char*args[])
 		
 		if (inputTrue == 1)
 		{
+			backUpState = new Chess(*ptrToChess);
 			//*lastState = myChess;
-			
-			std::cout << " Is Copy constructer called?\n";
-			lastState = new Chess(*ptrToChess);
+			//lastState = new Chess(*ptrToChess);
 			int result = (*ptrToChess).execute(myGraphic.inputMove);
 			if (result==1)
 			{
@@ -51,32 +51,19 @@ int main(int argc,char*args[])
 				std::cout << "Piece on e4: " << (*(*ptrToChess).currentBoard)[3][4].currentPiece->myName() << "\n";
 				(*ptrToChess).changeTurn();
 				std::cout << ((*ptrToChess).getCurrentPlayer() ? "White " : "Black ") << "to play.\n";
-				//delete lastState;
-				//lastState = new Chess(*ptrToChess);
-				//std::cout << "I copied \n";
-				//ptrToChess = lastState;
-				//std::cout << (myChess.isKingInCheck(1) ? "It is in check\n" : "it is not in check\n");
+				if (lastState != NULL)
+				{
+					delete lastState;
+					lastState = NULL;
+				}
+				lastState = backUpState;
+				canRevert = 1;
 				std::cout << " Created a new lastState after executieon\n";
 				myGraphic.inputMove = "";
 			}
 			else if (result==2)
 			{
-				goto label;
-				//std::cout << "You cant execute this move\n";
-				//if (lastState != NULL)
-				//{
-				//	std::cout << "Last state is not null\n";
-				//	delete ptrToChess;
-				//	ptrToChess = lastState;
-				//	std::cout << " check bata Is Chess Over? " << ptrToChess->isChessOver() << ".\n";
-				//	//delete lastState;
-				//	lastState = NULL;
-				//	std::cout << "Last state is NULLED\n";
-				//	
-				//}
-				//std::cout << "After check, setting Input move \n";
-				//myGraphic.inputMove = "";
-				
+				goto label;				
 			}
 			else
 			{
@@ -90,14 +77,16 @@ int main(int argc,char*args[])
 		{
 			label:
 			std::cout << "Piece on e4: before changing" << (*(*ptrToChess).currentBoard)[3][4].currentPiece->myName() << "\n";
-			if (lastState != NULL)
+			if (canRevert && lastState != NULL)
 			{
 				std::cout << "I am in side 2 and changing to last state\n";
 				delete ptrToChess;
 				ptrToChess = lastState;
+				//moveCount--;
 				/*std::cout << "after clicking undo Is Chess Over? " << ptrToChess->isChessOver() << ".\n";
 				std::cout << ((*ptrToChess).getCurrentPlayer() ? "White " : "Black ") << "to play.\n";*/
 				lastState = NULL;
+				canRevert = false;
 			}
 			else
 			{

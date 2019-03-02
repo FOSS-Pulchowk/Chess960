@@ -62,11 +62,15 @@ Graphic::Graphic()
 	title = IMG_Load("MainMenu.bmp");
 	hover = IMG_Load("buttonHover.png");
 	chessBoardNo = 1;
+	whiteTurn = IMG_Load("Icons/WhiteTurn.png");
+	blackTurn = IMG_Load("Icons/BlackTurn.png");
 	//whiteKing = IMG_Load("ChessPieces/WhiteKing.png");
 	inputMove = "";
 	for (int i = 0; i < 6; i++){ drawIconState[i] = 1; }
 	highlight = IMG_Load("highlight.png");
 	chessBoardPos.x = 0; chessBoardPos.y = 0;
+	turnPos.x = 80;
+	turnPos.y = 315;
 	additionChessBoardPos.x = 299; additionChessBoardPos.y = 0;
 	int initialPosX = 322, initialPosY = 26, boxPosDiff = 91;
 
@@ -236,6 +240,14 @@ void Graphic::run(Chess &myChess)
 
 	//std::cout << "After chessBoard blit\n";
 	SDL_BlitSurface(chessBoard, NULL, screenSurface, &chessBoardPos);
+	if (myChess.getCurrentPlayer())
+	{
+		SDL_BlitSurface(whiteTurn, NULL, screenSurface, &turnPos);
+	}
+	else
+	{
+		SDL_BlitSurface(blackTurn, NULL, screenSurface, &turnPos);
+	}
 	//std::cout << "After chessBoard blit\n";
 	/*if (chessBoardNo == 0) { SDL_BlitSurface(blueBoard, NULL, screenSurface, &additionChessBoardPos); }
 	else if (chessBoardNo == 2) { SDL_BlitSurface(darkBoard, NULL, screenSurface, &additionChessBoardPos); }

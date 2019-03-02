@@ -14,6 +14,9 @@ class Graphic
 	SDL_Rect posBoard[8][8];
 	SDL_Rect chessBoardPos, additionChessBoardPos;
 	SDL_Rect drawIconPos[6];
+	SDL_Surface *whiteTurn;
+	SDL_Surface *blackTurn;
+	SDL_Rect turnPos;
 	int drawIconState[6], currentMousePos[2];
 public:
 	SDL_Event graphicEvents;
