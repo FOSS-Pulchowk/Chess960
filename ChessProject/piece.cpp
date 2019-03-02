@@ -63,6 +63,16 @@ int King::movesInEmptyBoard(string initialPosition, string finalPosition)
 	return 0;
 }
 
+King::King(const King&obj)
+{
+	name = obj.name;
+	//std::cout << "Copying " << name << "\n";
+	alive = obj.alive;
+	image = SDL_ConvertSurface(obj.image, (obj.image)->format, SDL_SWSURFACE);
+	//image=IMG_Load("ChessPieces/WhiteBishop.png");
+	isWhite = obj.isWhite;
+}
+
 Bishop::Bishop(string color)
 {
 	this->name = "Bishop";
@@ -78,6 +88,15 @@ Bishop::Bishop(string color)
 		image=IMG_Load("ChessPieces/BlackBishop.png");
 		isWhite = false;
 	}
+}
+Bishop::Bishop(const Bishop&obj)
+{
+	name = obj.name;
+	//std::cout << "Copying " << name << "\n";
+	alive = obj.alive;
+	image = SDL_ConvertSurface(obj.image, (obj.image)->format, SDL_SWSURFACE);
+	//image = IMG_Load("ChessPieces/WhiteBishop.png");
+	isWhite = obj.isWhite;
 }
 
 int Bishop::movesInEmptyBoard(string initialPosition, string finalPosition)
@@ -135,6 +154,14 @@ Queen::Queen(string color)
 		isWhite = false;
 	}
 }
+Queen::Queen(const Queen&obj)
+{
+	name = obj.name;
+	//std::cout << "Copying " << name << "\n";
+	alive = obj.alive;
+	image = SDL_ConvertSurface(obj.image, (obj.image)->format, SDL_SWSURFACE);
+	isWhite = obj.isWhite;
+}
  
 int Queen::movesInEmptyBoard(string initialPosition, string finalPosition)
 {
@@ -172,6 +199,14 @@ Rook::Rook(string color)
 	}
 }
 
+Rook::Rook(const Rook&obj)
+{
+	name = obj.name;
+	//std::cout << "Copying " << name << "\n";
+	alive = obj.alive;
+	image = SDL_ConvertSurface(obj.image, (obj.image)->format, SDL_SWSURFACE);
+	isWhite = obj.isWhite;
+}
 int Rook::movesInEmptyBoard(string initialPosition, string finalPosition)
 {
 	vector<int> initialPositionInNumber = getPositionInVector(initialPosition);
@@ -198,6 +233,14 @@ Knight::Knight(string color)
 	}
 }
 
+Knight::Knight(const Knight&obj)
+{
+	name = obj.name;
+	//std::cout << "Copying " << name << "\n";
+	alive = obj.alive;
+	image = SDL_ConvertSurface(obj.image, (obj.image)->format, SDL_SWSURFACE);
+	isWhite = obj.isWhite;
+}
 int Knight::movesInEmptyBoard(string initialPosition, string finalPosition)
 {
 	vector<int> initialPositionInNumber = getPositionInVector(initialPosition);
@@ -236,6 +279,17 @@ Pawn::Pawn(string color)
 		this->isWhite = false;
 		image = IMG_Load("ChessPieces/blackPawn.png");
 	}
+}
+
+Pawn::Pawn(const Pawn&obj)
+{
+	name = obj.name;
+	//std::cout << "Copying " << name <<"\n";
+	alive = obj.alive;
+	promoted = obj.promoted;
+	promotedPiece = NULL;
+	image = SDL_ConvertSurface(obj.image, (obj.image)->format, SDL_SWSURFACE);
+	isWhite = obj.isWhite;
 }
 
 int Pawn::movesInEmptyBoard(string initialPosition, string finalPosition)

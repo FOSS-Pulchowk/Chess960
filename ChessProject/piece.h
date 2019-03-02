@@ -25,6 +25,10 @@ public:
 	bool kill();
 	bool resurrect();
 	bool getColor() { return isWhite; }
+	virtual ~Piece()
+	{
+		SDL_FreeSurface(image);
+	}
 };
 
 class King :public Piece
@@ -32,6 +36,8 @@ class King :public Piece
 	
 public:
 	King(string color);
+	King(const King&obj);
+	King& operator =(const King&obj);
 	int movesInEmptyBoard(string initialPosition, string finalPosition);
 
 };
@@ -41,6 +47,7 @@ class Bishop :public Piece
 	//bool isWhite;
 public:
 	Bishop(string color);
+	Bishop(const Bishop& obj);
 	int movesInEmptyBoard(string initialPosition, string finalPosition);
 };
 
@@ -63,6 +70,7 @@ class Queen :public Piece
 {
 public:
 	Queen(string color);
+	Queen(const Queen&obj);
 	int movesInEmptyBoard(string initialPosition, string finalPosition);
 };
 
@@ -70,6 +78,7 @@ class Rook :public Piece
 {
 public:
 	Rook(string color);
+	Rook(const Rook&obj);
 	int movesInEmptyBoard(string initialPosition, string finalPosition);
 };
 
@@ -77,12 +86,15 @@ class Knight :public Piece
 {
 public:
 	Knight(string color);
+	Knight(const Knight& obj);
 	int movesInEmptyBoard(string initialPosition, string finalPosition);
 };
 class Pawn :public Piece
 {
+
 public:
 	Pawn(string color);
+	Pawn(const Pawn&obj);
 	int promoted;
 	int promote(string piece);
 	int movesInEmptyBoard(string initialPosition, string finalPosition);

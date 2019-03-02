@@ -5,13 +5,13 @@ Program::Program()
 	ptrToGraphic = new Graphic;
 	ptrToBoard = new Board[1][8][8];
 	ptrToNoPiece = new OnePiece("white");
-	ptrToChess = new Chess("name1", "name2", ptrToBoard, ptrToNoPiece);
+	ptrToChess = new Chess("name1", "name2");
 	//myGraphic.loadingScreen();
 
 }
 void Program::init()
 {
-	Game::initializeBoard(ptrToBoard, ptrToNoPiece, ptrToChess);
+	//Game::initializeBoard(ptrToBoard, ptrToNoPiece, ptrToChess);
 	Graphic myGraphic = *ptrToGraphic;
 	Chess myChess = *ptrToChess;
 	//Board (*myBoard)[8][8] = ptrToBoard;
@@ -59,8 +59,8 @@ void Program::init()
 				}
 				else if (inputTrue == 3) // new game
 				{
-					Game::initializeBoard(ptrToBoard, &noPiece, &myChess);
-					myChess.reset(); // k k chaine no new game ma yesh vitra hai
+					//Game::initializeBoard(ptrToBoard, &noPiece, &myChess);
+					//myChess.reset(); // k k chaine no new game ma yesh vitra hai
 				}
 				else if (inputTrue == 4) // save/load
 				{
@@ -88,6 +88,7 @@ void Program::init()
 		else
 		{
 			isRunning = false;
+			return;
 		}
 	}
 }

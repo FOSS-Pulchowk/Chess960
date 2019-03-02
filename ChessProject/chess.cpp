@@ -5,23 +5,266 @@
 #include <ctime>
 #include <chrono>
 
-Chess::Chess(string name1, string name2, Board (*currentBoard)[8][8],OnePiece *ptr)
+Chess::Chess(string name1, string name2)
 {
+	ptrToWhiteKing = new King("white");
+	ptrToBlackKing = new King("black");
+	ptrToWhiteQueen = new Queen("white");
+	ptrToBlackQueen = new Queen("black");
+	ptrToWhiteBishop1 = new Bishop("white");
+	ptrToWhiteBishop2 = new Bishop("white");
+	ptrToBlackBishop1 = new Bishop("black");
+	ptrToBlackBishop2 = new Bishop("black");
+	ptrToWhiteKnight1 = new Knight("white");
+	ptrToWhiteKnight2 = new Knight("white");
+	ptrToBlackKnight1 = new Knight("black");
+	ptrToBlackKnight2 = new Knight("black");
+	ptrToWhiteRook1 = new Rook("white");
+	ptrToWhiteRook2 = new Rook("white");
+	ptrToBlackRook1 = new Rook("black");
+	ptrToBlackRook2 = new Rook("black");
+	ptrToBoard = new Board[1][8][8];
+	for (int i = 0; i < 8; i++)
+	{
+		whitePawns[i] = new Pawn("white");
+	}
+	for (int i = 0; i < 8; i++)
+	{
+		blackPawns[i] = new Pawn("black");
+	}
+	/*ptrToWhitePawn1 = new Pawn("white");
+	ptrToWhitePawn2 = new Pawn("white");
+	ptrToWhitePawn3 = new Pawn("white");
+	ptrToWhitePawn4 = new Pawn("white");
+	ptrToWhitePawn5 = new Pawn("white");
+	ptrToWhitePawn6 = new Pawn("white");
+	ptrToWhitePawn7 = new Pawn("white");
+	ptrToWhitePawn8 = new Pawn("white");
+	ptrToBlackPawn1 = new Pawn("black");
+	ptrToBlackPawn2 = new Pawn("black");
+	ptrToBlackPawn3 = new Pawn("black");
+	ptrToBlackPawn4 = new Pawn("black");
+	ptrToBlackPawn5 = new Pawn("black");
+	ptrToBlackPawn6 = new Pawn("black");
+	ptrToBlackPawn7 = new Pawn("black");
+	ptrToBlackPawn8 = new Pawn("black");*/
+
 	whiteToPlay = true;
 	isOver = false;
 	whitePlayerName = name1;
 	blackPlayerName = name2;
-	limboPiece = ptr;
-	lastMove = "";
-	this->currentBoard = currentBoard;
-	this->ptrToNoPiece = ptr;
+	limboPiece = ptrToNoPiece;
+	lastMove = "NULL";
+	this->currentBoard = ptrToBoard;
 	pawnDoubleStep = false;
+	initializeBoard();
 }
-bool Chess::getCurrentPlayer() { return whiteToPlay; }
-bool Chess::isChessOver()
+Chess::Chess(Chess&obj) 
+{
+	std::cout << "copy construtor called.";
+	ptrToWhiteKing = new King(*obj.ptrToWhiteKing);
+	ptrToBlackKing = new King(*obj.ptrToBlackKing);
+	ptrToWhiteQueen = new Queen(*obj.ptrToWhiteQueen);
+	ptrToBlackQueen = new Queen(*obj.ptrToBlackQueen);
+	ptrToWhiteBishop1 = new Bishop(*obj.ptrToWhiteBishop1);
+	ptrToWhiteBishop2 = new Bishop(*obj.ptrToWhiteBishop2);
+	ptrToBlackBishop1 = new Bishop(*obj.ptrToBlackBishop1);
+	ptrToBlackBishop2 = new Bishop(*obj.ptrToBlackBishop2);
+	ptrToWhiteKnight1 = new Knight(*obj.ptrToWhiteKnight1);
+	ptrToWhiteKnight2 = new Knight(*obj.ptrToWhiteKnight2);
+	ptrToBlackKnight1 = new Knight(*obj.ptrToBlackKnight1);
+	ptrToBlackKnight2 = new Knight(*obj.ptrToBlackKnight2);
+	ptrToWhiteRook1 = new Rook(*obj.ptrToWhiteRook1);
+	ptrToWhiteRook2 = new Rook(*obj.ptrToWhiteRook2);
+	ptrToBlackRook1 = new Rook(*obj.ptrToBlackRook1);
+	ptrToBlackRook2 = new Rook(*obj.ptrToBlackRook2);
+	
+	ptrToBoard = new Board[1][8][8];
+
+	//checking 
+	std::cout <<"Rookas name: " <<(obj.ptrToBlackRook2)->myName();
+	//(*ptrToBoard)[0][0].currentPiece = obj.ptrToBlackRook1;
+	//SDL_Delay(1000);
+	for (int i = 0; i < 8; i++)
+	{
+		whitePawns[i] = new Pawn(*obj.whitePawns[i]);
+	}
+	for (int i = 0; i < 8; i++)
+	{
+		blackPawns[i] = new Pawn(*obj.blackPawns[i]);
+	}
+	whiteToPlay = obj.whiteToPlay;
+	isOver = obj.isOver;
+	whitePlayerName = obj.whitePlayerName;
+	blackPlayerName = obj.blackKingIsChecked;
+	limboPiece = obj.limboPiece;
+	lastMove = obj.lastMove;
+	//Emptying Board
+	for (int i = 0; i < 8; i++)
+	{
+		for (int j = 0; j < 8; j++)
+		{
+			(*ptrToBoard)[i][j].currentPiece = ptrToNoPiece;
+		}
+	}
+
+	//copyBoard(obj.ptrToBoard);
+	//initializeBoard();
+
+	int wrook=0;
+	int wknight=0;
+	int wbishop = 0;
+	int brook = 0;
+	int bknight = 0;
+	int bbishop = 0;
+	int wpawn = 0;
+	int bpawn = 0;
+	for (int i = 0; i < 8; i++)
+	{
+		for (int j = 0; j < 8; j++)
+		{
+			if ((*obj.ptrToBoard)[i][j].currentPiece->myName() == "OnePiece")
+			{
+				//(*ptrToBoard)[8][8].currentPiece = ptrToNoPiece;
+			}
+			else if ((*obj.ptrToBoard)[i][j].currentPiece->myName() == "King")
+			{
+				if ((*obj.ptrToBoard)[i][j].currentPiece->getColor())
+					(*ptrToBoard)[i][j].currentPiece = ptrToWhiteKing;
+				else
+					(*ptrToBoard)[i][j].currentPiece = ptrToBlackKing;
+			}
+			else if ((*obj.ptrToBoard)[i][j].currentPiece->myName() == "Queen")
+			{
+				if ((*obj.ptrToBoard)[i][j].currentPiece->getColor())
+					(*ptrToBoard)[i][j].currentPiece = ptrToWhiteQueen;
+				else
+					(*ptrToBoard)[i][j].currentPiece = ptrToBlackQueen;
+			}
+			else if ((*obj.ptrToBoard)[i][j].currentPiece->myName() == "Bishop")
+			{
+				
+				if ((*obj.ptrToBoard)[i][j].currentPiece->getColor())
+				{
+					if (wbishop == 0)
+					{
+						(*ptrToBoard)[i][j].currentPiece = ptrToWhiteBishop1;
+						wbishop = 1;
+					}
+					else
+					{
+						(*ptrToBoard)[i][j].currentPiece = ptrToWhiteBishop2;
+					}
+				}
+
+				else
+				{
+					if (bbishop == 0)
+					{
+						(*ptrToBoard)[i][j].currentPiece = ptrToBlackBishop1;
+						bbishop = 1;
+					}
+					else
+					{
+						(*ptrToBoard)[i][j].currentPiece = ptrToBlackBishop2;
+					}
+				}
+			}
+			else if ((*obj.ptrToBoard)[i][j].currentPiece->myName() == "Knight")
+			{
+
+				if ((*obj.ptrToBoard)[i][j].currentPiece->getColor())
+				{
+					if (wknight == 0)
+					{
+						(*ptrToBoard)[i][j].currentPiece = ptrToWhiteKnight1;
+						wknight = 1;
+					}
+					else
+					{
+						(*ptrToBoard)[i][j].currentPiece = ptrToWhiteKnight2;
+					}
+				}
+
+				else
+				{
+					if (bknight == 0)
+					{
+						(*ptrToBoard)[i][j].currentPiece = ptrToBlackKnight1;
+						bknight = 1;
+					}
+					else
+					{
+						(*ptrToBoard)[i][j].currentPiece = ptrToBlackKnight2;
+					}
+				}
+			}
+			else if ((*obj.ptrToBoard)[i][j].currentPiece->myName() == "Rook")
+			{
+
+				if ((*obj.ptrToBoard)[i][j].currentPiece->getColor())
+				{
+					if (wrook == 0)
+					{
+						(*ptrToBoard)[i][j].currentPiece = ptrToWhiteRook1;
+						wrook = 1;
+					}
+					else
+					{
+						(*ptrToBoard)[i][j].currentPiece = ptrToWhiteRook2;
+					}
+				}
+
+				else
+				{
+					if (brook == 0)
+					{
+						(*ptrToBoard)[i][j].currentPiece = ptrToBlackRook1;
+						brook = 1;
+					}
+					else
+					{
+						(*ptrToBoard)[i][j].currentPiece = ptrToBlackRook2;
+					}
+				}
+			}
+			else if ((*obj.ptrToBoard)[i][j].currentPiece->myName() == "Pawn")
+			{
+				if ((*obj.ptrToBoard)[i][j].currentPiece->getColor())
+				{
+					(*ptrToBoard)[i][j].currentPiece = whitePawns[wpawn];
+					wpawn++;
+				}
+				else
+				{
+					(*ptrToBoard)[i][j].currentPiece = blackPawns[bpawn];
+					bpawn++;
+				}
+			}
+			
+		}
+	}
+	this->currentBoard = ptrToBoard;
+	for (int i = 0; i < 8; i++)
+	{
+		for (int j = 0; j < 8; j++)
+		{
+
+		}
+	}
+	//(*ptrToBoard)[0][0].currentPiece = ptrToBlackRook1;
+	pawnDoubleStep = obj.pawnDoubleStep;
+}
+auto Chess::getBoard()
+{
+	return ptrToBoard;
+}
+bool Chess::getCurrentPlayer() const { return whiteToPlay; }
+bool Chess::isChessOver() const
 {
 	return isOver;
 }
+
 void Chess::changeTurn()
 {
 	whiteToPlay = !whiteToPlay;
@@ -53,12 +296,13 @@ int Chess::moveToEmptySquare(string choosenMove)
 	bool playerMatchesPiece = (getCurrentPlayer() == sourcePiece->getColor());
 	string sourcePieceName = sourcePiece->myName();
 	//std::cout << canMove;
+	bool resultsInCheck = 0;
 	
 	if (canMove && playerMatchesPiece && pathIsNotBlocked)
 	{
 		std::cerr << "I am in move to empty square";
-		(*currentBoard)[destinationRow-1][destinationFile-1].currentPiece = (*currentBoard)[sourceRow-1][sourceFile-1].currentPiece;
-		(*currentBoard)[sourceRow-1][sourceFile-1].currentPiece = ptrToNoPiece;
+		(*currentBoard)[destinationRow - 1][destinationFile - 1].currentPiece = (*currentBoard)[sourceRow - 1][sourceFile - 1].currentPiece;
+		(*currentBoard)[sourceRow - 1][sourceFile - 1].currentPiece = ptrToNoPiece;
 		limboPiece = ptrToNoPiece;
 		lastMove = choosenMove;
 		//string destinationPosition = (*currentBoard)[destinationRow-1][destinationFile-1].getMyLocation();
@@ -66,7 +310,7 @@ int Chess::moveToEmptySquare(string choosenMove)
 		//std::cout << "Move done Successfully\n";
 		//std::cout << sourcePieceName << " moved from " << source << " to " << destination << "\n";
 		return 1;
-	}	
+	}
 	else
 	{
 		if (playerMatchesPiece == 0)
@@ -83,6 +327,7 @@ int Chess::moveToEmptySquare(string choosenMove)
 		}
 		return 0;
 	}
+	
 }
 int Chess::canMoveHere(string choosenMove)
 {
@@ -255,8 +500,8 @@ int Chess::execute(string choosenMove)
 		{
 			if (isKingInCheck(getCurrentPlayer()))
 			{
-				std::cout << "i am in undo\n";
-				undo();
+				std::cout << "King is checked. Undoing\n";
+				return 2;
 			}
 			return 1;
 		}
@@ -267,13 +512,13 @@ int Chess::execute(string choosenMove)
 	}
 	else if (destinationPiece->myName()!="OnePiece" && destinationPiece->getColor()!=getCurrentPlayer())
 	{
-		std::cout << "Sending mvoe to capture\n";
+		std::cout << "Sending move to capture\n";
 		if (capture(choosenMove))
 		{
 			if (isKingInCheck(getCurrentPlayer()))
 			{
-				undo();
-				//return 0;
+				std::cout << "King is checked. Undoing\n";
+				return 2;
 			}
 			return 1;
 		}
@@ -336,7 +581,8 @@ int Chess::isNotBlocked(string choosenMove)
 				{
 					currX = source.x;
 					currY = source.y+1;
-		
+				
+					
 					while (currY < destination.y)
 					{
 						if ((*currentBoard)[currX-1][currY-1].currentPiece != ptrToNoPiece)
@@ -377,6 +623,7 @@ int Chess::isNotBlocked(string choosenMove)
 		else if (source.y == destination.y)
 		{
 			//std::cout << "Here the column are equal";
+			std::cout << "pawn double step here?\n";
 			if (abs(source.x - destination.x) == 1)
 			{
 				//std::cout << "The move takes place in adjacent square so block is false.";
@@ -384,18 +631,21 @@ int Chess::isNotBlocked(string choosenMove)
 			}
 			else
 			{
-				
+				std::cout << "Address of ptrToNoPiece inside isNotBlocked: " << ptrToNoPiece << "||\n";
 				if (source.x < destination.x)
 				{
+					//std::cout << "source row is less\n";
 					currX = source.x  +1;
 					currY = source.y;
-					currX += 1;
+					//currX += 1;
 					while (currX < destination.x)
 					{
+						std::cout << "CurrX :" << currX << "\n";
 						if ((*currentBoard)[currX-1][currY-1].currentPiece != ptrToNoPiece)
 						{
 							//std::cout << ((*currentBoard)[currX-1][currY-1].currentPiece->myName());
 							//std::cout << " blocks the path column \n";
+							std::cout << "I am blocked here\n";
 							blocked = true;
 							break;
 						}
@@ -571,51 +821,20 @@ string Chess::getPiecesConfig()
 	return temp;
 }
 
-int Game::initializeBoard(Board(*myBoard)[8][8], OnePiece *noPiece, Chess *mychess)
+int Chess::initializeBoard()
 {
-	//yo extra ho hai, debugging ko lagi rakhy thyo
-	string locationData = (*mychess).getPiecesConfig();
-	
-	King *ptrToWhiteKing = new King("white");
-	King *ptrToBlackKing = new King("black");
-	Queen *ptrToWhiteQueen = new Queen("white");
-	Queen *ptrToBlackQueen = new Queen("black");
-	Bishop *ptrToWhiteBishop1 = new Bishop("white");
-	Bishop *ptrToWhiteBishop2 = new Bishop("white");
-	Bishop *ptrToBlackBishop1 = new Bishop("black");
-	Bishop *ptrToBlackBishop2 = new Bishop("black");
-	Knight *ptrToWhiteKnight1 = new Knight("white");
-	Knight *ptrToWhiteKnight2 = new Knight("white");
-	Knight *ptrToBlackKnight1 = new Knight("black");
-	Knight *ptrToBlackKnight2 = new Knight("black");
-	Rook *ptrToWhiteRook1 = new Rook("white");
-	Rook *ptrToWhiteRook2 = new Rook("white");
-	Rook *ptrToBlackRook1 = new Rook("black");
-	Rook *ptrToBlackRook2 = new Rook("black");
+	//setBoard(*ptrToBoard, ptrToNoPiece);
+	Board(*myBoard)[8][8] = ptrToBoard;
 
-	//OnePiece *ptrToOnePiece = new OnePiece("white");
+	for (int i = 0; i < 8; i++)
+	{
+		for (int j = 0; j < 8; j++)
+		{
+			(*myBoard)[i][j].currentPiece = ptrToNoPiece;
+		}
+	}
+	std::cout << "Value of ptrToNoPiece in intitializeBoard:" << ptrToNoPiece;
 
-	Pawn *ptrToWhitePawn1 = new Pawn("white");
-	Pawn *ptrToWhitePawn2 = new Pawn("white");
-	Pawn *ptrToWhitePawn3 = new Pawn("white");
-	Pawn *ptrToWhitePawn4 = new Pawn("white");
-	Pawn *ptrToWhitePawn5 = new Pawn("white");
-	Pawn *ptrToWhitePawn6 = new Pawn("white");
-	Pawn *ptrToWhitePawn7 = new Pawn("white");
-	Pawn *ptrToWhitePawn8 = new Pawn("white");
-
-
-	Pawn *ptrToBlackPawn1 = new Pawn("black");
-	Pawn *ptrToBlackPawn2 = new Pawn("black");
-	Pawn *ptrToBlackPawn3 = new Pawn("black");
-	Pawn *ptrToBlackPawn4 = new Pawn("black");
-	Pawn *ptrToBlackPawn5 = new Pawn("black");
-	Pawn *ptrToBlackPawn6 = new Pawn("black");
-	Pawn *ptrToBlackPawn7 = new Pawn("black");
-	Pawn *ptrToBlackPawn8 = new Pawn("black");
-	
-	setBoard(*myBoard, noPiece);
-	
 	(*myBoard)[0][4].currentPiece = ptrToWhiteKing;
 	(*myBoard)[7][4].currentPiece = ptrToBlackKing;
 	(*myBoard)[0][3].currentPiece = ptrToWhiteQueen;
@@ -634,48 +853,34 @@ int Game::initializeBoard(Board(*myBoard)[8][8], OnePiece *noPiece, Chess *myche
 	(*myBoard)[7][7].currentPiece = ptrToBlackRook2;
 	(*myBoard)[7][7].currentPiece = ptrToBlackRook2;
 
-
-	(*myBoard)[0][(*mychess).piecesIntValue[2]].currentPiece = ptrToWhiteKing;
-	(*myBoard)[7][(*mychess).piecesIntValue[2]].currentPiece = ptrToBlackKing;
-	(*myBoard)[0][(*mychess).piecesIntValue[7]].currentPiece = ptrToWhiteQueen;
-	(*myBoard)[7][(*mychess).piecesIntValue[7]].currentPiece = ptrToBlackQueen;
-	(*myBoard)[0][(*mychess).piecesIntValue[3]].currentPiece = ptrToWhiteBishop1;
-	(*myBoard)[0][(*mychess).piecesIntValue[4]].currentPiece = ptrToWhiteBishop2;
-	(*myBoard)[7][(*mychess).piecesIntValue[3]].currentPiece = ptrToBlackBishop1;
-	(*myBoard)[7][(*mychess).piecesIntValue[4]].currentPiece = ptrToBlackBishop2;
-	(*myBoard)[0][(*mychess).piecesIntValue[5]].currentPiece = ptrToWhiteKnight1;
-	(*myBoard)[0][(*mychess).piecesIntValue[6]].currentPiece = ptrToWhiteKnight2;
-	(*myBoard)[7][(*mychess).piecesIntValue[5]].currentPiece = ptrToBlackKnight1;
-	(*myBoard)[7][(*mychess).piecesIntValue[6]].currentPiece = ptrToBlackKnight2;
-	(*myBoard)[0][(*mychess).piecesIntValue[0]].currentPiece = ptrToWhiteRook1;
-	(*myBoard)[0][(*mychess).piecesIntValue[1]].currentPiece = ptrToWhiteRook2;
-	(*myBoard)[7][(*mychess).piecesIntValue[0]].currentPiece = ptrToBlackRook1;
-	(*myBoard)[7][(*mychess).piecesIntValue[1]].currentPiece = ptrToBlackRook2;
-
-
-	(*myBoard)[1][0].currentPiece = ptrToWhitePawn1;
-	(*myBoard)[1][1].currentPiece = ptrToWhitePawn2;
-	(*myBoard)[1][2].currentPiece = ptrToWhitePawn3;
-	(*myBoard)[1][3].currentPiece = ptrToWhitePawn4;
-	(*myBoard)[1][4].currentPiece = ptrToWhitePawn5;
-	(*myBoard)[1][5].currentPiece = ptrToWhitePawn6;
-	(*myBoard)[1][6].currentPiece = ptrToWhitePawn7;
-	(*myBoard)[1][7].currentPiece = ptrToWhitePawn8;
-
-	(*myBoard)[6][0].currentPiece = ptrToBlackPawn1;
-	(*myBoard)[6][1].currentPiece = ptrToBlackPawn2;
-	(*myBoard)[6][2].currentPiece = ptrToBlackPawn3;
-	(*myBoard)[6][3].currentPiece = ptrToBlackPawn4;
-	(*myBoard)[6][4].currentPiece = ptrToBlackPawn5;
-	(*myBoard)[6][5].currentPiece = ptrToBlackPawn6;
-	(*myBoard)[6][6].currentPiece = ptrToBlackPawn7;
-	(*myBoard)[6][7].currentPiece = ptrToBlackPawn8;
-	//dynamic_cast<Pawn *>((*myBoard)[1][0].currentPiece)->promote("Queen");
-
+	/*
+	(*myBoard)[0][piecesIntValue[2]].currentPiece = ptrToWhiteKing;
+	(*myBoard)[7][piecesIntValue[2]].currentPiece = ptrToBlackKing;
+	(*myBoard)[0][piecesIntValue[7]].currentPiece = ptrToWhiteQueen;
+	(*myBoard)[7][piecesIntValue[7]].currentPiece = ptrToBlackQueen;
+	(*myBoard)[0][piecesIntValue[3]].currentPiece = ptrToWhiteBishop1;
+	(*myBoard)[0][piecesIntValue[4]].currentPiece = ptrToWhiteBishop2;
+	(*myBoard)[7][piecesIntValue[3]].currentPiece = ptrToBlackBishop1;
+	(*myBoard)[7][piecesIntValue[4]].currentPiece = ptrToBlackBishop2;
+	(*myBoard)[0][piecesIntValue[5]].currentPiece = ptrToWhiteKnight1;
+	(*myBoard)[0][piecesIntValue[6]].currentPiece = ptrToWhiteKnight2;
+	(*myBoard)[7][piecesIntValue[5]].currentPiece = ptrToBlackKnight1;
+	(*myBoard)[7][piecesIntValue[6]].currentPiece = ptrToBlackKnight2;
+	(*myBoard)[0][piecesIntValue[0]].currentPiece = ptrToWhiteRook1;
+	(*myBoard)[0][piecesIntValue[1]].currentPiece = ptrToWhiteRook2;
+	(*myBoard)[7][piecesIntValue[0]].currentPiece = ptrToBlackRook1;
+	(*myBoard)[7][piecesIntValue[1]].currentPiece = ptrToBlackRook2;
+	*/
+	for (int i = 0; i < 8; i++)
+	{
+		(*myBoard)[1][i].currentPiece = whitePawns[i];
+	}
+	for (int i = 0; i < 8; i++)
+	{
+		(*myBoard)[6][i].currentPiece = blackPawns[i];
+	}
 	return 1;
-	
 }
-
 int Chess::isAttacked(bool colorOfAttacker,string position)
 {
 	Position pos(position);
@@ -770,13 +975,20 @@ vector <string> Chess:: validMoves(string source)
 			string move = source;
 			move.push_back(j + 'a');
 			move.push_back(i + '1');
+			std::cout << "Move: " << move << "\n";
 			if (canMoveHere(move) || canCapture(!getCurrentPlayer(), move))
 			{
 				moves.push_back(move);
 			}
+			else
+			{
+				std::cout << "i cant";
+			}
 
 		}
 	}
+	int temp;
+	std::cin >> temp;
 	return moves;
 }
 
@@ -904,3 +1116,142 @@ int Chess::score()
 	}
 	return white + black;
 }
+
+//void Chess::copyBoard(Board (*sourceBoard)[8][8])
+//{
+//	//Board(&sourceBoard)[8][8] = *sourceBoard1;
+//	//Board(&destinationBoard)[8][8] = *destinationBoard1;
+//	static int wrook=0;
+//	static int wknight=0;
+//	static int wbishop = 0;
+//	static int brook = 0;
+//	static int bknight = 0;
+//	static int bbishop = 0;
+//	static int wpawn = 0;
+//	static int bpawn = 0;
+//	for (int i = 0; i < 8; i++)
+//	{
+//		for (int j = 0; j < 8; j++)
+//		{
+//			if ((*sourceBoard)[i][j].currentPiece->myName() == "OnePiece")
+//			{
+//				//(*ptrToBoard)[8][8].currentPiece = ptrToNoPiece;
+//			}
+//			else if ((*sourceBoard)[i][j].currentPiece->myName() == "King")
+//			{
+//				if ((*sourceBoard)[i][j].currentPiece->getColor())
+//					(*ptrToBoard)[8][8].currentPiece = ptrToWhiteKing;
+//				else
+//					(*ptrToBoard)[8][8].currentPiece = ptrToBlackKing;
+//			}
+//			else if ((*sourceBoard)[i][j].currentPiece->myName() == "Queen")
+//			{
+//				if ((*sourceBoard)[i][j].currentPiece->getColor())
+//					(*ptrToBoard)[8][8].currentPiece = ptrToWhiteQueen;
+//				else
+//					(*ptrToBoard)[8][8].currentPiece = ptrToBlackQueen;
+//			}
+//			else if ((*sourceBoard)[i][j].currentPiece->myName() == "Bishop")
+//			{
+//				
+//				if ((*sourceBoard)[i][j].currentPiece->getColor())
+//				{
+//					if (wbishop == 0)
+//					{
+//						(*ptrToBoard)[8][8].currentPiece = ptrToWhiteBishop1;
+//						wbishop = 1;
+//					}
+//					else
+//					{
+//						(*ptrToBoard)[8][8].currentPiece = ptrToWhiteBishop2;
+//					}
+//				}
+//
+//				else
+//				{
+//					if (bbishop == 0)
+//					{
+//						(*ptrToBoard)[8][8].currentPiece = ptrToBlackBishop1;
+//						bbishop = 1;
+//					}
+//					else
+//					{
+//						(*ptrToBoard)[8][8].currentPiece = ptrToBlackBishop2;
+//					}
+//				}
+//			}
+//			else if ((*sourceBoard)[i][j].currentPiece->myName() == "Knight")
+//			{
+//
+//				if ((*sourceBoard)[i][j].currentPiece->getColor())
+//				{
+//					if (wknight == 0)
+//					{
+//						(*ptrToBoard)[8][8].currentPiece = ptrToWhiteKnight1;
+//						wknight = 1;
+//					}
+//					else
+//					{
+//						(*ptrToBoard)[8][8].currentPiece = ptrToWhiteKnight2;
+//					}
+//				}
+//
+//				else
+//				{
+//					if (bknight == 0)
+//					{
+//						(*ptrToBoard)[8][8].currentPiece = ptrToBlackKnight1;
+//						bknight = 1;
+//					}
+//					else
+//					{
+//						(*ptrToBoard)[8][8].currentPiece = ptrToBlackKnight2;
+//					}
+//				}
+//			}
+//			else if ((*sourceBoard)[i][j].currentPiece->myName() == "Rook")
+//			{
+//
+//				if ((*sourceBoard)[i][j].currentPiece->getColor())
+//				{
+//					if (wrook == 0)
+//					{
+//						(*ptrToBoard)[8][8].currentPiece = ptrToWhiteRook1;
+//						wrook = 1;
+//					}
+//					else
+//					{
+//						(*ptrToBoard)[8][8].currentPiece = ptrToWhiteRook2;
+//					}
+//				}
+//
+//				else
+//				{
+//					if (brook == 0)
+//					{
+//						(*ptrToBoard)[8][8].currentPiece = ptrToBlackRook1;
+//						brook = 1;
+//					}
+//					else
+//					{
+//						(*ptrToBoard)[8][8].currentPiece = ptrToBlackRook2;
+//					}
+//				}
+//			}
+//			else if ((*sourceBoard)[i][j].currentPiece->myName() == "Pawn")
+//			{
+//				if ((*sourceBoard)[i][j].currentPiece->getColor())
+//				{
+//					(*ptrToBoard)[8][8].currentPiece = whitePawns[wpawn];
+//					wpawn++;
+//				}
+//				else
+//				{
+//					(*ptrToBoard)[8][8].currentPiece = blackPawns[bpawn];
+//					bpawn++;
+//				}
+//			}
+//			
+//		}
+//	}
+//}

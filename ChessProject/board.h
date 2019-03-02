@@ -13,6 +13,9 @@ public:
 	void setMyLocation(string location);
 	string getMyLocation();
 	bool setPiece(Piece *pieceptr);//This sets the value of currentPiece Pointer to a pointer to derived object
-	friend void setBoard(Board currentBoard[8][8],OnePiece *onePiece);
+	//friend void setBoard(Board currentBoard[8][8],OnePiece **onePiece);
+	//friend void copyBoard(Board sourceBoard[8][8], Board destinationBoard[8][8]);
 };
-void setBoard(Board currentBoard[8][8],OnePiece *onePiece);
+//void setBoard(Board currentBoard[8][8],OnePiece *onePiece);
+
+//void copyBoard(Board sourceBoard[8][8], Board destinationBoard[8][8]);
