@@ -61,20 +61,21 @@ int main(int argc,char*args[])
 			}
 			else if (result==2)
 			{
-				std::cout << "You cant execute this move\n";
-				if (lastState != NULL)
-				{
-					std::cout << "Last state is not null\n";
-					delete ptrToChess;
-					ptrToChess = lastState;
-					std::cout << " check bata Is Chess Over? " << ptrToChess->isChessOver() << ".\n";
-					//delete lastState;
-					lastState = NULL;
-					std::cout << "Last state is NULLED\n";
-					
-				}
-				std::cout << "After check, setting Input move \n";
-				myGraphic.inputMove = "";
+				goto label;
+				//std::cout << "You cant execute this move\n";
+				//if (lastState != NULL)
+				//{
+				//	std::cout << "Last state is not null\n";
+				//	delete ptrToChess;
+				//	ptrToChess = lastState;
+				//	std::cout << " check bata Is Chess Over? " << ptrToChess->isChessOver() << ".\n";
+				//	//delete lastState;
+				//	lastState = NULL;
+				//	std::cout << "Last state is NULLED\n";
+				//	
+				//}
+				//std::cout << "After check, setting Input move \n";
+				//myGraphic.inputMove = "";
 				
 			}
 			else
@@ -87,6 +88,7 @@ int main(int argc,char*args[])
 		}
 		else if (inputTrue==2)
 		{
+			label:
 			std::cout << "Piece on e4: before changing" << (*(*ptrToChess).currentBoard)[3][4].currentPiece->myName() << "\n";
 			if (lastState != NULL)
 			{
