@@ -26,7 +26,7 @@ void Program::init()
 		{
 			while (!myChess.isChessOver())
 			{
-				myGraphic.run(myChess);
+				//myGraphic.run(myChess);
 				int inputTrue = myGraphic.getInput(myChess, &(myGraphic.graphicEvents), myMove);
 				if (inputTrue == 1)
 				{

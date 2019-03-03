@@ -3,6 +3,8 @@
 #include <iostream>
 #include <cmath>
 #include <ctime>
+#include <algorithm>
+#include <vector>
 #include <chrono>
 
 Chess::Chess(string name1, string name2)
@@ -81,9 +83,18 @@ Chess::Chess(string name1, string name2)
 	pawnDoubleStep = false;
 	initializeBoard();
 }
+Chess::~Chess()
+{
+	for (int i = 0; i < 16; i++)
+	{
+		delete whitePieces[i];
+		delete blackPieces[i];
+	}
+	delete ptrToBoard;
+}
 Chess::Chess(Chess&obj) 
 {
-	std::cout << "copy construtor called.";
+	//std::cout << "copy construtor called.";
 	ptrToWhiteKing = new King(*obj.ptrToWhiteKing);
 	ptrToBlackKing = new King(*obj.ptrToBlackKing);
 	ptrToWhiteQueen = new Queen(*obj.ptrToWhiteQueen);
@@ -104,7 +115,7 @@ Chess::Chess(Chess&obj)
 	ptrToBoard = new Board[1][8][8];
 
 	//checking 
-	std::cout <<"Rookas name: " <<(obj.ptrToBlackRook2)->myName();
+	//std::cout <<"Rookas name: " <<(obj.ptrToBlackRook2)->myName();
 	//(*ptrToBoard)[0][0].currentPiece = obj.ptrToBlackRook1;
 	//SDL_Delay(1000);
 	for (int i = 0; i < 8; i++)
@@ -338,7 +349,7 @@ int Chess::moveToEmptySquare(string choosenMove)
 	int pathIsNotBlocked = isNotBlocked(choosenMove);
 	if (!canMove)
 	{
-		std::cout << "I cant move " << sourcePiece->myName() << "in here" << "from " << source << "to " << destination << "\n";
+		//std::cout << "I cant move " << sourcePiece->myName() << "in here" << "from " << source << "to " << destination << "\n";
 	}
 	bool playerMatchesPiece = (getCurrentPlayer() == sourcePiece->getColor());
 	string sourcePieceName = sourcePiece->myName();
@@ -347,7 +358,7 @@ int Chess::moveToEmptySquare(string choosenMove)
 	
 	if (canMove && playerMatchesPiece && pathIsNotBlocked)
 	{
-		std::cerr << "I am in move to empty square";
+		//std::cerr << "I am in move to empty square";
 		(*currentBoard)[destinationRow - 1][destinationFile - 1].currentPiece = (*currentBoard)[sourceRow - 1][sourceFile - 1].currentPiece;
 		(*currentBoard)[sourceRow - 1][sourceFile - 1].currentPiece = ptrToNoPiece;
 		limboPiece = ptrToNoPiece;
@@ -366,7 +377,7 @@ int Chess::moveToEmptySquare(string choosenMove)
 		}
 		else if (canMove == 0)
 		{
-			std::cout << "Not a Valid Move\n";
+			//std::cout << "Not a Valid Move\n";
 		}
 		else if (!pathIsNotBlocked)
 		{
@@ -1078,14 +1089,14 @@ vector <string> Chess:: validMoves(string source)
 
 		}
 	}
-	std::cout << "Without validating Moves\n";
+	/*std::cout << "Without validating Moves\n";
 	std::cout << "\n\n***********************************\n\n";
 	for (int i = 0; i < moves.size(); i++)
 	{
 
 		std::cout << moves[i] << "\n";
 	}
-	std::cout << "******************************\n";
+	std::cout << "******************************\n";*/
 	for (int i = 0; i < moves.size(); i++)
 	{
 		Chess *temp = new Chess(*this);
@@ -1245,6 +1256,7 @@ vector<string> Chess::getAllMoves()
 		}
 	}
 	
+	
 	std::cout << "\nGetting All Moves.\n";
 	for (int i = 0; i < allMoves.size(); i++)
 	{
@@ -1257,8 +1269,23 @@ vector<string> Chess::getAllMoves()
 	return allMoves;
 
 }
-string Chess::getSingleMove()
+string Chess::getSingleMove(bool color)
 {
 	vector <string> allMoves = getAllMoves();
-	return "";
+	vector <int> allScores;
+	for (int i = 0; i < allMoves.size(); i++)
+	{
+		Chess *temp = new Chess(*this);
+		temp->execute(allMoves[i]);
+		allScores.push_back(temp->score());
+		delete temp;
+	}
+	auto maxIterator = max_element(allScores.begin(), allScores.end());
+	auto minIterator = min_element(allScores.begin(), allScores.end());
+	int minIndex = distance(allScores.begin(), minIterator);
+	int maxIndex = distance(allScores.begin(), maxIterator);
+	if (color)
+		return allMoves[maxIndex];
+	else
+		return allMoves[minIndex];
 }

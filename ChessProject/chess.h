@@ -65,9 +65,10 @@ public:
 	string whitePlayerName;
 	string blackPlayerName;
 	vector<string>  getAllMoves();
-	string getSingleMove();
+	string getSingleMove(bool color);
 	Chess(string name1, string name2);
 	Chess(Chess&obj);
+	~Chess();
 	int initializeBoard();
 	//Board(*ptrToBoard)**getBoard();
 	auto getBoard();

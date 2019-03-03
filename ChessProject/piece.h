@@ -27,6 +27,7 @@ public:
 	bool getColor() { return isWhite; }
 	virtual ~Piece()
 	{
+		//std::cout << "\nI freed image\n";
 		SDL_FreeSurface(image);
 	}
 };

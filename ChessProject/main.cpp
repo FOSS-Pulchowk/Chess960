@@ -16,20 +16,51 @@ int main(int argc,char*args[])
 	//myProgram.init();
 	Graphic myGraphic;
 	Chess *ptrToChess=new Chess("Player1", "Player2");
-	
+	int counter = 0;
 	//delete ptrToChess;
 	string myMove;
 	int canRevert = 0;
 	Chess *lastState = NULL;
 	Chess *backUpState = NULL;
+	vector<string> moveSet;
+	moveSet.push_back("e2b6");
+	moveSet.push_back("b5d3");
+	moveSet.push_back("a3f6");
+	moveSet.push_back("c3f5");
+	moveSet.push_back("a2c8");
+	moveSet.push_back("f2e4");
+	moveSet.push_back("a1b3");
+	moveSet.push_back("c3f5");
+	moveSet.push_back("d2f8");
+	moveSet.push_back("e5a6");
+	moveSet.push_back("c3d7");
 	while (!(*ptrToChess).isChessOver())
 	{
 		//std::cout << "IS Over outside: " << (*ptrToChess).isChessOver();
-		myGraphic.run(*ptrToChess);
+		myGraphic.run(*ptrToChess,moveSet);
 		//std::cout << "Outside of run\n";
-		(*ptrToChess).getAllMoves();
-		SDL_Delay(50000);
-		int inputTrue = myGraphic.getInput(*ptrToChess, &(myGraphic.graphicEvents), myMove);
+		
+		//SDL_Delay(50000);
+
+		/*if (counter == 4)
+		{ 
+			std::cout << "All Moves-------------------\n";
+			(*ptrToChess).getAllMoves(); 
+			std::cout << "..................................................\n\n\nnn";
+			counter++;
+		}*/
+		int inputTrue;// = myGraphic.getInput(*ptrToChess, &(myGraphic.graphicEvents), myMove);
+		if ((*ptrToChess).getCurrentPlayer())
+		{
+			inputTrue = myGraphic.getInput(*ptrToChess, &(myGraphic.graphicEvents), myMove);
+		}
+		else
+		{
+			string move = (*ptrToChess).getSingleMove(0);
+			myGraphic.inputMove = move;
+			inputTrue = 1;
+		}
+		//std::cout << "Move from engine: " << (*ptrToChess).getSingleMove() << "\n";
 		if (inputTrue == 1)
 		{
 			backUpState = new Chess(*ptrToChess);
@@ -37,7 +68,7 @@ int main(int argc,char*args[])
 			//*lastState = myChess;
 			//lastState = new Chess(*ptrToChess);
 			int result = (*ptrToChess).execute(myGraphic.inputMove);
-			if (result==1)
+			if (result == 1)
 			{
 				//std::cerr << "I am executing inside rresult==1 \n";
 				//myChess.canUndo = true;
@@ -51,18 +82,8 @@ int main(int argc,char*args[])
 				//if (abs(move[1] - move[3]) == 2 && (*myChess.currentBoard)[move[3] - '1'][move[2] - 'a'].currentPiece->myName() == "Pawn") { myChess.pawnDoubleStep = true; }
 				//else { myChess.pawnDoubleStep = false; }
 				//std::cout << "Piece on e4: " << (*(*ptrToChess).currentBoard)[3][4].currentPiece->myName() << "\n";
-				
-				//std::cout << ((*ptrToChess).getCurrentPlayer() ? "White " : "Black ") << "to play.\n";
-				std::cout << "wHITE king: " <<(*ptrToChess).getKing(WHITE) << "\n";
-				std::cout << "BLACK king: " << (*ptrToChess).getKing(BLACK) << "\n";
 
-				vector <string> moves = (*ptrToChess).validMoves("f2");
-				std::cout << "-------------------------------------------------------------------------\n";
-				for (int i = 0; i < moves.size(); i++)
-				{
-					std::cout << i + 1 << ". " << moves[i] << "\n";
-				}
-				std::cout << "....................................................................\n";
+				//std::cout << ((*ptrToChess).getCurrentPlayer() ? "White " : "Black ") << "to play.\n";
 				(*ptrToChess).changeTurn();
 				if ((*ptrToChess).checkState() == 0)
 				{
@@ -83,10 +104,11 @@ int main(int argc,char*args[])
 				}
 				lastState = backUpState;
 				canRevert = 1;
+				counter++;
 				//std::cout << " Created a new lastState after executieon\n";
 				myGraphic.inputMove = "";
 			}
-			else if (result==2)
+			else if (result == 2)
 			{
 				if (lastState != NULL)
 				{
@@ -95,7 +117,7 @@ int main(int argc,char*args[])
 				}
 				lastState = backUpState;
 				canRevert = 1;
-				goto label;				
+				goto label;
 			}
 			else
 			{
@@ -105,9 +127,9 @@ int main(int argc,char*args[])
 				//lastState = NULL;
 			}
 		}
-		else if (inputTrue==2)
+		else if (inputTrue == 2)
 		{
-			label:
+		label:
 			std::cout << "Piece on e4: before changing" << (*(*ptrToChess).currentBoard)[3][4].currentPiece->myName() << "\n";
 			if (canRevert && lastState != NULL)
 			{
@@ -127,6 +149,7 @@ int main(int argc,char*args[])
 			myGraphic.inputMove = "";
 			//std::cout << "Piece on e4: after changing " << (*(*ptrToChess).currentBoard)[3][4].currentPiece->myName() << "\n";
 		}
+		
 		//std::cout << " After undo after check: ";
 	}
 	//std::cout << "Game Result: " << output;

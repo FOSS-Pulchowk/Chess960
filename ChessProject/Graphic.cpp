@@ -62,6 +62,10 @@ Graphic::Graphic()
 	title = IMG_Load("MainMenu.bmp");
 	hover = IMG_Load("buttonHover.png");
 	chessBoardNo = 1;
+	font = TTF_OpenFont("comicbd.ttf", 24);
+	colorText = { 200, 200, 200 };
+	colorHead = { 50, 100, 60 };
+	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 	whiteTurn = IMG_Load("Icons/WhiteTurn.png");
 	blackTurn = IMG_Load("Icons/BlackTurn.png");
 	//whiteKing = IMG_Load("ChessPieces/WhiteKing.png");
@@ -251,10 +255,12 @@ int Graphic::getInput(Chess &myChess, SDL_Event *e, string &myMove)
 
 
 
-void Graphic::run(Chess &myChess)
+void Graphic::run(Chess &myChess, vector<string> moveSet)
 {
 
 	//std::cout << "After chessBoard blit\n";
+	moveTextPos.x = 1100;
+	moveTextPos.y = 25;
 	SDL_BlitSurface(chessBoard, NULL, screenSurface, &chessBoardPos);
 	if (myChess.getCurrentPlayer())
 	{
@@ -311,6 +317,20 @@ void Graphic::run(Chess &myChess)
 		}
 	}
 
+	surfaceMessage = TTF_RenderText_Solid(font, "Moves in the game :", colorText);
+	SDL_BlitSurface(surfaceMessage, NULL, screenSurface, &moveTextPos);
+	SDL_FreeSurface(surfaceMessage);
+
+	moveTextPos.y += 50;
+	for (int i = 0; i < moveSet.size(); i++)
+	{
+		surfaceMessage = TTF_RenderText_Solid(font, moveSet[i].c_str(), colorText);
+		SDL_BlitSurface(surfaceMessage, NULL, screenSurface, &moveTextPos);
+		moveTextPos.y += 27;
+		SDL_FreeSurface(surfaceMessage);
+		/*moveText = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
+		SDL_RenderCopy(renderer, moveText, NULL, &moveTextPos);*/
+	}
 	
 	
 	SDL_UpdateWindowSurface(window);
