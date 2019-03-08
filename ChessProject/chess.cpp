@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <vector>
 #include <chrono>
+#include <random>
 
 Chess::Chess(string name1, string name2)
 {
@@ -72,7 +73,6 @@ Chess::Chess(string name1, string name2)
 	ptrToBlackPawn6 = new Pawn("black");
 	ptrToBlackPawn7 = new Pawn("black");
 	ptrToBlackPawn8 = new Pawn("black");*/
-
 	whiteToPlay = true;
 	isOver = false;
 	whitePlayerName = name1;
@@ -113,7 +113,7 @@ Chess::Chess(Chess&obj)
 	ptrToBlackRook2 = new Rook(*obj.ptrToBlackRook2);
 	
 	ptrToBoard = new Board[1][8][8];
-
+	moveSet = obj.moveSet;
 	//checking 
 	//std::cout <<"Rookas name: " <<(obj.ptrToBlackRook2)->myName();
 	//(*ptrToBoard)[0][0].currentPiece = obj.ptrToBlackRook1;
@@ -313,6 +313,8 @@ Chess::Chess(Chess&obj)
 	//(*ptrToBoard)[0][0].currentPiece = ptrToBlackRook1;
 	pawnDoubleStep = obj.pawnDoubleStep;
 }
+
+
 auto Chess::getBoard()
 {
 	return ptrToBoard;
@@ -579,11 +581,29 @@ int Chess::execute(string choosenMove)
 		}
 		else if (moveToEmptySquare(choosenMove))
 		{
+			if (destinationPiece->myName() == "Pawn")
+			{
+				if (destinationPiece->getColor())
+				{
+					if (destinationRow == 7)
+					{
+						dynamic_cast<Pawn*>(destinationPiece)->promote("Queen");
+					}
+				}
+				else
+				{
+					if (destinationRow == 0)
+					{
+						dynamic_cast<Pawn*>(destinationPiece)->promote("Queen");
+					}
+				}
+			}
 			if (isKingInCheck(getCurrentPlayer()))
 			{
 				std::cout << "King is checked. Undoing\n";
 				return 2;
 			}
+			
 			return 1;
 		}
 		else
@@ -596,6 +616,23 @@ int Chess::execute(string choosenMove)
 		//std::cout << "Sending move to capture\n";
 		if (capture(choosenMove))
 		{
+			if (destinationPiece->myName() == "Pawn")
+			{
+				if (destinationPiece->getColor())
+				{
+					if (destinationRow == 7)
+					{
+						dynamic_cast<Pawn*>(destinationPiece)->promote("Queen");
+					}
+				}
+				else
+				{
+					if (destinationRow == 0)
+					{
+						dynamic_cast<Pawn*>(destinationPiece)->promote("Queen");
+					}
+				}
+			}
 			if (isKingInCheck(getCurrentPlayer()))
 			{
 				std::cout << "King is checked. Undoing\n";
@@ -613,6 +650,7 @@ int Chess::execute(string choosenMove)
 		std::cout << "It is neither capture nor move";
 		return 0;
 	}
+	
 	bool canMove = sourcePiece->movesInEmptyBoard(source, destination);
 	bool playerMatchesPiece = (getCurrentPlayer() == sourcePiece->getColor());
 	bool isOpponentPiece = (getCurrentPlayer() != destinationPiece->getColor());
@@ -622,17 +660,17 @@ int Chess::execute(string choosenMove)
 int Chess::checkState()
 {
 	int player = getCurrentPlayer();
-	std::cout << "Current turn: " << (getCurrentPlayer() ? "White" : "Black") << "\n";
+	//std::cout << "Current turn: " << (getCurrentPlayer() ? "White" : "Black") << "\n";
 	string king = getKing(static_cast<Color>(player));
-	std::cout << "I got kings position in checking state as : " << king << "\n";
+	//std::cout << "I got kings position in checking state as : " << king << "\n";
 	vector<string> moves = validMoves(king);
-	std::cout << "\n\n***********************************\n\n";
+	/*std::cout << "\n\n***********************************\n\n";
 	for (int i = 0; i < moves.size(); i++)
 	{
 		
 		std::cout << moves[i] << "\n";
 	}
-	std::cout << "******************************\n";
+	std::cout << "******************************\n";*/
 	if (isKingInCheck(player) && moves.empty())
 	{
 		return !getCurrentPlayer();
@@ -925,6 +963,7 @@ string Chess::getPiecesConfig()
 int Chess::initializeBoard()
 {
 	//setBoard(*ptrToBoard, ptrToNoPiece);
+	string locationData = (*this).getPiecesConfig();
 	Board(*myBoard)[8][8] = ptrToBoard;
 
 	for (int i = 0; i < 8; i++)
@@ -936,7 +975,7 @@ int Chess::initializeBoard()
 	}
 	std::cout << "Value of ptrToNoPiece in intitializeBoard:" << ptrToNoPiece;
 
-	(*myBoard)[0][4].currentPiece = ptrToWhiteKing;
+	/*(*myBoard)[0][4].currentPiece = ptrToWhiteKing;
 	(*myBoard)[7][4].currentPiece = ptrToBlackKing;
 	(*myBoard)[0][3].currentPiece = ptrToWhiteQueen;
 	(*myBoard)[7][3].currentPiece = ptrToBlackQueen;
@@ -952,9 +991,9 @@ int Chess::initializeBoard()
 	(*myBoard)[0][7].currentPiece = ptrToWhiteRook2;
 	(*myBoard)[7][0].currentPiece = ptrToBlackRook1;
 	(*myBoard)[7][7].currentPiece = ptrToBlackRook2;
-	(*myBoard)[7][7].currentPiece = ptrToBlackRook2;
+	(*myBoard)[7][7].currentPiece = ptrToBlackRook2;*/
 
-	/*
+	
 	(*myBoard)[0][piecesIntValue[2]].currentPiece = ptrToWhiteKing;
 	(*myBoard)[7][piecesIntValue[2]].currentPiece = ptrToBlackKing;
 	(*myBoard)[0][piecesIntValue[7]].currentPiece = ptrToWhiteQueen;
@@ -971,7 +1010,7 @@ int Chess::initializeBoard()
 	(*myBoard)[0][piecesIntValue[1]].currentPiece = ptrToWhiteRook2;
 	(*myBoard)[7][piecesIntValue[0]].currentPiece = ptrToBlackRook1;
 	(*myBoard)[7][piecesIntValue[1]].currentPiece = ptrToBlackRook2;
-	*/
+	
 	for (int i = 0; i < 8; i++)
 	{
 		(*myBoard)[1][i].currentPiece = whitePawns[i];
@@ -1257,13 +1296,13 @@ vector<string> Chess::getAllMoves()
 	}
 	
 	
-	std::cout << "\nGetting All Moves.\n";
+	//std::cout << "\nGetting All Moves.\n";
 	for (int i = 0; i < allMoves.size(); i++)
 	{
-		std::cout << allMoves[i] << ":";
+		//std::cout << allMoves[i] << ":";
 		Chess *temp = new Chess(*this);
 		temp->execute(allMoves[i]);
-		std::cout << temp->score() << "\n";
+		//std::cout << temp->score() << "\n";
 		delete temp;
 	}
 	return allMoves;
@@ -1272,11 +1311,14 @@ vector<string> Chess::getAllMoves()
 string Chess::getSingleMove(bool color)
 {
 	vector <string> allMoves = getAllMoves();
-	vector <int> allScores;
+	auto rng = std::default_random_engine{};
+	std::shuffle(allMoves.begin(), allMoves.end(), rng);
+
+	vector <int>allScores;
 	for (int i = 0; i < allMoves.size(); i++)
 	{
 		Chess *temp = new Chess(*this);
-		temp->execute(allMoves[i]);
+		temp->minmax(allMoves[i],3);
 		allScores.push_back(temp->score());
 		delete temp;
 	}
@@ -1288,4 +1330,53 @@ string Chess::getSingleMove(bool color)
 		return allMoves[maxIndex];
 	else
 		return allMoves[minIndex];
+}
+int Chess::minmax(string move,int val)
+{
+	//static int count = 0;
+	Chess *temp = new Chess(*this);
+	temp->execute(move);
+	//count++;
+	int player = getCurrentPlayer();
+	if (val <1)
+	{
+		if (player)
+			return temp->score();
+		else
+			return -temp->score();
+	}
+	else
+	{
+		if (player)
+		{
+			int bestVal = -10000;
+			Chess *myChess = new Chess(*temp);
+			vector <string> allMoves = myChess->getAllMoves();
+			//vector <int> allScores;
+			for (int i = 0; i < allMoves.size(); i++)
+			{
+				//Chess *tempChess = new Chess(*myChess);
+				int temp = myChess->minmax(allMoves[i],val-1);
+				if (temp > bestVal)
+					bestVal = temp;
+			}
+			delete myChess;
+			return bestVal;
+		}
+		else
+		{
+			int bestVal = 10000;
+			Chess *myChess = new Chess(*temp);
+			vector <string> allMoves = myChess->getAllMoves();
+			for (int i = 0; i < allMoves.size(); i++)
+			{
+				int temp = myChess->minmax(allMoves[i],val-1);
+				if (temp < bestVal)
+					bestVal = temp;
+			}
+			delete myChess;
+			return bestVal;
+		}
+	}
+	return 0;
 }

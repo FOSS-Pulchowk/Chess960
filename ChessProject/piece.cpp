@@ -287,7 +287,7 @@ Pawn::Pawn(const Pawn&obj)
 	//std::cout << "Copying " << name <<"\n";
 	alive = obj.alive;
 	promoted = obj.promoted;
-	promotedPiece = NULL;
+	promotedPiece = obj.promotedPiece;
 	image = SDL_ConvertSurface(obj.image, (obj.image)->format, SDL_SWSURFACE);
 	isWhite = obj.isWhite;
 }
@@ -325,10 +325,12 @@ int Pawn::promote(string piece)
 		if (getColor())
 		{
 			promotedPiece = new Queen("white");
+			std::cout << "I promoted to white Queen\n";
 		}
 		else
 		{
 			promotedPiece = new Queen("black");
+			std::cout << "I promoted to white Queen\n";
 		}
 		promoted = true;
 		image = promotedPiece->image;

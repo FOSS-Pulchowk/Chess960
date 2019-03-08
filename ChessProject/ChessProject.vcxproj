@@ -81,6 +81,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
+    <IncludePath>C:\Libraries\SDL2_TTF\include;C:\Libraries\SDL2_Image\include;C:\Libraries\SDL2-2.0.9\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Libraries\SDL2_TTF\lib\x86;C:\Libraries\SDL2_Image\lib\x86;C:\Libraries\SDL2-2.0.9\lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>

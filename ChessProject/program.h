@@ -1,5 +1,7 @@
 #pragma once
 #include <string>
+#include "SDL.h"
+#include "SDL_image.h"
 #include "board.h"
 #include "piece.h"
 #include "chess.h"
@@ -8,9 +10,12 @@ class Program
 {
 private:
 	Graphic *ptrToGraphic;
-	Board(*ptrToBoard)[8][8];
 	Chess *ptrToChess;
-	OnePiece *ptrToNoPiece;
+	string myMove;
+	int canRevert = 0;
+	Chess *lastState = NULL;
+	Chess *backUpState = NULL;
+	//OnePiece *ptrToNoPiece;
 
 public:
 	bool isRunning;

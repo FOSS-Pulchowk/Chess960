@@ -10,13 +10,13 @@ class Graphic
 	SDL_Surface* chessBoard, *blueBoard, *darkBoard;
 	//SDL_Surface* whiteKing;
 	SDL_Window *window;
-	SDL_Surface*screenSurface, *highlight, *drawIcon[6][3], *loadingSurface, *mainmenuSurface, *dash;
+	SDL_Surface *highlight, *drawIcon[6][3], *loadingSurface, *mainmenuSurface, *dash;
 	SDL_Surface *title, *hover, *settingSurface, *settingActive;
 	SDL_Renderer *renderer;
-	TTF_Font* font;
+	/*TTF_Font* font;
 	SDL_Color colorText, colorHead;
 	SDL_Surface* surfaceMessage;
-	SDL_Texture* moveText;
+	SDL_Texture* moveText;*/
 	SDL_Rect posBoard[8][8];
 	SDL_Rect chessBoardPos, additionChessBoardPos;
 	SDL_Rect drawIconPos[6];
@@ -26,6 +26,11 @@ class Graphic
 	SDL_Rect turnPos, moveTextPos;
 	int drawIconState[6], currentMousePos[2];
 public:
+	bool single = false;
+	SDL_Surface *whiteWins;
+	SDL_Surface *blackWins;
+	int winner=2;
+	SDL_Surface *screenSurface;
 	SDL_Event graphicEvents;
 	string inputMove;
 	string currentWindowView;

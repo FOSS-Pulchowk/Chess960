@@ -59,6 +59,8 @@ class Chess
 	Pawn *blackPawns[8];
 	
 public:
+	int minmax(string move,int val);
+	vector <string>moveSet;
 	Board(*ptrToBoard)[8][8];// = new Board[1][8][8];
 	Piece *whitePieces[16];
 	Piece *blackPieces[16];

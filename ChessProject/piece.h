@@ -99,5 +99,5 @@ public:
 	int promoted;
 	int promote(string piece);
 	int movesInEmptyBoard(string initialPosition, string finalPosition);
-	Piece *promotedPiece;
+	Queen *promotedPiece;
 };
